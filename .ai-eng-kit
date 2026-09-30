@@ -1,0 +1,117 @@
+{
+  "version": "0.7.3",
+  "mode": "new",
+  "language": "de",
+  "agents": [
+    "codex"
+  ],
+  "memory": "AGENTS.md",
+  "createdWith": "create-ai-eng-app",
+  "platform": "web",
+  "stack": {
+    "framework": "nextjs",
+    "backend": "supabase",
+    "test": "vitest",
+    "e2e": "playwright",
+    "ui": "shadcn",
+    "deploy": null,
+    "packageManager": "npm"
+  },
+  "commands": {
+    "dev": "npm run dev",
+    "build": "npm run build",
+    "test": "npm test",
+    "lint": "npm run lint"
+  },
+  "probe": {
+    "kind": "http",
+    "baseUrl": "http://localhost:3000"
+  },
+  "layers": [],
+  "law": [
+    "gdpr"
+  ],
+  "featurePrefix": "PROJ",
+  "managed": {
+    ".codex/skills": [
+      "architecture",
+      "audit",
+      "build",
+      "cleanup",
+      "deploy",
+      "dsgvo",
+      "e2e-tests",
+      "help",
+      "init",
+      "map",
+      "qa",
+      "refactor",
+      "refine",
+      "reverse-spec",
+      "security-check",
+      "starter-kit-migration",
+      "tasks",
+      "verify-setup",
+      "write-spec"
+    ],
+    "docs/production": [
+      "database-optimization.md",
+      "error-tracking.md",
+      "performance.md",
+      "rate-limiting.md",
+      "security-headers.md"
+    ],
+    "docs/stacks": [
+      "backend-supabase.md",
+      "deploy-hostinger.md",
+      "deploy-vercel.md",
+      "framework-nextjs.md",
+      "tests-vitest-playwright.md",
+      "ui-shadcn.md"
+    ],
+    "docs/law": [
+      "ai-act.md",
+      "dsg.md",
+      "gdpr.md"
+    ],
+    "docs/kit": [
+      "CHANGELOG.md"
+    ]
+  },
+  "hashes": {
+    ".codex/skills/architecture": "ab990385815b93c6",
+    ".codex/skills/audit": "dd4856d7ade8a308",
+    ".codex/skills/build": "ef08865ce6321ec8",
+    ".codex/skills/cleanup": "b0a5b0a6c244355b",
+    ".codex/skills/deploy": "c2d52263165e0396",
+    ".codex/skills/dsgvo": "efc66e49472368bb",
+    ".codex/skills/e2e-tests": "c6036e1ca3cfee11",
+    ".codex/skills/help": "6baa6286ea16ac4b",
+    ".codex/skills/init": "b134d5dafe5b393e",
+    ".codex/skills/map": "f4b7bb79515aa01b",
+    ".codex/skills/qa": "223634f50dbf4818",
+    ".codex/skills/refactor": "c4854fa2616ff68b",
+    ".codex/skills/refine": "8699ce541e540ea9",
+    ".codex/skills/reverse-spec": "c055b21e7145d6cd",
+    ".codex/skills/security-check": "7db51bd6850f2ba1",
+    ".codex/skills/starter-kit-migration": "a48bdabfd2f35a12",
+    ".codex/skills/tasks": "2050a8c285c6d984",
+    ".codex/skills/verify-setup": "e7232f5878b9bceb",
+    ".codex/skills/write-spec": "2e8c48204930eed7",
+    "docs/production/database-optimization.md": "ea25a896ca251692",
+    "docs/production/error-tracking.md": "9a26ae3d0029ae96",
+    "docs/production/performance.md": "c592f2aa3f8eb761",
+    "docs/production/rate-limiting.md": "ae53c1276171f153",
+    "docs/production/security-headers.md": "e0d533266cc33ef2",
+    "docs/stacks/backend-supabase.md": "30a602afb13c7c0e",
+    "docs/stacks/deploy-hostinger.md": "e695932a009c76fc",
+    "docs/stacks/deploy-vercel.md": "76675af7e1486260",
+    "docs/stacks/framework-nextjs.md": "d3e9f35ed073139a",
+    "docs/stacks/tests-vitest-playwright.md": "16b10381dfee170d",
+    "docs/stacks/ui-shadcn.md": "86c2202698f1a17f",
+    "docs/law/ai-act.md": "ab7a959b366afbff",
+    "docs/law/dsg.md": "8521b1d04b8aa0b1",
+    "docs/law/gdpr.md": "4669e4e2e2964833",
+    "docs/kit/CHANGELOG.md": "04cc6e7e17fca0e5"
+  }
+}

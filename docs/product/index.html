@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PULSE — Dein persönlicher Fitness-Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============================================================
+     ONBOARDING / LANDING SCREEN
+============================================================= -->
+<section id="onboarding-screen" class="onboarding">
+
+  <!-- ---------- Landing Hero ---------- -->
+  <div id="landing-view" class="landing">
+    <div class="landing__bg-ring"></div>
+    <div class="landing__bg-ring landing__bg-ring--pink"></div>
+    <nav class="landing__nav">
+      <div class="logo"><span class="logo__mark">P</span>ULSE</div>
+      <div class="landing__nav-pulse" aria-hidden="true">
+        <svg viewBox="0 0 200 40" preserveAspectRatio="none"><polyline class="pulse-line" points="0,20 40,20 52,20 60,4 68,36 76,20 90,20 130,20 142,20 150,6 158,34 166,20 200,20"/></svg>
+      </div>
+    </nav>
+
+    <div class="landing__hero">
+      <div class="landing__hero-copy">
+        <p class="eyebrow">Dein Training. Dein Tempo. Dein Fortschritt.</p>
+        <h1 class="landing__title">Trainiere mit einem Plan,<br>der dich <span class="highlight">wirklich</span> kennt.</h1>
+        <p class="landing__subtitle">PULSE berechnet deinen Kalorienbedarf, baut dir einen Trainingsplan und begleitet dich als KI-Trainer bis zu deinem Ziel — egal ob zuhause, im Studio oder draußen.</p>
+        <button id="start-btn" class="btn btn--primary btn--lg">Jetzt starten <span class="btn__arrow">→</span></button>
+
+        <div class="landing__stat-row">
+          <div><strong>28</strong><span>Übungen</span></div>
+          <div><strong>6</strong><span>Ränge</span></div>
+          <div><strong>24/7</strong><span>KI-Trainer</span></div>
+        </div>
+      </div>
+
+      <div class="landing__hero-visual" aria-hidden="true">
+        <div class="hero-visual-card">
+          <div class="hero-visual-card__top">
+            <span>Heutige Belastung</span>
+            <span class="hero-visual-card__badge">Live</span>
+          </div>
+          <svg class="hero-pulse-svg" viewBox="0 0 320 100" preserveAspectRatio="none">
+            <polyline class="pulse-line pulse-line--big" points="0,55 40,55 60,55 72,10 84,95 96,55 120,55 160,55 180,55 192,15 204,90 216,55 240,55 320,55"/>
+          </svg>
+          <div class="hero-visual-card__stats">
+            <div><strong>142</strong><span>bpm Ø</span></div>
+            <div><strong>412</strong><span>kcal</span></div>
+            <div><strong>38</strong><span>Min</span></div>
+          </div>
+        </div>
+        <div class="hero-floating-chip hero-floating-chip--1">🔥 Streak: 5 Tage</div>
+        <div class="hero-floating-chip hero-floating-chip--2">🏆 Rang: Gold</div>
+      </div>
+    </div>
+
+    <div class="landing__features">
+      <div class="feature-card">
+        <span class="feature-card__icon">⚡</span>
+        <h3>Individueller Plan</h3>
+        <p>Trainingspläne, angepasst an Ziel, Level und Equipment.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card__icon">🔥</span>
+        <h3>Kalorien &amp; Makros</h3>
+        <p>Dein täglicher Bedarf, verständlich berechnet.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card__icon">🏆</span>
+        <h3>Rangsystem</h3>
+        <p>Von Bronze bis Elite — verfolge jeden Fortschritt.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card__icon">💬</span>
+        <h3>KI-Trainer</h3>
+        <p>Fragen stellen, Antworten bekommen, motiviert bleiben.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------- Multi-Step Questionnaire ---------- -->
+  <div id="questionnaire-view" class="questionnaire hidden">
+    <div class="questionnaire__top">
+      <div class="logo logo--small"><span class="logo__mark">P</span>ULSE</div>
+      <button id="quit-questionnaire" class="btn-text">Abbrechen</button>
+    </div>
+
+    <div class="progress-track" aria-hidden="true">
+      <div id="questionnaire-progress-fill" class="progress-track__fill"></div>
+    </div>
+    <div class="step-indicator">
+      <span id="step-label">Schritt 1 von 5</span>
+      <span id="step-name">Persönliche Daten</span>
+    </div>
+
+    <form id="questionnaire-form" class="questionnaire__form">
+
+      <!-- Step 1: Persönliche Daten -->
+      <div class="q-step" data-step="1">
+        <h2>Erzähl uns von dir</h2>
+        <p class="q-step__hint">Damit wir dich richtig ansprechen können.</p>
+        <div class="field">
+          <label for="firstName">Vorname</label>
+          <input type="text" id="firstName" name="firstName" placeholder="z. B. Max" required>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="age">Alter</label>
+            <input type="number" id="age" name="age" min="12" max="99" placeholder="28" required>
+          </div>
+          <div class="field">
+            <label for="gender">Geschlecht</label>
+            <select id="gender" name="gender" required>
+              <option value="" disabled selected>Auswählen</option>
+              <option value="male">Männlich</option>
+              <option value="female">Weiblich</option>
+              <option value="other">Divers</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="email">E-Mail-Adresse <span class="optional">(optional)</span></label>
+          <input type="email" id="email" name="email" placeholder="max@beispiel.de">
+        </div>
+      </div>
+
+      <!-- Step 2: Körperdaten -->
+      <div class="q-step hidden" data-step="2">
+        <h2>Deine Körperdaten</h2>
+        <p class="q-step__hint">Grundlage für Kalorien- und Trainingsberechnung.</p>
+        <div class="field-row">
+          <div class="field">
+            <label for="height">Größe (cm)</label>
+            <input type="number" id="height" name="height" min="100" max="230" placeholder="178" required>
+          </div>
+          <div class="field">
+            <label for="weight">Gewicht (kg)</label>
+            <input type="number" id="weight" name="weight" min="30" max="300" step="0.1" placeholder="76" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Fitnessziel -->
+      <div class="q-step hidden" data-step="3">
+        <h2>Was ist dein Ziel?</h2>
+        <p class="q-step__hint">Wähle das Ziel, das am besten passt.</p>
+        <div class="choice-grid" id="goal-grid">
+          <label class="choice-card"><input type="radio" name="goal" value="lose_weight" required><span class="choice-card__icon">📉</span><span>Abnehmen</span></label>
+          <label class="choice-card"><input type="radio" name="goal" value="gain_weight"><span class="choice-card__icon">📈</span><span>Zunehmen</span></label>
+          <label class="choice-card"><input type="radio" name="goal" value="muscle"><span class="choice-card__icon">💪</span><span>Muskelaufbau</span></label>
+          <label class="choice-card"><input type="radio" name="goal" value="fat_loss"><span class="choice-card__icon">🔥</span><span>Körperfett reduzieren</span></label>
+          <label class="choice-card"><input type="radio" name="goal" value="general"><span class="choice-card__icon">✨</span><span>Allgemeine Fitness</span></label>
+          <label class="choice-card"><input type="radio" name="goal" value="strength"><span class="choice-card__icon">🏋️</span><span>Kraft steigern</span></label>
+          <label class="choice-card"><input type="radio" name="goal" value="endurance"><span class="choice-card__icon">🏃</span><span>Ausdauer verbessern</span></label>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="targetWeight">Zielgewicht (kg) <span class="optional">(optional)</span></label>
+            <input type="number" id="targetWeight" name="targetWeight" min="30" max="300" step="0.1" placeholder="70">
+          </div>
+          <div class="field">
+            <label for="targetDate">Zieldatum <span class="optional">(optional)</span></label>
+            <input type="date" id="targetDate" name="targetDate">
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Trainingserfahrung -->
+      <div class="q-step hidden" data-step="4">
+        <h2>Deine Trainingserfahrung</h2>
+        <p class="q-step__hint">Wie würdest du dein aktuelles Level einschätzen?</p>
+        <div class="choice-grid choice-grid--3" id="level-grid">
+          <label class="choice-card"><input type="radio" name="level" value="beginner" required><span class="choice-card__icon">🌱</span><span>Anfänger</span></label>
+          <label class="choice-card"><input type="radio" name="level" value="advanced"><span class="choice-card__icon">🔷</span><span>Fortgeschritten</span></label>
+          <label class="choice-card"><input type="radio" name="level" value="expert"><span class="choice-card__icon">⭐</span><span>Erfahren</span></label>
+        </div>
+
+        <h3 class="q-step__subheading">Wie oft möchtest du pro Woche trainieren?</h3>
+        <div class="slider-field">
+          <input type="range" id="daysPerWeek" name="daysPerWeek" min="1" max="6" value="3">
+          <div class="slider-field__value"><span id="daysPerWeekValue">3</span> Tage / Woche</div>
+        </div>
+
+        <h3 class="q-step__subheading">Wie lange soll ein Training ungefähr dauern?</h3>
+        <div class="choice-grid choice-grid--3" id="duration-grid">
+          <label class="choice-card choice-card--sm"><input type="radio" name="duration" value="30" required><span>~30 Min</span></label>
+          <label class="choice-card choice-card--sm"><input type="radio" name="duration" value="45"><span>~45 Min</span></label>
+          <label class="choice-card choice-card--sm"><input type="radio" name="duration" value="60"><span>~60 Min</span></label>
+        </div>
+      </div>
+
+      <!-- Step 5: Trainingsmöglichkeiten -->
+      <div class="q-step hidden" data-step="5">
+        <h2>Wo und womit trainierst du?</h2>
+        <p class="q-step__hint">So stellen wir sicher, dass dein Plan wirklich umsetzbar ist.</p>
+        <div class="choice-grid choice-grid--4" id="location-grid">
+          <label class="choice-card choice-card--sm"><input type="radio" name="location" value="home" required><span class="choice-card__icon">🏠</span><span>Zuhause</span></label>
+          <label class="choice-card choice-card--sm"><input type="radio" name="location" value="gym"><span class="choice-card__icon">🏢</span><span>Fitnessstudio</span></label>
+          <label class="choice-card choice-card--sm"><input type="radio" name="location" value="outdoor"><span class="choice-card__icon">🌳</span><span>Draußen</span></label>
+          <label class="choice-card choice-card--sm"><input type="radio" name="location" value="home_gym"><span class="choice-card__icon">🔁</span><span>Zuhause + Studio</span></label>
+        </div>
+
+        <h3 class="q-step__subheading">Welches Equipment steht dir zur Verfügung?</h3>
+        <div class="choice-grid choice-grid--4" id="equipment-grid">
+          <label class="choice-card choice-card--sm"><input type="checkbox" name="equipment" value="none"><span>Keine Geräte</span></label>
+          <label class="choice-card choice-card--sm"><input type="checkbox" name="equipment" value="dumbbells"><span>Kurzhanteln</span></label>
+          <label class="choice-card choice-card--sm"><input type="checkbox" name="equipment" value="barbell"><span>Langhantel</span></label>
+          <label class="choice-card choice-card--sm"><input type="checkbox" name="equipment" value="pullupbar"><span>Klimmzugstange</span></label>
+          <label class="choice-card choice-card--sm"><input type="checkbox" name="equipment" value="bands"><span>Widerstandsbänder</span></label>
+          <label class="choice-card choice-card--sm"><input type="checkbox" name="equipment" value="cable"><span>Kabelzug</span></label>
+          <label class="choice-card choice-card--sm"><input type="checkbox" name="equipment" value="machines"><span>Maschinen</span></label>
+          <label class="choice-card choice-card--sm"><input type="checkbox" name="equipment" value="kettlebell"><span>Kettlebell</span></label>
+          <label class="choice-card choice-card--sm"><input type="checkbox" name="equipment" value="other"><span>Sonstiges</span></label>
+        </div>
+      </div>
+
+      <div class="questionnaire__nav">
+        <button type="button" id="prev-step-btn" class="btn btn--ghost hidden">Zurück</button>
+        <button type="button" id="next-step-btn" class="btn btn--primary">Weiter</button>
+        <button type="submit" id="finish-questionnaire-btn" class="btn btn--primary hidden">Plan erstellen ✨</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ---------- Results / Overview reveal ---------- -->
+  <div id="results-view" class="results hidden">
+    <div class="results__inner">
+      <p class="eyebrow">Dein Profil ist bereit</p>
+      <h1 id="results-greeting" class="landing__title landing__title--sm">Alles klar, <span class="highlight">Max</span>!</h1>
+      <p class="landing__subtitle">Hier ist dein persönlicher Tagesüberblick, basierend auf deinen Angaben.</p>
+
+      <div class="stat-cards" id="results-stat-cards"></div>
+      <p class="disclaimer">⚠️ Diese Werte sind Schätzungen auf Basis gängiger Formeln (Mifflin-St-Jeor). Individuelle Faktoren, Gesundheitszustand und medizinische Besonderheiten werden nicht berücksichtigt. Bei gesundheitlichen Fragen wende dich an eine Ärztin, einen Arzt oder eine Ernährungsfachkraft.</p>
+
+      <button id="enter-app-btn" class="btn btn--primary btn--lg">Zu meinem Dashboard <span class="btn__arrow">→</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MAIN APP SHELL (hidden until onboarding complete)
+============================================================= -->
+<div id="app" class="app hidden">
+
+  <!-- Sidebar navigation (desktop) -->
+  <aside class="sidebar">
+    <div class="logo"><span class="logo__mark">P</span>ULSE</div>
+    <nav class="sidebar__nav">
+      <button class="nav-item active" data-view="dashboard"><span class="nav-item__icon">🏠</span>Dashboard</button>
+      <button class="nav-item" data-view="training"><span class="nav-item__icon">🗓️</span>Training</button>
+      <button class="nav-item" data-view="exercises"><span class="nav-item__icon">📚</span>Übungen</button>
+      <button class="nav-item" data-view="progress"><span class="nav-item__icon">📊</span>Fortschritt</button>
+      <button class="nav-item" data-view="ranking"><span class="nav-item__icon">🏆</span>Rangliste</button>
+      <button class="nav-item" data-view="nutrition"><span class="nav-item__icon">🥗</span>Ernährung</button>
+      <button class="nav-item" data-view="ai-trainer"><span class="nav-item__icon">💬</span>AI Trainer</button>
+      <button class="nav-item" data-view="profile"><span class="nav-item__icon">⚙️</span>Profil</button>
+    </nav>
+    <div class="sidebar__pulse" aria-hidden="true">
+      <svg viewBox="0 0 200 30" preserveAspectRatio="none"><polyline class="pulse-line" points="0,15 30,15 40,15 48,3 56,27 64,15 76,15 200,15"/></svg>
+    </div>
+    <button id="reset-app-btn" class="btn-text sidebar__reset">Daten zurücksetzen</button>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main-content">
+
+    <!-- Mobile top bar -->
+    <div class="mobile-topbar">
+      <div class="logo logo--small"><span class="logo__mark">P</span>ULSE</div>
+      <span id="mobile-view-title">Dashboard</span>
+    </div>
+
+    <!-- ============ DASHBOARD VIEW ============ -->
+    <section id="view-dashboard" class="view active">
+      <header class="view-header">
+        <div>
+          <h1 id="dashboard-greeting">Hey Max! 💪</h1>
+          <p class="view-header__subtitle">Bereit für dein nächstes Training?</p>
+        </div>
+      </header>
+
+      <div class="dashboard-grid">
+        <div class="card card--highlight card--span2 fade-in">
+          <h3 class="card__label">Heutiges Training</h3>
+          <div id="today-workout-box"></div>
+        </div>
+
+        <div class="card card--accent-corner fade-in">
+          <h3 class="card__label">Tagesziel</h3>
+          <div class="macro-grid" id="dashboard-macros"></div>
+        </div>
+
+        <div class="card fade-in">
+          <h3 class="card__label">Gewichtsfortschritt</h3>
+          <div id="weight-progress-box"></div>
+        </div>
+
+        <div class="card fade-in">
+          <h3 class="card__label">Trainingsfortschritt (diese Woche)</h3>
+          <div id="training-progress-box"></div>
+        </div>
+
+        <div class="card card--motivation card--span2 fade-in">
+          <span class="card__icon">🚀</span>
+          <p id="motivation-message">Noch 2 Trainingseinheiten bis zu deinem Wochenziel!</p>
+        </div>
+
+        <div class="card card--span2 fade-in">
+          <h3 class="card__label">Persönliche Rekorde</h3>
+          <div id="pr-box"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TRAINING VIEW ============ -->
+    <section id="view-training" class="view">
+      <header class="view-header">
+        <div>
+          <h1>Training</h1>
+          <p class="view-header__subtitle">Dein automatisch generierter Plan — oder erstelle deinen eigenen.</p>
+        </div>
+        <div class="view-header__actions">
+          <button class="btn btn--ghost" id="tab-auto-plan">Automatischer Plan</button>
+          <button class="btn btn--ghost" id="tab-custom-plan">Eigener Plan</button>
+        </div>
+      </header>
+
+      <div id="auto-plan-section">
+        <div id="auto-plan-days" class="plan-days"></div>
+      </div>
+
+      <div id="custom-plan-section" class="hidden">
+        <div class="card">
+          <h3 class="card__label">Eigenen Trainingsplan erstellen</h3>
+          <div class="field">
+            <label for="custom-plan-name">Name deines Plans</label>
+            <input type="text" id="custom-plan-name" placeholder="z. B. Mein Sommer-Split">
+          </div>
+          <div id="custom-plan-days-editor"></div>
+          <button id="add-custom-day-btn" class="btn btn--ghost">+ Trainingstag hinzufügen</button>
+          <button id="save-custom-plan-btn" class="btn btn--primary">Plan speichern</button>
+        </div>
+
+        <div id="saved-custom-plans" class="plan-days"></div>
+      </div>
+    </section>
+
+    <!-- ============ EXERCISES VIEW ============ -->
+    <section id="view-exercises" class="view">
+      <header class="view-header">
+        <div>
+          <h1>Übungsdatenbank</h1>
+          <p class="view-header__subtitle">Alle Übungen mit Muskelgruppe, Equipment und Schwierigkeit.</p>
+        </div>
+      </header>
+      <div class="filter-bar" id="exercise-filter-bar"></div>
+      <div id="exercise-grid" class="exercise-grid"></div>
+    </section>
+
+    <!-- ============ PROGRESS VIEW ============ -->
+    <section id="view-progress" class="view">
+      <header class="view-header">
+        <div>
+          <h1>Fortschritt</h1>
+          <p class="view-header__subtitle">Dein Weg von Tag eins bis heute.</p>
+        </div>
+      </header>
+
+      <div class="card">
+        <h3 class="card__label">Gewichtsverlauf eintragen</h3>
+        <div class="field-row field-row--log">
+          <div class="field">
+            <label for="log-weight-input">Aktuelles Gewicht (kg)</label>
+            <input type="number" id="log-weight-input" step="0.1" placeholder="75.5">
+          </div>
+          <button id="log-weight-btn" class="btn btn--primary">Eintragen</button>
+        </div>
+
+        <div class="weight-chart" id="weight-chart">
+          <div class="weight-chart__head">
+            <div class="weight-chart__stats" id="weight-chart-stats"></div>
+            <div class="weight-chart__range" id="weight-chart-range"></div>
+          </div>
+          <div class="weight-chart__canvas" id="weight-chart-canvas"></div>
+        </div>
+
+        <div id="weight-history-list"></div>
+      </div>
+
+      <div class="card">
+        <h3 class="card__label">Vorher / Nachher</h3>
+        <p class="q-step__hint">Ziehe den Regler, um deine Entwicklung zu vergleichen. Die Silhouetten werden aus deinen eingetragenen Gewichtsdaten erzeugt.</p>
+
+        <div class="ba-wrap">
+          <div class="ba" id="before-after-slider">
+            <!-- NACHHER liegt als volle Ebene darunter -->
+            <div class="ba__layer ba__layer--after">
+              <div class="ba__scene" id="ba-scene-after"></div>
+              <span class="ba__tag ba__tag--after">Nachher</span>
+              <span class="ba__weight ba__weight--after" id="ba-weight-after">– kg</span>
+            </div>
+
+            <!-- VORHER wird per clip-path beschnitten -->
+            <div class="ba__layer ba__layer--before" id="before-after-before-clip">
+              <div class="ba__scene" id="ba-scene-before"></div>
+              <span class="ba__tag ba__tag--before">Vorher</span>
+              <span class="ba__weight ba__weight--before" id="ba-weight-before">– kg</span>
+            </div>
+
+            <div class="ba__handle" id="before-after-handle">
+              <span class="ba__grip"><svg viewBox="0 0 24 24"><path d="M9 6 L4 12 L9 18 M15 6 L20 12 L15 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
+          </div>
+
+          <div class="ba-stats">
+            <div class="ba-stat">
+              <span class="ba-stat__label">Veränderung</span>
+              <span class="ba-stat__value" id="before-after-diff">— kg</span>
+            </div>
+            <div class="ba-stat">
+              <span class="ba-stat__label">Zeitraum</span>
+              <span class="ba-stat__value ba-stat__value--sm" id="before-after-time">seit Start</span>
+            </div>
+            <div class="ba-stat">
+              <span class="ba-stat__label">Einträge</span>
+              <span class="ba-stat__value ba-stat__value--sm" id="before-after-entries">0</span>
+            </div>
+            <div class="ba-stat">
+              <span class="ba-stat__label">Workouts</span>
+              <span class="ba-stat__value ba-stat__value--sm" id="before-after-workouts">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card__label">Absolvierte Workouts</h3>
+        <div id="completed-workouts-box"></div>
+      </div>
+    </section>
+
+    <!-- ============ RANKING VIEW ============ -->
+    <section id="view-ranking" class="view">
+      <header class="view-header">
+        <div>
+          <h1>Rangliste</h1>
+          <p class="view-header__subtitle">Trage deine Bestleistungen ein und steige im Rang auf.</p>
+        </div>
+      </header>
+      <div id="ranking-grid" class="ranking-grid"></div>
+    </section>
+
+    <!-- ============ NUTRITION VIEW ============ -->
+    <section id="view-nutrition" class="view">
+      <header class="view-header">
+        <div>
+          <h1>Ernährung</h1>
+          <p class="view-header__subtitle">Dein täglicher Nährstoffbedarf im Überblick.</p>
+        </div>
+      </header>
+      <div class="stat-cards" id="nutrition-stat-cards"></div>
+      <div class="card">
+        <h3 class="card__label">Wie werden diese Werte berechnet?</h3>
+        <p class="explain-text">
+          Zuerst berechnen wir deinen Grundumsatz (BMR) mit der Mifflin-St-Jeor-Formel aus Gewicht, Größe, Alter und Geschlecht.
+          Multipliziert mit deinem Aktivitätsfaktor ergibt das deinen Gesamtkalorienbedarf (TDEE). Je nach Ziel ziehen wir davon
+          ein moderates Defizit ab (Abnehmen) oder addieren einen Überschuss (Zunehmen/Muskelaufbau). Die Makros verteilen sich
+          anschließend auf Protein (Muskelerhalt/-aufbau), Kohlenhydrate (Energie) und Fett (Hormonhaushalt).
+        </p>
+        <p class="disclaimer">⚠️ Alle Angaben sind Schätzwerte. Individuelle Faktoren wie Stoffwechsel, Erkrankungen oder Medikamente werden nicht berücksichtigt — bitte im Zweifel medizinisch abklären lassen.</p>
+      </div>
+    </section>
+
+    <!-- ============ AI TRAINER VIEW ============ -->
+    <section id="view-ai-trainer" class="view">
+      <header class="view-header">
+        <div>
+          <h1>AI Personal Trainer</h1>
+          <p class="view-header__subtitle">Stell mir Fragen zu deinem Training — ich bin für dich da.</p>
+        </div>
+      </header>
+      <div class="chat-window">
+        <div id="chat-messages" class="chat-messages"></div>
+        <div class="chat-suggestions" id="chat-suggestions"></div>
+        <form id="chat-form" class="chat-input-row">
+          <input type="text" id="chat-input" placeholder="Frag deinen Trainer etwas..." autocomplete="off">
+          <button type="submit" class="btn btn--primary">Senden</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============ PROFILE VIEW ============ -->
+    <section id="view-profile" class="view">
+      <header class="view-header">
+        <div>
+          <h1>Profil</h1>
+          <p class="view-header__subtitle">Deine Angaben — jederzeit anpassbar.</p>
+        </div>
+      </header>
+      <div class="card">
+        <div id="profile-summary" class="profile-summary"></div>
+        <button id="edit-profile-btn" class="btn btn--ghost">Angaben neu ausfüllen</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Mobile bottom navigation -->
+  <nav class="mobile-nav">
+    <button class="mobile-nav-item active" data-view="dashboard"><span>🏠</span></button>
+    <button class="mobile-nav-item" data-view="training"><span>🗓️</span></button>
+    <button class="mobile-nav-item" data-view="exercises"><span>📚</span></button>
+    <button class="mobile-nav-item" data-view="ranking"><span>🏆</span></button>
+    <button class="mobile-nav-item" data-view="ai-trainer"><span>💬</span></button>
+    <button class="mobile-nav-item" data-view="profile"><span>⚙️</span></button>
+  </nav>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
