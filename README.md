@@ -132,8 +132,8 @@ Status flow: **Roadmap → Planned → Architected → Tasked → In Progress �
 ├── .claude/                        (Claude Code; other agents use their own folder)
 │   ├── settings.json               Permissions (committed)
 │   ├── rules/                      Auto-applied rules
-│   │   ├── general.md                  Git workflow, feature tracking, status updates
-│   │   └── security.md                 Secrets, headers, auth
+│   │   ├── general.md                  Routing, tracking, working language, test runs
+│   │   └── security.md                 SEC core; details in docs/kit/guides/
 │   ├── skills/                     Invocable workflows (/command) — one folder per skill:
 │   │   │                           verify-setup, init, write-spec, refine, architecture, tasks,
 │   │   │                           build, qa, e2e-tests, deploy, security-check, dsgvo, audit,
@@ -177,7 +177,7 @@ Status flow: **Roadmap → Planned → Architected → Tasked → In Progress �
 
 | agent | skills | rules |
 |---|---|---|
-| Claude Code | `.claude/skills/` | `.claude/rules/` |
+| Claude Code | `.claude/skills/` | `.claude/rules/`, or inside the shared memory file when rules are inline |
 | Codex | `.codex/skills/` | inside the memory file |
 | Cursor | `.cursor/skills/` | `.cursor/rules/*.mdc` |
 | GitHub Copilot | `.github/skills/` | `.github/instructions/*.instructions.md` |
@@ -187,6 +187,12 @@ Status flow: **Roadmap → Planned → Architected → Tasked → In Progress �
 
 **One file carries your project's context.** In a Claude-Code-only project that is `CLAUDE.md`; with any other agent it is `AGENTS.md`, and the remaining memory files are generated pointers to it. Edit the one with content — the pointers are overwritten on every update.
 
+**Claude shares inline rules.** When Codex, Grok or Kimi is selected, the kit puts its general and
+security rules in `AGENTS.md`. Claude reads them through its `@AGENTS.md` pointer; the kit then
+ships no duplicate `general.md` or `security.md` in `.claude/rules/`, which Claude would also load
+automatically. Your own additional rules still belong there. On update, old kit copies are retired;
+edited copies and copies without a recorded content hash are saved in `.ai-eng-kit-backup/` first.
+
 **One thing is not the same everywhere.** `.claude/settings.json` (Claude Code) and `.grok/config.toml` (Grok Build) *block* reading `.env*` files and force-pushing. Only those two enforce it. With the other agents — Kimi Code included, whose permission rules live in your user config, not in the project — the same rules are instructions your agent follows — real, but not a wall it cannot cross.
 
 ### Recommended (optional): live API docs
@@ -194,7 +200,10 @@ Status flow: **Roadmap → Planned → Architected → Tasked → In Progress �
 Memorized API knowledge goes stale. Connecting a live-docs MCP server like **[Context7](https://github.com/upstash/context7)** lets `/architecture` and `/build` pull the *current* API surface of libraries (Supabase, Stripe, Next.js, …) instead of relying on memory — fewer outdated-API bugs. It's entirely optional: every skill works without it and never blocks if it's absent. To enable it, add Context7 as an MCP server in your Claude Code settings.
 
 - **State lives in files, not memory.** Every skill re-reads `features/INDEX.md` and the relevant feature folder at start — nothing is lost after a new session or context compaction.
-- **Context is layered.** `CLAUDE.md` + rules (always) → `SKILL.md` (when invoked) → feature spec (on demand) → `docs/production/` (only when referenced).
+- **Context is layered.** Memory + compact core rules (always) → `SKILL.md` (when invoked) → relevant
+  feature docs and `docs/kit/guides/` / `docs/stacks/` / `docs/production/` (on demand). Security controls
+  are selected per affected runtime: local native/CLI tools need no web stack, native accounts retain
+  auth protection, and an additional HTTP backend gets its own relevant controls.
 - **Context is isolated.** Heavy work runs in forked sub-agents with their own context window, so noise from one task doesn't pollute another.
 - **Always read, never guess.** A global rule enforces reading a file before modifying it and verifying paths/APIs by reading — preventing hallucinated code references.
 
@@ -207,12 +216,29 @@ npm run dev          # Development server (localhost:3000)
 npm run build        # Production build
 npm run start        # Production server
 npm run lint         # ESLint
+npm run typecheck    # Generate Next.js types, then check TypeScript
+npm run check        # Lint, typecheck, architecture, unit/integration tests, build
+npm run test:structure # Repeatable counter-probes of the architecture config
 npm test             # Vitest: unit + integration tests
 npm run test:e2e     # Playwright: E2E tests (added by /e2e-tests)
 npm run test:all     # Both test suites
 ```
 
 > Playwright browsers are **not** installed during setup. The first `/e2e-tests` run installs the browser binary (~300 MB) once — keeping everyday setup fast.
+
+`check` is the closing gate for `/build` and `/deploy`; during changes run the affected test files. Full test
+suites still run only by the main agent per build level and at the end, and once by QA's owner.
+The aggregate replaces the closing individual runs, including covered runtimes; `/init checks`
+records its runtime and stage coverage (`checkLayers` / `checkCoverage`). Partial aggregates get
+only missing steps appended; a read-only planner in `docs/kit/checks/` resolves the plan. Older
+aggregates need coverage confirmed once. QA keeps its narrow test command and diff-scoped re-verification.
+Older scaffolds can adopt the scripts through `/verify-setup`; `update` preserves app tooling.
+Existing projects retain their own checks and module convention. The Next.js default structure
+and import rules are described in `docs/stacks/framework-nextjs.md`.
+
+Optional CI: `/init ci` records GitHub Actions, then `/verify-setup ci` prepares a reviewed workflow
+using `docs/stacks/ci-github-actions.md`. No pipeline is installed by default. Green checks must
+prove the exact release candidate; a workflow file alone does not enforce branch protection.
 
 ---
 

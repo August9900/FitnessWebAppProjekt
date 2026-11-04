@@ -28,6 +28,10 @@ git log -- supabase/migrations/
 Changes to a migration that went live in an earlier release show up here — and they should only ever
 show up when something went wrong. A shipped migration is frozen; corrections are new files.
 
+Before the **first** `supabase db push` of a project, check the signs under **"Migrations applied by
+hand — bringing them under the CLI"**: files that were pasted into the SQL Editor have no ledger
+entry, and a push would run them a second time.
+
 ---
 
 ## Authoring a schema change
@@ -193,7 +197,7 @@ There is no "un-push". A code rollback puts the old code back and leaves the new
 
 ## What Supabase Auth rate-limits for you, and what it does not
 
-_Reached from the project security rules, `/architecture` and `/security-check`._
+_Reached from `docs/kit/guides/security.md`, `/architecture` and `/security-check`._
 
 Supabase Auth throttles its **own** endpoints — that means a login going through
 `signInWithPassword`, `signUp` or `resetPasswordForEmail`, and nothing else. Two groups behave
@@ -250,7 +254,7 @@ above are `[user]` tasks with the dashboard path, ticked by the user.
 
 ## Row Level Security
 
-_Reached from the project security rules, `/build`, `/qa` and `/security-check`._
+_Reached from `docs/kit/guides/security.md`, `/build`, `/qa` and `/security-check`._
 
 RLS is this project's data-layer enforcement — the second, independent check behind the one in
 application code. Every table a feature creates has RLS **enabled**, with policies covering exactly
@@ -306,6 +310,71 @@ _Reached from `/dsgvo` §5, `/deploy` step 5 and `/init`._
 - **Supabase Auth stores** email addresses, hashed passwords, sign-in timestamps and IP addresses in
   `auth.users` and the audit log — personal data by definition, which is why the region question is
   not optional for an app with a login.
+
+---
+
+## Migrations applied by hand — bringing them under the CLI
+
+_Reached from `/verify-setup` check 6b, from `/init` when the project already has migration files,
+and from the pre-flight check above._
+
+Typical for a project begun with the AI Coding Starter Kit: the `.sql` files in
+`supabase/migrations/` were pasted into the SQL Editor, so the database has the schema and its ledger
+(`supabase_migrations.schema_migrations`) says nothing ran. Until that is fixed, the first `db push`
+tries to run every file again — `CREATE TABLE` fails loudly, an `INSERT` or a backfill silently
+duplicates rows.
+
+**The signs — checked without touching any database:**
+
+- `supabase/migrations/*.sql` exists, `supabase/config.toml` does not.
+- Two files share a version: `ls supabase/migrations | sed -E 's/_.*//' | sort | uniq -d` prints
+  anything. The CLI reads the version as the digits before the first `_` (`<digits>_<name>.sql`), so
+  `20260223_profiles.sql` and `20260223_tasks.sql` are one version to it — it cannot list, repair or
+  push them apart.
+- A file does not match `<digits>_<name>.sql` at all — the CLI skips it without a word.
+
+None of them → nothing to do here. Any of them → offer the procedure below. It is a one-time step of
+setup, not a feature. In `mode: existing` ask before every step — it is someone's running project.
+
+**The procedure — top to bottom, stop at the first thing that fails:**
+
+1. `supabase init`, where `supabase/config.toml` is missing. It writes config only.
+2. **Unique versions, contents unchanged.** Work out the order the files were applied in — the order
+   of their current names, unless `git log --diff-filter=A --name-only -- supabase/migrations/` or the
+   user says otherwise — and show the user the rename table before doing anything:
+
+   ```
+   20260223_profiles.sql   → 20260223000001_profiles.sql
+   20260223_tasks.sql      → 20260223000002_tasks.sql
+   20260227_comments.sql   → 20260227000001_comments.sql
+   ```
+
+   Keep the date, append a six-digit sequence, so the order stays the order. `git mv` each file, so
+   its history follows. **Never edit a file's contents here** — the database already ran exactly
+   that SQL. Then grep the repo for the old names (a README, a script) and update the references.
+3. 👤 `supabase login`, then 👤 `supabase link --project-ref <ref>` — the user's, as in the promotion
+   steps; `link` asks for the database password. Link **the project that already has the schema**.
+   With `two-projects`, steps 3–6 run once per project (dev, then prod) — each database keeps its own
+   ledger.
+4. `supabase migration list` — the local files show no remote entry. Now confirm **per file, with the
+   user**, that its effect really exists in that database: the tables and columns in the Table
+   Editor, the policies under Authentication → Policies. A file that never ran, or ran only in part,
+   is not `applied` — leave it pending, and `db push` runs it later. Never mark the whole set applied
+   on a hunch.
+5. `supabase migration repair --status applied <version> [<version> …]` for the confirmed ones (it
+   asks first — it is on the settings `ask` list). This corrects the ledger only; it executes nothing.
+6. The evidence: `supabase migration list` shows a remote entry for every confirmed file, and
+   `supabase db push --dry-run` has nothing to push — or exactly the files left pending in step 4.
+
+With `local`, the Docker stack replays every file from scratch on `supabase start` / `supabase db
+reset`, so it needs no repair — but that is where duplicate versions break first, and step 2 is what
+lets it start cleanly. Steps 3–6 then run against whichever hosted project already has the schema,
+before the first `/deploy`.
+
+**The CLI needs no entry in an env file.** `login` and `link` keep the access token and the database
+password in the system's credential store. `SUPABASE_ACCESS_TOKEN` and `SUPABASE_DB_PASSWORD` exist
+for CI and belong in the CI's secrets — never in `.env.local` or `.env.local.example`, never behind
+`NEXT_PUBLIC_`.
 
 ---
 

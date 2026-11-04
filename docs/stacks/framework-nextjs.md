@@ -38,9 +38,75 @@ in this framework: `src/app/**/page.tsx` and `src/app/**/route.ts` (a new screen
 `src/middleware.ts` or `src/proxy.ts` (the auth boundary), and `src/app/**/layout.tsx` (the shell).
 A new component under `src/components/` is not a route and does not count.
 
+## Code structure and closing checks
+
+_Reached from `/architecture`, `/tasks`, `/build` and `/verify-setup`. Defaults for new kit
+scaffolds; an existing project keeps its own mapped convention. Older scaffolds adopt the
+checker explicitly, without a bulk move of their code. Independent of the product's `quality`._
+
+Keep one feature's implementation under `src/features/<name>/`, using a stable product name.
+`features/PROJ-X-*/` contains the specification, not application code. Routing and layout files
+stay in `src/app/` and attach the feature; share a module only when another caller needs it.
+Prefer a small interface with the feature's behavior behind it. Do not create empty folders,
+repository/service wrappers or a barrel export just to complete a diagram.
+
+| Responsibility | Default location / suggested name | Imports and execution |
+| --- | --- | --- |
+| Pure business rules | Feature-local `*.rules.ts` | Inputs in, result out; other pure rules/schema modules, type-only imports and Zod. No framework or IO. |
+| Pure validation | Feature-local `*.schema.ts` | Same pure dependency contract. Pass time/randomness as inputs when behavior needs them. |
+| Server data access | Feature-local `*.data.ts` | Database/client infrastructure; mark privileged server modules with `import 'server-only'`. |
+| External service integration | Feature-local `*.integration.ts` | The SDK/transport and safe data it returns; privileged integrations are server-only. |
+| Mutation entry from the UI | Feature-local `*.actions.ts` | Server Actions validate/authenticate and coordinate rules/data/integrations; use `'use server'` where Next.js requires it. |
+| Feature UI and hooks | Feature-local components / `use*.ts` | Pure modules and supported entry points; Client Components may import Server Actions, never server-only data modules. |
+| Browser storage/public clients | Feature-local `*.storage.ts`, existing `src/lib/supabase/client.ts` | Public browser APIs only; a localStorage feature does not need a server data layer. |
+| Shared UI, hooks and infrastructure | Named modules under `src/components/`, `src/hooks/`, `src/lib/<purpose>/` | Reused responsibilities; never import feature implementations back into shared code. |
+| Routing/layout entry | `src/app/**/page.tsx`, `route.ts`, `layout.tsx` | Import feature interfaces; feature implementations never import routing files. |
+
+These are recommended names, not a closed catalog for every TypeScript file. The pure suffixes
+do declare a dependency contract and the checker enforces it. A reviewed additional pure library
+can be added to the config's allowed pure dependencies. Keep new business code out of a generic
+`lib/` utility dump. Co-locate unit/integration tests next to the module they exercise.
+
+**Next.js' execution boundary takes precedence over folder names.** Server Components may call
+server data modules directly; no extra HTTP hop or Action is needed for a server read. Client
+Components use the supported Action/API/public-client path. `server-only` makes accidental client
+imports fail at build time, including through another module. Authorization and minimal safe
+data remain responsibilities of the data/entry modules; an import graph cannot prove them.
+
+### The scaffold's check
+
+The scaffolder seeds project-owned scripts and configuration from the setup skill's assets:
+
+```bash
+npm run check          # lint → typecheck → structure → unit/integration tests → build
+npm run check:structure # dependency-cruiser on the actual src/ graph
+npm run test:structure  # counter-probes in temporary fixtures, using the actual config
+```
+
+`typecheck` generates Next.js types before `tsc --noEmit`, so it works in a fresh checkout.
+The aggregate stops at the first failing stage. `/build` uses it once at the end; inner bug-fix
+loops and build levels retain their single-file/per-level test discipline. `/qa` continues using
+`commands.test`, not the aggregate. Playwright/E2E keeps its separate workflow and browser setup.
+
+`.dependency-cruiser.cjs` rejects runtime cycles, impure imports from `.rules`/`.schema` modules,
+shared-to-feature and feature-to-route imports, and unresolved imports. It resolves `@/` with the
+project's `tsconfig.json`. Tests are outside the production graph; package internals are not
+followed. A scan with no source modules fails instead of passing vacuously. Type-only cycles
+are allowed; runtime cycles are errors. Next.js itself enforces `server-only` in the build.
+
+Run the counter-probes once on adoption and after a change to the config/checker. Normal feature
+checks scan real code without running the fixture probes each time. A fresh scaffold has no
+behavioral tests yet; check-green means its installed checks passed, while `/qa` still verifies
+the feature's acceptance criteria. Never weaken rules, exclude new source or skip assertions
+merely to make a red check green.
+
+References: [Next.js data security](https://nextjs.org/docs/app/guides/data-security),
+[Next.js typegen](https://nextjs.org/docs/app/api-reference/cli/next#next-typegen-options),
+[dependency-cruiser rules](https://github.com/sverweij/dependency-cruiser/blob/main/doc/rules-reference.md).
+
 ## Submitting a form that carries credentials
 
-_Reached from the project security rules, `/build`, `/qa` and `/security-check`._
+_Reached from `docs/kit/guides/security.md`, `/build`, `/qa` and `/security-check`._
 
 A `<form>` left to submit natively sends every field in the URL (`?email=…&password=…`), which
 leaks it into browser history, server logs and `Referer` headers. Next.js gives two correct paths:
@@ -102,7 +168,7 @@ live URL rather than against the config file.
 
 ## App-level rate limiting with Upstash Redis
 
-_Reached from the project security rules, `/architecture`, `/build` and `docs/production/rate-limiting.md` — the throttle keyed per IP and per account that the platform's own limits do not give you._
+_Reached from `docs/kit/guides/security.md`, `/architecture`, `/build` and `docs/production/rate-limiting.md` — the throttle keyed per IP and per account that the platform's own limits do not give you._
 
 ### 1. Install Dependencies
 ```bash
@@ -115,7 +181,7 @@ npm install @upstash/ratelimit @upstash/redis
 - Copy REST URL and token
 
 ### 3. Add Environment Variables
-Document the names in the example env file; the user puts the real values into `.env.local` — you never write that file (security rules → the real env file).
+Document the names in the example env file; the user puts the real values into `.env.local` — you never write that file (SEC-01).
 ```bash
 # .env.local.example
 UPSTASH_REDIS_REST_URL=https://xxx.upstash.io
@@ -125,6 +191,7 @@ UPSTASH_REDIS_REST_TOKEN=xxx
 ### 4. Create Rate Limiter
 ```typescript
 // src/lib/rate-limit.ts
+import 'server-only'
 import { Ratelimit } from '@upstash/ratelimit'
 import { Redis } from '@upstash/redis'
 
@@ -170,7 +237,7 @@ export async function POST(request: NextRequest) {
 ```
 
 ### 5b. Credential routes — key by IP **and** by account
-This is the hard gate from the security rules and `/build`: anything that checks a credential — login,
+This is the hard gate from SEC-04 in `docs/kit/guides/security.md` and `/build`: anything that checks a credential — login,
 signup, password reset, an invite code, a share-link password — is throttled on **two** counters. The IP
 counter stops one host hammering many accounts; the account counter stops an attacker rotating IPs
 against one account. One counter alone leaves the other attack unlimited, and a per-IP throttle on a login
@@ -231,7 +298,6 @@ export const config = {
   matcher: '/api/:path*',
 }
 ```
-
 
 ---
 

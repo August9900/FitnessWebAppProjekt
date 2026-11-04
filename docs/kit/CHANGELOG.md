@@ -6,6 +6,126 @@ not your project's. `npx create-ai-eng-app update` also prints the entries since
 
 ## [Unreleased]
 
+## [0.7.7] — 2026-11-01
+
+### Changed
+- **A compact always-loaded rule core, with detailed security and phase guidance read on demand.**
+  Working-language, routing, tracking and test-budget invariants remain in the core. Shared guides
+  select auth/HTTP/browser controls per affected runtime, including native apps with accounts and
+  mixed-runtime projects. Local native/CLI tools acquire no web stack. User memory outside the
+  managed block remains untouched; all seven agent layouts use the same authored rules.
+- **Decisions keep their alternatives and consequences, including after cleanup.** Superseded
+  entries link their replacement. A project-wide register and product glossary are created only
+  for real decisions/ambiguous terms and loaded where needed; load-bearing choices name reversal
+  costs and can receive specialist review at the user's discretion.
+
+### Added
+- **Closing-check coverage records individual stages, shared by build and deploy.** A read-only
+  planner appends only missing steps/runtimes to partial aggregates and rejects unknown coverage.
+  `/init checks` confirms existing aggregates once after upgrade; project scripts stay owned by
+  the project. Task/fix loops keep single-file checks, per-level suites stay with the build owner,
+  and QA retains one independent suite per runtime and its Deferred stop condition.
+- **Quality, error and model-integration guidance follows the existing AC → Task → Test chain.**
+  PRDs separate operating assumptions from constraints; material quality goals specify conditions
+  and measurable evidence. Designs define safe errors/recovery and model adapters with validated
+  outputs, bounded costs/failures and deterministic fake tests. Server-only Vitest tests keep the
+  production marker and use a test-local mock; the real Next.js build proves the import boundary.
+- **Optional GitHub Actions setup and stable security control references.** `/init ci` and
+  `/verify-setup ci` prepare a project-specific quality workflow on request. The CI pack requires
+  evidence for the exact candidate commit and distinguishes workflow presence from repository
+  enforcement; no pipeline is installed by default. SEC IDs link designs, QA findings and explicit
+  exception records without enlarging the always-loaded security rules.
+
+- **A project without a linter gets the usual one for its language recommended — once, never installed.**
+  `/init` and `/verify-setup` first look for a configured linter the install could not detect
+  (`ruff`, PHPStan, SwiftLint, ktlint, `golangci-lint` …). Built-in commands (`dart analyze`, `go vet`,
+  `cargo clippy`, `./gradlew lint`) are proposed directly; anything to install is a hand-off, and
+  a declined recommendation is recorded with its reason so it is not raised again.
+
+### Fixed
+- **Older no-mode stamps no longer receive a fictitious `npm run check` during update.** Commands
+  are detected from actual scripts; unknown aggregate scope/stages remain null until confirmed.
+- **Claude's eight obsolete env/example `Write(path)` rules are removed on update and new installs.**
+  Equivalent Edit rules retain their intent, including an example rule moved to ask. Other user
+  permissions survive; CI/agent/check-guide definitions gain review gates. Suppressions, baselines
+  and weakened checks may not be used merely to get green. Grok's different permission syntax stays.
+
+## [0.7.6] — 2026-10-15
+
+### Added
+- **Closing checks and a small architecture baseline — with the existing test-run budget preserved.**
+  New Next.js scaffolds receive `npm run check` (lint, typecheck, structure, unit/integration tests,
+  build), project-owned dependency-cruiser rules and repeatable counter-probes. It replaces build's
+  final individual runs; targeted tests, per-level suites and QA's single owner run stay in place.
+  `commands.check` / `checkLayers` record aggregate coverage so included runtimes are not checked
+  twice. `/init checks` confirms scope; `/verify-setup` previews adoption in older scaffolds,
+  preserving existing definitions. Update delivers the helper without changing app tooling.
+- **Feature-local code and a design footprint.** The Next.js pack guides responsibilities and
+  allowed imports; `/architecture` records module paths/interfaces and the feature's inventory,
+  `/tasks` uses them. Existing projects keep their conventions; names are recommended, not a
+  universal suffix catalog. Runtime cycles and import boundaries are automatically checked;
+  Next.js preserves Server Component data access and supported client-to-Action imports.
+- **Claude review gates for check and workflow definitions.** Package/lint/type/test/architecture
+  config, checker scripts, Claude rules/skills/settings, memory and registry files use `Edit` ask
+  rules. Normal tests remain editable; changes weakening verification are explicitly reported.
+  These gates do not imply OS-level isolation or enforcement by other coding agents.
+- **Migrations applied by hand are brought under the Supabase CLI — offered by `/verify-setup` and `/init`.**
+  Starter Kit projects pasted their `.sql` files into the SQL Editor, so no ledger knew they ran, and
+  the first `db push` would run them again; their `YYYYMMDD_name.sql` names also share versions the CLI
+  cannot tell apart. The new section in `docs/stacks/backend-supabase.md` checks the signs from the files
+  alone and walks through it once: `supabase init`, unique versions (renamed with `git mv`, contents
+  unchanged), `login` + `link` by the user, `migration repair --status applied` per file the user
+  confirmed, `migration list` and `db push --dry-run` as the evidence. `/starter-kit-migration` names it.
+
+### Fixed
+- **Claude no longer receives duplicate kit rules when sharing inline rules with Codex, Grok or Kimi.**
+  `AGENTS.md` stays the single maintained project file and supplies the rule bodies through
+  Claude's memory pointer. The generator omits native Claude kit copies and redirects its skill
+  and QA rule references to `AGENTS.md`; native-rule selections keep their existing layout.
+  Update retires only manifest-owned copies, backing up edited entries or entries without content
+  hashes before removal. User rules remain. `/verify-setup` accepts both layouts, and documentation
+  now correctly describes Claude's automatic native-rule loading.
+- **`update` and `add` name a deny rule of yours that cancels a permission the kit grants.** A broad
+  `Read(**/.env*)` / `Edit(**/.env*)` from the Starter Kit also matches `.env.local.example`, and deny
+  always wins — the agent could neither read nor maintain the example env file the rules tell it to keep.
+  The line is quoted with what it blocks and left in place; `/verify-setup` check 3b reports the same.
+- **`.env.local.example` says the Supabase CLI needs nothing in it** — `login` and `link` keep the token
+  and the database password in the system's credential store; the password never goes into an env file.
+
+## [0.7.5] — 2026-10-01
+
+### Added
+- **A quality stance — prototype, standard or strict — asked by `/init`, changeable later with `/init`.**
+  `prototype` is for a local thing to try out and show: `/qa` checks only secrets and, where there is a
+  real login, its credential gates (the rest is listed as not verified); `/write-spec` proposes demo users
+  instead of a login and skips `/dsgvo`; `/deploy` refuses until the stance is raised. What `/build`
+  builds is the same in every stance. `strict` makes Medium bugs block too. Projects without the field
+  behave as `standard`; `update` adds it as `null`.
+
+### Changed
+- **`/qa` no longer loops on Medium and Low bugs** — only Critical and High send a feature back to `/build`.
+  The handoff used to send every bug back, so each fresh verifier found a few more cosmetic things
+  and the build → QA cycle did not end (community reports: nine rounds, 36 bugs, almost all Low).
+  Medium and Low are now decided once with the user: fix now (`Open`) or later (`Deferred`), proposed
+  as Medium now, Low later. A new Medium or Low found in a re-verification is `Deferred` automatically.
+- **Deferred bugs are fixed in one batch with `/build PROJ-X deferred`** — they stay in `qa-report.md`,
+  do not block Approved or `/deploy` (which names them), and `/cleanup` never condenses them.
+- **Every bug names its class and a sweep command, and `/build` fixes the class** — all instances the
+  sweep finds, not the one reported line; the re-verification re-runs the sweep. `/build` has a
+  section for fixing bugs from `qa-report.md` now, and never edits the report itself.
+- **QA reports written before this version work as they are** — a bug without a status counts as open;
+  `/build` works out its class and search itself, and the next `/qa` rewrites the report in the new format.
+
+## [0.7.4] — 2026-09-24
+
+### Fixed
+- **`/reverse-spec` was invisible to the agent** — its frontmatter description held an unquoted `: `,
+  which YAML reads as structure, so the block did not parse and the skill never appeared in the
+  list (community report). Quoted now; the emitter refuses such a value from here on.
+- **`/build`'s level commits no longer stop for a permission prompt** — `git add` joins the scaffold's
+  allow list next to `git commit` (`update` merges it into existing projects); `git push` still asks.
+  And the "safe place to stop" line is a note the build talks past, never a question it waits on.
+
 ## [0.7.3] — 2026-09-18
 
 ### Added

@@ -1,6 +1,7 @@
 // Server-side Supabase client — Server Components, Server Actions, Route Handlers.
 // One client per request: it reads and refreshes the session from the request's cookies.
 // The two NEXT_PUBLIC_ values come from the env file at call time; nothing here runs at build.
+import 'server-only'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
