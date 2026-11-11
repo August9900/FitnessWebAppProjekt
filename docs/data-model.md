@@ -10,7 +10,7 @@ _Grundlage: `docs/PRD.md` und `features/INDEX.md`, durch `/init` am 23.09.2026 e
 |------|-------|---------------------------|
 | Konto | Ermöglicht Anmeldung und geräteübergreifende Nutzung. | Nur die jeweilige Person und der Authentifizierungsdienst. |
 | Kurzprofil | Enthält die bei der Registrierung angegebene Altersgruppe; PROJ-3 ergänzt Ziel und praktische Trainingsmöglichkeiten. | Nur die jeweilige Person. |
-| Schutz-Zähler | Hält kurzlebige, pseudonyme Kennwerte für begrenzte Kontoanfragen und Sperrfristen fest. | Nur der Authentifizierungsablauf und eng begrenzte Serverfunktionen; keine Anzeige für Nutzende. |
+| Schutz-Zähler | Hält kurzlebige, pseudonyme Kennwerte für begrenzte Kontoanfragen und Sperrfristen fest. Im lokalen Prototyp zurückgestellt, Pflicht vor dem ersten Deploy (PROJ-1). | Nur der Authentifizierungsablauf und eng begrenzte Serverfunktionen; keine Anzeige für Nutzende. |
 | Übung | Beschreibt eine fachlich geprüfte Bewegung. | Gemeinsam bereitgestellter Inhalt; Pflege durch berechtigte Redaktion. |
 | Kurzes Workout | Fasst geprüfte Übungen zu einer machbaren Aktion zusammen. | Gemeinsam bereitgestellter Inhalt; Pflege durch berechtigte Redaktion. |
 | Mahlzeitenoption | Beschreibt eine geprüfte, einfach umsetzbare Essensoption. | Gemeinsam bereitgestellter Inhalt; Pflege durch berechtigte Redaktion. |

@@ -22,7 +22,7 @@
 
 | ID | Feature | Beschreibung | Status | Spec | Erstellt |
 |----|---------|--------------|--------|------|----------|
-| PROJ-1 | Konto & Anmeldung | Nutzende können ein Konto erstellen, sich anmelden und ihre persönlichen Daten geräteübergreifend geschützt nutzen. | Tasked | [Spec](PROJ-1-konto-anmeldung/) | 2026-09-23 |
+| PROJ-1 | Konto & Anmeldung | Nutzende können ein Konto erstellen, sich anmelden und ihre persönlichen Daten geräteübergreifend geschützt nutzen. | Planned | [Spec](PROJ-1-konto-anmeldung/) | 2026-09-23 |
 | PROJ-2 | App-Rahmen & Navigation | Ein gemeinsamer, ruhiger Rahmen verbindet die Bereiche der App auf Desktop und Mobilgeräten. | Roadmap | — | 2026-09-23 |
 | PROJ-3 | Kurzprofil & Einstieg | Nutzende erfassen mit wenigen Angaben ihr Ziel und ihre praktischen Trainingsmöglichkeiten. | Roadmap | — | 2026-09-23 |
 | PROJ-4 | Kurze Workouts | Ein fachlich geprüftes Angebot enthält kurze, anpassbare Bewegungsoptionen. | Roadmap | — | 2026-09-23 |
