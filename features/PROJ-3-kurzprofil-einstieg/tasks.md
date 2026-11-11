@@ -15,8 +15,8 @@
 
 ## Stufe 2 — Regeln und Auswahlflächen
 
-- [ ] T5 [P] Reine Regeln: Fragenliste für gegebene Antworten (4 ohne, 5 mit „Zuhause“), erste unbeantwortete Frage, „vollständig?“, Bereinigung (Ausstattung entfällt ohne „Zuhause“); mit Test. · files: `src/features/profile/profile.rules.ts`, `src/features/profile/profile.rules.test.ts` · → AC-2, AC-6, AC-9, AC-11, AC-14; EC-1, EC-4
-- [ ] T6 [P] Gemeinsame Auswahlflächen: Einzelauswahl (shadcn `RadioGroup`) und Mehrfachauswahl (shadcn `Checkbox`) mit „Nichts davon“, das andere abwählt; ganz anklickbar, per Tastatur bedienbar; mit Test. · files: `src/features/profile/components/answer-options.tsx`, `src/features/profile/components/answer-options.test.tsx` · → AC-3, AC-4, AC-5, AC-6, AC-7, AC-11
+- [x] T5 [P] Reine Regeln: Fragenliste für gegebene Antworten (4 ohne, 5 mit „Zuhause“), erste unbeantwortete Frage, „vollständig?“, Bereinigung (Ausstattung entfällt ohne „Zuhause“); mit Test. · files: `src/features/profile/profile.rules.ts`, `src/features/profile/profile.rules.test.ts` · → AC-2, AC-6, AC-9, AC-11, AC-14; EC-1, EC-4
+- [x] T6 [P] Gemeinsame Auswahlflächen: Einzelauswahl (shadcn `RadioGroup`) und Mehrfachauswahl (shadcn `Checkbox`) mit „Nichts davon“, das andere abwählt; ganz anklickbar, per Tastatur bedienbar; mit Test. · files: `src/features/profile/components/answer-options.tsx`, `src/features/profile/components/answer-options.test.tsx` · → AC-3, AC-4, AC-5, AC-6, AC-7, AC-11
 
 ## Stufe 3 — Datenzugriff
 
