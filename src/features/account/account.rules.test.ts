@@ -80,7 +80,16 @@ describe('buildAccountExport (AC-15)', () => {
         // fields a real user object carries that must not leak into the export
         ...({ encrypted_password: 'hash', app_metadata: { provider: 'email' } } as object),
       },
-      profile: { age_band_at_signup: '16_plus', created_at: '2026-11-01T00:00:00Z', updated_at: '2026-11-01T00:00:00Z' },
+      profile: {
+        age_band_at_signup: '16_plus',
+        created_at: '2026-11-01T00:00:00Z',
+        updated_at: '2026-11-01T00:00:00Z',
+        goal: 'fitness',
+        experience: 'beginner',
+        places: ['home', 'gym'],
+        home_equipment: ['mat'],
+        diet: 'vegan',
+      },
       exportedAt,
     })
     expect(result).toEqual({
@@ -88,9 +97,27 @@ describe('buildAccountExport (AC-15)', () => {
       version: 1,
       exportedAt: '2026-11-11T10:00:00.000Z',
       account: { id: 'u1', email: 'a@b.de', createdAt: '2026-11-01T00:00:00Z', lastSignInAt: '2026-11-10T00:00:00Z' },
-      profile: { ageBandAtSignup: '16_plus', createdAt: '2026-11-01T00:00:00Z', updatedAt: '2026-11-01T00:00:00Z' },
+      profile: {
+        ageBandAtSignup: '16_plus',
+        goal: 'fitness',
+        experience: 'beginner',
+        places: ['home', 'gym'],
+        homeEquipment: ['mat'],
+        diet: 'vegan',
+        createdAt: '2026-11-01T00:00:00Z',
+        updatedAt: '2026-11-01T00:00:00Z',
+      },
     })
     expect(JSON.stringify(result)).not.toContain('hash')
+  })
+
+  it('exports unanswered PROJ-3 fields as null (AC-15 of PROJ-3)', () => {
+    const result = buildAccountExport({
+      account: { id: 'u1', email: 'a@b.de', created_at: 'c' },
+      profile: { age_band_at_signup: '12_15', created_at: 'c', updated_at: 'u' },
+      exportedAt,
+    })
+    expect(result.profile).toMatchObject({ goal: null, experience: null, places: null, homeEquipment: null, diet: null })
   })
 
   it('names the file after the export date', () => {

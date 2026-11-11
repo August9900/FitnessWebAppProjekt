@@ -20,6 +20,7 @@ describe('isProtectedPath', () => {
     expect(isProtectedPath('/bewegung')).toBe(true)
     expect(isProtectedPath('/essen')).toBe(true)
     expect(isProtectedPath('/wochenblick')).toBe(true)
+    expect(isProtectedPath('/einstieg')).toBe(true)
     expect(isProtectedPath('/')).toBe(false)
     expect(isProtectedPath('/anmelden')).toBe(false)
     expect(isProtectedPath('/profilbild')).toBe(false)

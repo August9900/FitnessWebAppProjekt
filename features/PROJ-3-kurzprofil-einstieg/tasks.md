@@ -8,10 +8,10 @@
 
 ## Stufe 1 — Grundlagen
 
-- [ ] T1 [P] Migration: `profiles` um `goal`, `experience`, `places`, `home_equipment`, `diet` erweitern, mit Prüfregeln (erlaubte Werte, nicht leere Listen ohne Doppelte, `none` allein, `home_equipment` nur mit `home` in `places`); RLS-Änderungsregel „eigene Zeile + aktive Sitzung“; Änderungsrecht nur für die fünf Spalten; automatische Pflege von `updated_at`. · files: `supabase/migrations/20261111150000_profile_answers.sql` · → AC-3, AC-4, AC-5, AC-6, AC-7, AC-14, AC-16; EC-2, EC-5
-- [ ] T2 [P] Erlaubte Werte, deutsche Beschriftungen und Zod-Schemas für eine einzelne Antwort (je Frage) und für das vollständige Profil-Formular; mit Test. · files: `src/features/profile/profile.schema.ts`, `src/features/profile/profile.schema.test.ts` · → AC-3, AC-4, AC-5, AC-6, AC-7, AC-8, AC-13, AC-14; EC-5
-- [ ] T3 [P] Proxy: `/einstieg` als geschützten Pfad ergänzen; Test erweitern. · files: `src/proxy.ts`, `src/proxy.test.ts` · → AC-1, AC-10
-- [ ] T4 [P] Export aus PROJ-1 um `goal`, `experience`, `places`, `homeEquipment`, `diet` erweitern (leere Felder als `null`); Tests anpassen. · files: `src/features/account/account.data.ts`, `src/features/account/account.rules.ts`, `src/features/account/account.data.test.ts`, `src/features/account/account.rules.test.ts` · → AC-15
+- [x] T1 [P] Migration: `profiles` um `goal`, `experience`, `places`, `home_equipment`, `diet` erweitern, mit Prüfregeln (erlaubte Werte, nicht leere Listen ohne Doppelte, `none` allein, `home_equipment` nur mit `home` in `places`); RLS-Änderungsregel „eigene Zeile + aktive Sitzung“; Änderungsrecht nur für die fünf Spalten; automatische Pflege von `updated_at`. · files: `supabase/migrations/20261111150000_profile_answers.sql` · → AC-3, AC-4, AC-5, AC-6, AC-7, AC-14, AC-16; EC-2, EC-5
+- [x] T2 [P] Erlaubte Werte, deutsche Beschriftungen und Zod-Schemas für eine einzelne Antwort (je Frage) und für das vollständige Profil-Formular; mit Test. · files: `src/features/profile/profile.schema.ts`, `src/features/profile/profile.schema.test.ts` · → AC-3, AC-4, AC-5, AC-6, AC-7, AC-8, AC-13, AC-14; EC-5
+- [x] T3 [P] Proxy: `/einstieg` als geschützten Pfad ergänzen; Test erweitern. · files: `src/proxy.ts`, `src/proxy.test.ts` · → AC-1, AC-10
+- [x] T4 [P] Export aus PROJ-1 um `goal`, `experience`, `places`, `homeEquipment`, `diet` erweitern (leere Felder als `null`); Tests anpassen. · files: `src/features/account/account.data.ts`, `src/features/account/account.rules.ts`, `src/features/account/account.data.test.ts`, `src/features/account/account.rules.test.ts` · → AC-15
 
 ## Stufe 2 — Regeln und Auswahlflächen
 

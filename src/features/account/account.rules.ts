@@ -112,6 +112,12 @@ export type ExportProfile = {
   age_band_at_signup: string
   created_at: string
   updated_at: string
+  /** PROJ-3 answers; empty until the person has answered. */
+  goal?: string | null
+  experience?: string | null
+  places?: string[] | null
+  home_equipment?: string[] | null
+  diet?: string | null
 }
 
 /** Machine-readable copy of the account's stored data (AC-15). Later features add their sections. */
@@ -133,6 +139,11 @@ export function buildAccountExport(input: {
     profile: input.profile
       ? {
           ageBandAtSignup: input.profile.age_band_at_signup,
+          goal: input.profile.goal ?? null,
+          experience: input.profile.experience ?? null,
+          places: input.profile.places ?? null,
+          homeEquipment: input.profile.home_equipment ?? null,
+          diet: input.profile.diet ?? null,
           createdAt: input.profile.created_at,
           updatedAt: input.profile.updated_at,
         }

@@ -39,7 +39,7 @@ export async function getOwnProfile(userId: string): Promise<ExportProfile | nul
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('profiles')
-    .select('age_band_at_signup, created_at, updated_at')
+    .select('age_band_at_signup, created_at, updated_at, goal, experience, places, home_equipment, diet')
     .eq('user_id', userId)
     .maybeSingle()
   if (error) throw new Error(`Profile could not be read (${error.code ?? 'unknown'}).`)

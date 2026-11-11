@@ -60,13 +60,22 @@ describe('collectAccountExport (AC-15)', () => {
   it('combines account and own profile', async () => {
     serverAuth.getUser.mockResolvedValue({ data: { user }, error: null })
     profileQuery.maybeSingle.mockResolvedValue({
-      data: { age_band_at_signup: '12_15', created_at: 'c', updated_at: 'u' },
+      data: { age_band_at_signup: '12_15', created_at: 'c', updated_at: 'u', goal: 'strength', experience: 'regular', places: ['outdoors'], home_equipment: null, diet: 'omnivore' },
       error: null,
     })
     const result = await data.collectAccountExport(new Date('2026-11-11T00:00:00Z'))
     expect(from).toHaveBeenCalledWith('profiles')
     expect(result?.account.id).toBe('u1')
-    expect(result?.profile).toEqual({ ageBandAtSignup: '12_15', createdAt: 'c', updatedAt: 'u' })
+    expect(result?.profile).toEqual({
+      ageBandAtSignup: '12_15',
+      goal: 'strength',
+      experience: 'regular',
+      places: ['outdoors'],
+      homeEquipment: null,
+      diet: 'omnivore',
+      createdAt: 'c',
+      updatedAt: 'u',
+    })
     expect(JSON.stringify(result)).not.toContain('provider')
   })
 
