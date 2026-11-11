@@ -20,10 +20,10 @@ Nach der Anmeldung öffnet sich **Heute**. PROJ-7 ergänzt die Rückmeldung nach
 
 ## Layoutbereiche
 
-- **Desktop-Navigation:** PULSE-Marke und die fünf Hauptbereiche in einer gemeinsamen Seitenleiste; der aktuelle Bereich ist erkennbar.
-- **Mobilnavigation:** Dieselben fünf Bereiche in einer knappen unteren Navigation mit zugänglichen Namen; der aktuelle Bereich ist erkennbar.
+- **Desktop-Navigation (ab 1024 px Breite):** PULSE-Marke und die fünf Hauptbereiche in einer gemeinsamen, nicht einklappbaren Seitenleiste; der aktuelle Bereich ist erkennbar, nicht nur durch Farbe.
+- **Mobilnavigation (unter 1024 px Breite):** Dieselben fünf Bereiche in einer fixierten unteren Navigation mit Symbol und sichtbarer Beschriftung; der aktuelle Bereich ist erkennbar.
 - **Kopfbereich:** Titel des aktuellen Bereichs und, falls erforderlich, genau eine wichtigste Aktion.
-- **Inhalt:** Der aktuelle Schritt oder die aktuelle Aufgabe steht im Vordergrund; ergänzende Informationen bleiben nachgeordnet.
+- **Inhalt:** Der aktuelle Schritt oder die aktuelle Aufgabe steht im Vordergrund; ergänzende Informationen bleiben nachgeordnet. Ein Link „Zum Inhalt springen“ ist das erste fokussierbare Element.
 
 ## Wiederkehrendes Seitenmuster
 
@@ -32,13 +32,30 @@ Nach der Anmeldung öffnet sich **Heute**. PROJ-7 ergänzt die Rückmeldung nach
 - Leere Zustände benennen den nächsten möglichen Schritt, etwa den ersten Check-in.
 - Fehler benennen das Problem und eine konkrete Möglichkeit zum erneuten Versuch.
 - Bestätigungen erscheinen nahe der ausgelösten Aktion und verwenden dieselben Begriffe wie die zugehörigen Bedienelemente.
+- Bereiche ohne Inhalt zeigen einen ruhigen Platzhalter mit einem Weg zu „Heute“, bis ihr Feature sie füllt.
+- Eine unbekannte Adresse zeigt „Seite nicht gefunden“: angemeldet im Rahmen, sonst ohne Navigation.
 
 ## Anmeldestatus
 
-- **Ohne Anmeldung:** Nur Einstieg und Konto-Zugang sind erreichbar; persönliche Bereiche und Daten bleiben geschützt.
+- **Ohne Anmeldung:** Nur Einstieg und Konto-Zugang sind erreichbar; sie zeigen die PULSE-Marke, aber keine App-Navigation. Persönliche Bereiche und Daten bleiben geschützt.
 - **Angemeldet:** Die fünf Hauptbereiche sind erreichbar; Einstiegspunkt ist „Heute“.
 - **Weitere Rollen:** Für die erste Version sind keine zusätzlichen Nutzendenrollen festgelegt. Berechtigungen für die Pflege geprüfter Inhalte werden in den betreffenden Feature-Designs entschieden.
 
 ## Gemeinsame Bausteine
 
-Seitenleiste, Mobilnavigation, Kopfbereich sowie Lade-, Leer- und Fehlerzustände werden als gemeinsame Bausteine von PROJ-2 geplant. Konkrete Komponenten und Dateipfade legt `/architecture PROJ-2` fest.
+Festgelegt durch `/architecture PROJ-2`. Features verwenden diese Bausteine und bauen keine eigenen nach:
+
+| Baustein | Ort | Verwendung |
+|----------|-----|------------|
+| App-Rahmen (Sprunglink, Seitenleiste, untere Navigation, Inhaltsbereich) | `src/components/shell/app-shell.tsx` | Liegt im geschützten Layout `src/app/(protected)/layout.tsx`; Features fügen nur Seiten darunter hinzu. |
+| Navigationseinträge | `src/components/shell/navigation.rules.ts` | Einzige Liste der Hauptbereiche; ein neuer Eintrag ist eine Änderung an PROJ-2. |
+| Kopfbereich | `src/components/shell/page-header.tsx` | Jede geschützte Seite beginnt damit: Titel und optional genau eine Hauptaktion. |
+| Platzhalter für leere Bereiche | `src/components/shell/area-placeholder.tsx` | Für Bereiche, deren Feature noch fehlt. |
+| PULSE-Marke | `src/components/shell/brand-mark.tsx` | Seitenleiste, öffentliche Seiten, „Seite nicht gefunden“. |
+| Lade- und Fehlerzustand | `src/app/(protected)/loading.tsx`, `error.tsx` | Gelten automatisch für alle geschützten Seiten; Features können eigene, feinere Zustände ergänzen. |
+
+## Darstellung
+
+- Das Farbschema folgt der Geräteeinstellung; im Profil lässt sich unter „Darstellung“ System, Hell oder Dunkel wählen.
+- Reduzierte Bewegung gilt, wenn das Gerät sie meldet oder die Person sie im Profil einschaltet. Sie wirkt app-weit über eine zentrale Regel, Features müssen dafür nichts tun.
+- Beide Einstellungen liegen nur auf dem jeweiligen Gerät.

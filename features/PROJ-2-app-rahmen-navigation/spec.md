@@ -75,6 +75,7 @@
 
 ## Offene Fragen
 
+- [x] AC-13: Heutige Browser melden ohne gesetzte Vorliebe meist „hell“. → AC-13 bleibt: PULSE folgt dem Gerät; „dunkel“ gilt nur, wenn der Browser keine Einstellung liefern kann (2026-11-11)
 - [ ] Wie die Platzhalter für Bewegung, Essen und Wochenblick genau formuliert sind, wird bei der Umsetzung mit kurzen, ermutigenden Texten festgelegt und kann bei der Produktvalidierung angepasst werden.
 
 ## Entscheidungsprotokoll
