@@ -79,7 +79,7 @@ Die folgenden Punkte werden vor dem ersten Deploy geklärt. Sie halten die lokal
 
 - [ ] Vor dem ersten Deploy: `/dsgvo PROJ-1` prüft die Registrierung von 12- bis 15-Jährigen und klärt, ob zusätzliche Schritte oder Änderungen am Registrierungsablauf erforderlich sind.
 - [ ] Vor dem ersten Deploy: `/dsgvo PROJ-1` klärt die Löschfristen für Sicherungen und Sicherheitsprotokolle sowie den Umgang mit laufenden Export- oder Löschanfragen.
-- [ ] Vor dem ersten Deploy: Die Auth-Architektur muss AC-7 und AC-17 bis AC-20 auch gegen direkt erreichbare gehostete Auth-Endpunkte erfüllen. Dafür werden Kosten und mögliche Anpassungen der technischen Lösung geprüft.
+- [ ] Vor dem ersten Deploy: Die Auth-Architektur muss AC-7 und AC-17 bis AC-20 auch gegen direkt erreichbare gehostete Auth-Endpunkte erfüllen. Dafür werden Kosten und mögliche Anpassungen der technischen Lösung geprüft. Zu beachten: Bei serverseitigen Auth-Aufrufen sieht Supabase nur die IP des App-Servers, sodass die eingebauten Grenzen je IP app-weit gelten.
 - [ ] Vor dem ersten Deploy: Verantwortlichen, Produktionshoster, E-Mail-Dienst und erforderliche Verträge festlegen; die Datenschutzprüfung dokumentiert die tatsächlichen Datenflüsse.
 
 ## Entscheidungsprotokoll
