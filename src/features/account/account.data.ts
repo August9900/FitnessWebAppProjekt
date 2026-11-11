@@ -3,6 +3,7 @@
 import 'server-only'
 import { createClient as createStatelessClient } from '@supabase/supabase-js'
 import { redirect } from 'next/navigation'
+import { cache } from 'react'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { buildAccountExport, type ExportProfile } from './account.rules'
@@ -16,15 +17,15 @@ export type AccountUser = {
 
 /**
  * The signed-in person, confirmed by the auth server — not just a cookie that decodes.
- * Revoked or expired sessions come back as null (AC-12).
+ * Revoked or expired sessions come back as null (AC-12). Asked once per request.
  */
-export async function getCurrentUser(): Promise<AccountUser | null> {
+export const getCurrentUser = cache(async (): Promise<AccountUser | null> => {
   const supabase = await createClient()
   const { data, error } = await supabase.auth.getUser()
   if (error || !data.user) return null
   const { id, email, created_at, last_sign_in_at } = data.user
   return { id, email: email ?? null, created_at, last_sign_in_at: last_sign_in_at ?? null }
-}
+})
 
 /** For protected pages and actions: the signed-in person, or a redirect to the login (AC-1). */
 export async function requireUser(): Promise<AccountUser> {

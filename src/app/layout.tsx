@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "FitnessApp",
-  description: "Built with the AI Engineering Kit",
+  title: "PULSE",
+  description: "Der nächste machbare Schritt für Bewegung und Ernährung – auch an unruhigen Tagen.",
 };
 
 export default function RootLayout({
@@ -12,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="de">
       <body className="antialiased">
         {children}
       </body>

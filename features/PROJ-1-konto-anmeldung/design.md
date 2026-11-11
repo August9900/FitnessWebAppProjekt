@@ -171,3 +171,12 @@ Diese Entscheidungen sind für den Prototyp ersetzt. Ihre Begründung gilt für 
 
 - [ ] Vor dem ersten Deploy: Wie werden AC-17 bis AC-20 und der Leak-Teil von AC-7 auch bei direkt erreichbaren gehosteten Auth-Endpunkten durchgesetzt? Dabei ist zu beachten, dass Supabase bei serverseitigen Aufrufen nur die IP des Next.js-Servers sieht.
 - [ ] Vor dem ersten Deploy: `/dsgvo PROJ-1` prüft die Registrierung Minderjähriger, die Datenflüsse und die Löschfristen. Dazu gehört auch die Altersgruppe in den Auth-Metadaten bzw. im Token.
+
+## Umsetzungsnotizen (`/build`, 2026-11-11)
+
+- **Formular-Verdrahtung:** Zusätzlich zu den geplanten Dateien gibt es `src/features/account/components/use-server-form.ts`. Der kleine Hook verbindet die shadcn-`Form` (react-hook-form, dieselben Zod-Schemas im Browser) mit den Server-Actions und setzt Feldfehler vom Server direkt am Feld. Jedes Formular trägt zusätzlich `method="post"`, damit es auch vor dem Laden von JavaScript nie per GET sendet.
+- **Export-Download:** Der Button lädt `/profil/export` per `fetch` und speichert die Datei nur bei Erfolg. Ein Fehler erscheint als Meldung statt als heruntergeladene Fehlerdatei.
+- **Meldungstexte:** `ACCOUNT_MESSAGES` liegen in `account.rules.ts`, weil eine `'use server'`-Datei nur async-Funktionen exportieren darf.
+- **Sitzungsabfrage:** `getCurrentUser` ist pro Anfrage mit React `cache` zwischengespeichert, damit Layout und Seite den Auth-Server nur einmal fragen.
+- **Rücksprungziel:** Der Proxy übergibt den ursprünglich aufgerufenen geschützten Pfad als `?weiter=`. Es ist nur der Pfad, keine personenbezogenen Daten; er wird über `safeRedirectPath` auf interne Ziele beschränkt.
+- **Ablauf des Builds:** Die `[P]`-Aufgaben wurden ohne Subagenten nacheinander gebaut, weil die Stufen klein und eng gekoppelt waren.
