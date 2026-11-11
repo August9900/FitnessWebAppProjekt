@@ -14,9 +14,9 @@
 
 ## Stufe 2 — Inhalte, Datenzugriff, Grundbausteine
 
-- [ ] T4 [P] Beispielinhalte: etwa 25 einfache Übungen mit leichterer Variante und mindestens 10 Workouts mit `review_status = unreviewed`; Abdeckung je mindestens einmal 5/10/15 Minuten, zuhause/draußen/Studio, zuhause ohne Ausstattung sowie mit Matte, Kurzhanteln, Widerstandsband, sanft/mittel/kräftig; Abdeckung gegen die lokale Datenbank geprüft. · files: `supabase/migrations/20261111170100_workouts_sample_content.sql` · → AC-12, AC-13
-- [ ] T5 [P] Datenzugriff (`server-only`): alle angebotenen Workouts mit Schritten und Übungen in einer Abfrage, ein Workout per ID oder „nicht vorhanden“; Umwandlung in die Typen der Regeln; mit Test. · files: `src/features/workouts/workouts.data.ts`, `src/features/workouts/workouts.data.test.ts` · → AC-1, AC-6; EC-2
-- [ ] T6 [P] Hinweis „Beispielinhalt – noch nicht fachlich geprüft“ und Übungsanzeige (Name, Sekunden oder Wiederholungen, Anleitung) mit Schalter „Leichter“; mit Test. · files: `src/features/workouts/components/sample-content-badge.tsx`, `src/features/workouts/components/exercise-view.tsx`, `src/features/workouts/components/exercise-view.test.tsx` · → AC-7, AC-12
+- [x] T4 [P] Beispielinhalte: etwa 25 einfache Übungen mit leichterer Variante und mindestens 10 Workouts mit `review_status = unreviewed`; Abdeckung je mindestens einmal 5/10/15 Minuten, zuhause/draußen/Studio, zuhause ohne Ausstattung sowie mit Matte, Kurzhanteln, Widerstandsband, sanft/mittel/kräftig; Abdeckung gegen die lokale Datenbank geprüft. · files: `supabase/migrations/20261111170100_workouts_sample_content.sql` · → AC-12, AC-13
+- [x] T5 [P] Datenzugriff (`server-only`): alle angebotenen Workouts mit Schritten und Übungen in einer Abfrage, ein Workout per ID oder „nicht vorhanden“; Umwandlung in die Typen der Regeln; mit Test. · files: `src/features/workouts/workouts.data.ts`, `src/features/workouts/workouts.data.test.ts` · → AC-1, AC-6; EC-2
+- [x] T6 [P] Hinweis „Beispielinhalt – noch nicht fachlich geprüft“ und Übungsanzeige (Name, Sekunden oder Wiederholungen, Anleitung) mit Schalter „Leichter“; mit Test. · files: `src/features/workouts/components/sample-content-badge.tsx`, `src/features/workouts/components/exercise-view.tsx`, `src/features/workouts/components/exercise-view.test.tsx` · → AC-7, AC-12
 
 ## Stufe 3 — Ansichten
 
