@@ -12,7 +12,7 @@ export const THEME_CHOICES = ['system', 'light', 'dark'] as const
 export type ThemeChoice = (typeof THEME_CHOICES)[number]
 
 export const THEME_LABELS: Record<ThemeChoice, string> = {
-  system: 'Wie das Gerät',
+  system: 'System',
   light: 'Hell',
   dark: 'Dunkel',
 }

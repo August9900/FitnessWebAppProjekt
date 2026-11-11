@@ -23,9 +23,9 @@
 
 ## Stufe 3 — Zusammensetzen
 
-- [ ] T10 [P] App-Rahmen: Link „Zum Inhalt springen“ als erstes fokussierbares Element, Seitenleiste, untere Navigation, `main` als Sprungziel mit unterem Abstand für die Navigation; mit Test. · files: `src/components/shell/app-shell.tsx`, `src/components/shell/app-shell.test.tsx` · → AC-1, AC-2, AC-8; EC-6
-- [ ] T11 [P] Root-Layout: Inter und Unbounded über `next/font/google` (selbst ausgeliefert), Darstellungs-Provider und Skript einhängen, `suppressHydrationWarning` am `html`. · files: `src/app/layout.tsx` · → AC-10, AC-12, AC-13; EC-1
-- [ ] T12 [P] Abschnitt „Darstellung“: Farbschema System/Hell/Dunkel (shadcn `RadioGroup`) mit sofortiger Wirkung, Schalter „Bewegung reduzieren“ (shadcn `Switch`), gesperrt mit Hinweis, wenn das Gerät bereits reduziert; mit Test. · files: `src/features/appearance/appearance-settings.tsx`, `src/features/appearance/appearance-settings.test.tsx` · → AC-14, AC-15; EC-2
+- [x] T10 [P] App-Rahmen: Link „Zum Inhalt springen“ als erstes fokussierbares Element, Seitenleiste, untere Navigation, `main` als Sprungziel mit unterem Abstand für die Navigation; mit Test. · files: `src/components/shell/app-shell.tsx`, `src/components/shell/app-shell.test.tsx` · → AC-1, AC-2, AC-8; EC-6
+- [x] T11 [P] Root-Layout: Inter und Unbounded über `next/font/google` (selbst ausgeliefert), Darstellungs-Provider und Skript einhängen, `suppressHydrationWarning` am `html`. · files: `src/app/layout.tsx` · → AC-10, AC-12, AC-13; EC-1
+- [x] T12 [P] Abschnitt „Darstellung“: Farbschema System/Hell/Dunkel (shadcn `RadioGroup`) mit sofortiger Wirkung, Schalter „Bewegung reduzieren“ (shadcn `Switch`), gesperrt mit Hinweis, wenn das Gerät bereits reduziert; mit Test. · files: `src/features/appearance/appearance-settings.tsx`, `src/features/appearance/appearance-settings.test.tsx` · → AC-14, AC-15; EC-2
 
 ## Stufe 4 — Einhängen
 

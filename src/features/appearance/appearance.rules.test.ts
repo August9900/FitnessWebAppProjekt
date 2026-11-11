@@ -21,7 +21,7 @@ describe('parseThemeChoice (AC-13, AC-14, EC-2)', () => {
   })
 
   it('offers exactly System, Hell and Dunkel', () => {
-    expect(THEME_CHOICES.map((choice) => THEME_LABELS[choice])).toEqual(['Wie das Gerät', 'Hell', 'Dunkel'])
+    expect(THEME_CHOICES.map((choice) => THEME_LABELS[choice])).toEqual(['System', 'Hell', 'Dunkel'])
   })
 })
 
