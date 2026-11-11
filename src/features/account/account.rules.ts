@@ -24,6 +24,12 @@ export const AUTH_MESSAGES = {
 
 export type AuthMessageKey = keyof typeof AUTH_MESSAGES
 
+export const ACCOUNT_MESSAGES = {
+  passwordChanged: 'Dein Passwort wurde geändert. Andere Geräte wurden abgemeldet.',
+  deleteFailed:
+    'Dein Konto konnte gerade nicht gelöscht werden. Es wurde nichts verändert. Bitte versuche es erneut.',
+} as const
+
 export type AuthFlow = 'signup' | 'login' | 'resetRequest' | 'resetConfirm' | 'passwordUpdate'
 
 /** The parts of a Supabase AuthError the rules look at. */

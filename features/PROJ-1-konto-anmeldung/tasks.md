@@ -23,8 +23,8 @@
 
 ## Stufe 3 — Geschützte Serverlogik
 
-- [ ] T8 [P] Konto-Actions: Passwort ändern (aktuelles Passwort prüfen, neues setzen, alle anderen Sitzungen beenden) und Konto löschen (aktuelles Passwort und „LÖSCHEN“, Löschung über das Datenmodul, Cookies leeren, Weiterleitung nach `/` mit Hinweis; bei Fehler unverändert mit Wiederholungsmöglichkeit); mit Test. · files: `src/features/account/account.actions.ts`, `src/features/account/account.actions.test.ts` · → AC-7, AC-9, AC-16, AC-21; EC-5
-- [ ] T9 [P] Download-Endpunkt für den Datenexport mit eigener Sitzungsprüfung; liefert `pulse-daten-<Datum>.json` oder bei Fehler keine Datei. · files: `src/app/(protected)/profil/export/route.ts` · → AC-15
+- [x] T8 [P] Konto-Actions: Passwort ändern (aktuelles Passwort prüfen, neues setzen, alle anderen Sitzungen beenden) und Konto löschen (aktuelles Passwort und „LÖSCHEN“, Löschung über das Datenmodul, Cookies leeren, Weiterleitung nach `/` mit Hinweis; bei Fehler unverändert mit Wiederholungsmöglichkeit); mit Test. · files: `src/features/account/account.actions.ts`, `src/features/account/account.actions.test.ts` · → AC-7, AC-9, AC-16, AC-21; EC-5
+- [x] T9 [P] Download-Endpunkt für den Datenexport mit eigener Sitzungsprüfung; liefert `pulse-daten-<Datum>.json` oder bei Fehler keine Datei. · files: `src/app/(protected)/profil/export/route.ts` · → AC-15
 
 ## Stufe 4 — Oberfläche
 
