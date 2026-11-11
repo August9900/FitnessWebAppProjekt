@@ -54,7 +54,8 @@ Festgelegt durch `/architecture PROJ-2`. Features verwenden diese Bausteine und 
 | Platzhalter für leere Bereiche | `src/components/shell/area-placeholder.tsx` | Für Bereiche, deren Feature noch fehlt. |
 | PULSE-Marke | `src/components/shell/brand-mark.tsx` | Seitenleiste, öffentliche Seiten, „Seite nicht gefunden“. |
 | Gate für Hauptbereiche | `src/app/(protected)/(bereiche)/layout.tsx` (PROJ-3) | Seiten von Heute, Bewegung, Essen und Wochenblick liegen in dieser Gruppe und öffnen sich erst mit vollständigen Angaben; das Profil liegt außerhalb. |
-| Lade- und Fehlerzustand | `src/app/(protected)/loading.tsx`, `error.tsx` | Gelten automatisch für alle geschützten Seiten; Features können eigene, feinere Zustände ergänzen. |
+| Ladezustand | `src/components/shell/area-loading.tsx`, eingebunden über `loading.tsx` in `(protected)/(bereiche)/` und `(protected)/profil/` | Liegt bewusst unterhalb jedes Zugangs-Gates, damit ein Gate per Server-Weiterleitung antworten kann, bevor etwas gesendet wird. Ein neuer geschützter Bereich außerhalb von `(bereiche)` bekommt eine eigene `loading.tsx` mit diesem Baustein. |
+| Fehlerzustand | `src/app/(protected)/error.tsx` | Gilt automatisch für alle geschützten Seiten; Features können eigene, feinere Zustände ergänzen. |
 
 ## Darstellung
 

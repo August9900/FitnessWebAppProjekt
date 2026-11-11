@@ -1,7 +1,11 @@
 import { Skeleton } from '@/components/ui/skeleton'
 
-// Calm placeholder while an area loads (AC-17): keeps the space, no pulsing, navigation stays usable.
-export default function Loading() {
+/**
+ * Calm placeholder while an area loads (PROJ-2, AC-17): keeps the space, no pulsing, navigation
+ * stays usable. Used by the loading.tsx of each area group — placed below any access gate, so a
+ * gate can still answer with a real redirect before anything is streamed (PROJ-3).
+ */
+export function AreaLoading() {
   return (
     <div aria-busy="true" className="space-y-8">
       <p role="status" className="sr-only">

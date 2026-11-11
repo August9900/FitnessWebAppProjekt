@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/components/shell/page-header'
@@ -9,10 +10,21 @@ import { DeleteAccountDialog } from '@/features/account/components/delete-accoun
 import { ExportButton } from '@/features/account/components/export-button'
 import { PasswordChangeForm } from '@/features/account/components/password-change-form'
 import { AppearanceSettings } from '@/features/appearance/appearance-settings'
+import { AnswersForm } from '@/features/profile/components/answers-form'
+import { getOwnAnswers } from '@/features/profile/profile.data'
+import { isComplete } from '@/features/profile/profile.rules'
 
 export const metadata: Metadata = { title: 'Profil · PULSE' }
 
 const dateFormat = new Intl.DateTimeFormat('de-DE', { dateStyle: 'long' })
+
+async function loadAnswers(userId: string) {
+  try {
+    return { answers: await getOwnAnswers(userId), failed: false }
+  } catch {
+    return { answers: null, failed: true }
+  }
+}
 
 async function loadProfile(userId: string) {
   try {
@@ -25,6 +37,7 @@ async function loadProfile(userId: string) {
 export default async function ProfilePage() {
   const user = await requireUser()
   const { profile, failed } = await loadProfile(user.id)
+  const answersState = await loadAnswers(user.id)
 
   return (
     <div>
@@ -47,6 +60,26 @@ export default async function ProfilePage() {
           <dt className="text-muted-foreground">Konto seit</dt>
           <dd>{dateFormat.format(new Date(user.created_at))}</dd>
         </dl>
+      </section>
+
+      <section aria-labelledby="angaben" className="mt-12 space-y-4">
+        <h2 id="angaben" className="text-xl font-semibold">
+          Meine Angaben
+        </h2>
+        {answersState.failed ? (
+          <Alert variant="destructive" role="alert">
+            <AlertDescription>Deine Angaben konnten gerade nicht geladen werden. Lade die Seite neu.</AlertDescription>
+          </Alert>
+        ) : answersState.answers && isComplete(answersState.answers) ? (
+          <AnswersForm initialAnswers={answersState.answers} />
+        ) : (
+          <div className="space-y-4 rounded-lg border bg-card p-6">
+            <p>Deine Angaben sind noch nicht vollständig.</p>
+            <Button asChild>
+              <Link href="/einstieg">Einstieg fortsetzen</Link>
+            </Button>
+          </div>
+        )}
       </section>
 
       <section aria-labelledby="darstellung" className="mt-12 space-y-4">

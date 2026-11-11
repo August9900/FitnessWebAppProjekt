@@ -143,3 +143,11 @@ Keine.
 ## Offene Fragen
 
 - [ ] Vor dem ersten Deploy: `/dsgvo PROJ-3` (siehe `spec.md`).
+
+## Umsetzungsnotizen (`/build`, 2026-11-11)
+
+- **Kein eigenes `finishOnboarding`:** `saveOnboardingAnswer` liefert nach jeder Antwort zurück, ob die Angaben jetzt vollständig sind. Nach der letzten Frage zeigt der Einstieg die Bestätigung „Danke, das reicht schon.“ und öffnet „Heute“ nach 1,5 Sekunden; der Knopf „Weiter zu Heute“ geht sofort. Die Weiterleitung übernimmt der Browser, nicht die Action.
+- **Ladezustand unterhalb des Gates:** Die `loading.tsx` aus PROJ-2 lag in `(protected)` und umschloss damit auch das neue Gate in `(bereiche)`. Next.js begann deshalb schon zu senden, bevor das Gate prüfte; die Weiterleitung zum Einstieg kam erst im Browser, nachdem Rahmen und Skelett kurz zu sehen waren. Der Ladezustand ist jetzt ein Baustein (`src/components/shell/area-loading.tsx`), eingebunden über je eine `loading.tsx` in `(bereiche)` und `profil`. Das Gate antwortet dadurch mit einer echten Server-Weiterleitung (307). Das Verhalten der Ladeansicht ist unverändert; `docs/app-shell.md` nennt den neuen Ort.
+- **Hilfsfunktion für Spaltenrechte:** Die Prüfregel „keine Doppelten“ nutzt `private.array_is_distinct`, weil Prüfregeln in Postgres keine Unterabfragen enthalten dürfen.
+- **Antwortoptionen:** `optionsOf` in `answer-options.tsx` baut die Auswahllisten aus den Beschriftungen in `profile.schema.ts`, damit Einstieg und Profil-Formular dieselbe Reihenfolge und dieselben Texte zeigen.
+- **Typen-Cache:** `.next/dev/types` enthielt nach dem Umzug der Bereichsseiten veraltete Pfade aus einem früheren `npm run dev` und brach `tsc`. Das Verzeichnis wurde gelöscht; `npm run dev` erzeugt es neu.

@@ -10,6 +10,11 @@ import { cn } from '@/lib/utils'
 
 export type Option<V extends string> = { value: V; label: string }
 
+/** Options in the order of a labels record (see LABELS in profile.schema). */
+export function optionsOf<V extends string>(labels: Record<V, string>): Option<V>[] {
+  return (Object.entries(labels) as [V, string][]).map(([value, label]) => ({ value, label }))
+}
+
 type GroupProps = {
   legend: string
   /** Shown under the legend, e.g. "Mehrere Antworten möglich." */
