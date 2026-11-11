@@ -17,6 +17,9 @@ describe('isProtectedPath', () => {
     expect(isProtectedPath('/heute')).toBe(true)
     expect(isProtectedPath('/profil')).toBe(true)
     expect(isProtectedPath('/profil/export')).toBe(true)
+    expect(isProtectedPath('/bewegung')).toBe(true)
+    expect(isProtectedPath('/essen')).toBe(true)
+    expect(isProtectedPath('/wochenblick')).toBe(true)
     expect(isProtectedPath('/')).toBe(false)
     expect(isProtectedPath('/anmelden')).toBe(false)
     expect(isProtectedPath('/profilbild')).toBe(false)
@@ -34,6 +37,14 @@ describe('proxy', () => {
     expect(location.pathname).toBe('/anmelden')
     expect(location.searchParams.get('weiter')).toBe('/profil')
     expect(location.searchParams.has('tab')).toBe(false)
+  })
+
+  it('sends an expired session from a new area to the login and back there (EC-3)', async () => {
+    getClaims.mockResolvedValue({ data: null, error: null })
+    const response = await proxy(request('/wochenblick'))
+    const location = new URL(response.headers.get('location')!)
+    expect(location.pathname).toBe('/anmelden')
+    expect(location.searchParams.get('weiter')).toBe('/wochenblick')
   })
 
   it('lets a signed-in person through to a protected page', async () => {

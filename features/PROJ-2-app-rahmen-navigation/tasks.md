@@ -8,12 +8,12 @@
 
 ## Stufe 1 — Grundlagen
 
-- [ ] T1 [P] PULSE-Farbtoken für Hell und Dunkel exakt nach `docs/design-system.md`, Rundung 14 px, Schriftzuordnung (Text: Inter, Marke/Überschriften: Unbounded), zentrale Regel für reduzierte Bewegung (Gerätemeldung oder `data-reduce-motion` am `html`); Test berechnet den Kontrast aller Textpaare in beiden Schemata aus `globals.css`. · files: `src/app/globals.css`, `src/app/design-tokens.test.ts` · → AC-10, AC-11, AC-15
-- [ ] T2 [P] Grundhöhe von Schaltflächen und Eingabefeldern auf 48 px anheben, ohne die Bausteine nachzubauen. · files: `src/components/ui/button.tsx`, `src/components/ui/input.tsx` · → AC-9
-- [ ] T3 [P] Navigationsregeln: die fünf Bereiche (Name, Pfad, Symbol) in fester Reihenfolge und die Prüfung „aktiv für Pfad X“ (Pfad selbst oder Unterpfad nach `/`); mit Test. · files: `src/components/shell/navigation.rules.ts`, `src/components/shell/navigation.rules.test.ts` · → AC-1, AC-2, AC-3
-- [ ] T4 [P] Darstellungsregeln: erlaubte Werte, Speicherschlüssel `pulse-theme` und `pulse-reduce-motion`, Auslesen mit Rückfall bei ungültigen Werten, „Bewegung reduzieren“ gilt bei Gerätemeldung oder eigener Wahl; mit Test. · files: `src/features/appearance/appearance.rules.ts`, `src/features/appearance/appearance.rules.test.ts` · → AC-13, AC-14, AC-15; EC-2
-- [ ] T5 [P] Proxy: `/bewegung`, `/essen` und `/wochenblick` als geschützte Pfade ergänzen; Test erweitern. · files: `src/proxy.ts`, `src/proxy.test.ts` · → EC-3
-- [ ] T6 [P] PULSE-Marke (Wortmarke in Unbounded mit statischer Pulslinie) und Kopfbereich (Titel als `h1`, umbrechend, optionaler Platz für genau eine Hauptaktion). · files: `src/components/shell/brand-mark.tsx`, `src/components/shell/page-header.tsx` · → AC-6, AC-7, AC-10; EC-5
+- [x] T1 [P] PULSE-Farbtoken für Hell und Dunkel exakt nach `docs/design-system.md`, Rundung 14 px, Schriftzuordnung (Text: Inter, Marke/Überschriften: Unbounded), zentrale Regel für reduzierte Bewegung (Gerätemeldung oder `data-reduce-motion` am `html`); Test berechnet den Kontrast aller Textpaare in beiden Schemata aus `globals.css`. · files: `src/app/globals.css`, `src/app/design-tokens.test.ts` · → AC-10, AC-11, AC-15
+- [x] T2 [P] Grundhöhe von Schaltflächen und Eingabefeldern auf 48 px anheben, ohne die Bausteine nachzubauen. · files: `src/components/ui/button.tsx`, `src/components/ui/input.tsx` · → AC-9
+- [x] T3 [P] Navigationsregeln: die fünf Bereiche (Name, Pfad, Symbol) in fester Reihenfolge und die Prüfung „aktiv für Pfad X“ (Pfad selbst oder Unterpfad nach `/`); mit Test. · files: `src/components/shell/navigation.rules.ts`, `src/components/shell/navigation.rules.test.ts` · → AC-1, AC-2, AC-3
+- [x] T4 [P] Darstellungsregeln: erlaubte Werte, Speicherschlüssel `pulse-theme` und `pulse-reduce-motion`, Auslesen mit Rückfall bei ungültigen Werten, „Bewegung reduzieren“ gilt bei Gerätemeldung oder eigener Wahl; mit Test. · files: `src/features/appearance/appearance.rules.ts`, `src/features/appearance/appearance.rules.test.ts` · → AC-13, AC-14, AC-15; EC-2
+- [x] T5 [P] Proxy: `/bewegung`, `/essen` und `/wochenblick` als geschützte Pfade ergänzen; Test erweitern. · files: `src/proxy.ts`, `src/proxy.test.ts` · → EC-3
+- [x] T6 [P] PULSE-Marke (Wortmarke in Unbounded mit statischer Pulslinie) und Kopfbereich (Titel als `h1`, umbrechend, optionaler Platz für genau eine Hauptaktion). · files: `src/components/shell/brand-mark.tsx`, `src/components/shell/page-header.tsx` · → AC-6, AC-7, AC-10; EC-5
 
 ## Stufe 2 — Bausteine
 
