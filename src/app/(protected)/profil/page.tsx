@@ -1,13 +1,14 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
+import { PageHeader } from '@/components/shell/page-header'
 import { getOwnProfile, requireUser } from '@/features/account/account.data'
 import { ageBandLabel } from '@/features/account/account.rules'
 import { signOut } from '@/features/account/auth.actions'
 import { DeleteAccountDialog } from '@/features/account/components/delete-account-dialog'
 import { ExportButton } from '@/features/account/components/export-button'
 import { PasswordChangeForm } from '@/features/account/components/password-change-form'
+import { AppearanceSettings } from '@/features/appearance/appearance-settings'
 
 export const metadata: Metadata = { title: 'Profil · PULSE' }
 
@@ -26,11 +27,8 @@ export default async function ProfilePage() {
   const { profile, failed } = await loadProfile(user.id)
 
   return (
-    <main className="mx-auto w-full max-w-2xl px-4 py-10">
-      <Link href="/heute" className="text-sm underline underline-offset-4">
-        Zu Heute
-      </Link>
-      <h1 className="mt-4 text-[28px] font-bold leading-tight">Profil</h1>
+    <div>
+      <PageHeader title="Profil" />
 
       <section aria-labelledby="konto" className="mt-10 space-y-4">
         <h2 id="konto" className="text-xl font-semibold">
@@ -49,6 +47,13 @@ export default async function ProfilePage() {
           <dt className="text-muted-foreground">Konto seit</dt>
           <dd>{dateFormat.format(new Date(user.created_at))}</dd>
         </dl>
+      </section>
+
+      <section aria-labelledby="darstellung" className="mt-12 space-y-4">
+        <h2 id="darstellung" className="text-xl font-semibold">
+          Darstellung
+        </h2>
+        <AppearanceSettings />
       </section>
 
       <section aria-labelledby="passwort" className="mt-12 space-y-4">
@@ -78,11 +83,11 @@ export default async function ProfilePage() {
 
       <section aria-label="Abmelden" className="mt-12 border-t pt-8">
         <form action={signOut}>
-          <Button type="submit" variant="outline" className="h-12">
+          <Button type="submit" variant="outline">
             Abmelden
           </Button>
         </form>
       </section>
-    </main>
+    </div>
   )
 }

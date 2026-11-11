@@ -150,3 +150,15 @@ Keine.
 ## Offene Fragen
 
 - [x] AC-13 bei Browsern ohne gesetzte Vorliebe → PULSE folgt dem Gerät (`next-themes` mit Standard `system`); „dunkel“ gilt nur, wenn der Browser die Abfrage nicht unterstützt. Entschieden bei der Freigabe am 2026-11-11.
+
+## Umsetzungsnotizen (`/build`, 2026-11-11)
+
+- **`--accent` und Hover-Flächen:** `--accent` ist wie im Designsystem das PULSE-Pink. shadcn verwendet `accent` aber auch für dezente Hover- und Fokusflächen. In `button` (Varianten `outline` und `ghost`) und in der Seitenleiste (`--sidebar-accent`) nutzen Hover-Flächen deshalb die Sekundärfarbe. Andere shadcn-Bausteine, die `accent` für Fokus oder Hover nutzen (`dropdown-menu`, `select`, `command`), zeigen dort noch Pink. Das sollte das erste Feature anpassen, das sie verwendet.
+- **Neuer Token `--primary-hover`:** Er trägt die Hover-Werte des Designsystems (Dunkel `#A7DB2E`, Hell `#415300`) und wird in `button` verwendet.
+- **Seitenleistenbreite:** Die vorhandene shadcn-`sidebar.tsx` nutzt noch die Tailwind-v3-Schreibweise `w-[--sidebar-width]`, die Tailwind v4 nicht auswertet. `desktop-nav.tsx` setzt die Breite deshalb ausdrücklich (`w-64`).
+- **Gemeinsame Symbole:** `src/components/shell/nav-icons.tsx` ist eine kleine zusätzliche Datei, die die Symbole beider Navigationen an einer Stelle zuordnet. Die Regeln in `navigation.rules.ts` bleiben dadurch frei von UI-Imports.
+- **Fehlerzustand:** `error.tsx` nutzt `retry()` aus Next.js 16. Das lädt den Bereich neu, statt nur den Fehlerzustand zurückzusetzen.
+- **Ladezustand:** Das shadcn-`Skeleton` pulsiert standardmäßig. Im Ladezustand ist das abgeschaltet (`animate-none`), damit keine Dauerbewegung entsteht (AC-17).
+- **Farbschema-Skript:** `next-themes` setzt sein Skript als erstes Element in den `body`, vor jeden sichtbaren Inhalt. Das blockiert den Aufbau, bis das Schema gesetzt ist (EC-1). Das Skript für „Bewegung reduzieren“ steht im `head`.
+- **Tests und `localStorage`:** Node 26 überdeckt das `localStorage` von jsdom mit einem eigenen, unkonfigurierten Speicher. Die Darstellungstests setzen deshalb einen Speicher im Arbeitsspeicher ein.
+- **Tastenkürzel:** Der shadcn-`SidebarProvider` belegt Strg/⌘+B zum Einklappen der Leiste. Weil die Leiste nicht einklappbar ist, hat das keine sichtbare Wirkung, blockiert aber im Browser das Kürzel für die Lesezeichen-Leiste.

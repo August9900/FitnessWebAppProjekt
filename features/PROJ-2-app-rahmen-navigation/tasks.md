@@ -29,11 +29,11 @@
 
 ## Stufe 4 — Einhängen
 
-- [ ] T13 [P] Geschütztes Layout legt nach der Sitzungsprüfung den App-Rahmen um den Inhalt; Ladezustand mit ruhigem Skelett; Fehlerzustand mit „Erneut versuchen“, Navigation bleibt bedienbar. · files: `src/app/(protected)/layout.tsx`, `src/app/(protected)/loading.tsx`, `src/app/(protected)/error.tsx` · → AC-1, AC-2, AC-4, AC-17, AC-18
-- [ ] T14 [P] Platzhalterseiten für Bewegung, Essen und Wochenblick. · files: `src/app/(protected)/bewegung/page.tsx`, `src/app/(protected)/essen/page.tsx`, `src/app/(protected)/wochenblick/page.tsx` · → AC-5
-- [ ] T15 [P] „Heute“ und Profil mit Kopfbereich; im Profil den Abschnitt „Darstellung“ ergänzen; doppelte Links („Zum Profil“, „Zu Heute“) und den Abmelde-Knopf auf „Heute“ entfernen. · files: `src/app/(protected)/heute/page.tsx`, `src/app/(protected)/profil/page.tsx` · → AC-4, AC-6, AC-14
-- [ ] T16 [P] „Seite nicht gefunden“: angemeldet im App-Rahmen mit Weg zu „Heute“, sonst mit Marke ohne Navigation und Weg zum Einstieg. · files: `src/app/not-found.tsx` · → AC-16
-- [ ] T17 [P] PULSE-Marke auf den öffentlichen Seiten aus PROJ-1 statt des Schriftzugs „PULSE“; keine App-Navigation. · files: `src/app/page.tsx`, `src/app/(auth)/anmelden/page.tsx`, `src/app/(auth)/registrieren/page.tsx`, `src/app/(auth)/passwort-vergessen/page.tsx` · → AC-7, AC-10
+- [x] T13 [P] Geschütztes Layout legt nach der Sitzungsprüfung den App-Rahmen um den Inhalt; Ladezustand mit ruhigem Skelett; Fehlerzustand mit „Erneut versuchen“, Navigation bleibt bedienbar. · files: `src/app/(protected)/layout.tsx`, `src/app/(protected)/loading.tsx`, `src/app/(protected)/error.tsx` · → AC-1, AC-2, AC-4, AC-17, AC-18
+- [x] T14 [P] Platzhalterseiten für Bewegung, Essen und Wochenblick. · files: `src/app/(protected)/bewegung/page.tsx`, `src/app/(protected)/essen/page.tsx`, `src/app/(protected)/wochenblick/page.tsx` · → AC-5
+- [x] T15 [P] „Heute“ und Profil mit Kopfbereich; im Profil den Abschnitt „Darstellung“ ergänzen; doppelte Links („Zum Profil“, „Zu Heute“) und den Abmelde-Knopf auf „Heute“ entfernen. · files: `src/app/(protected)/heute/page.tsx`, `src/app/(protected)/profil/page.tsx` · → AC-4, AC-6, AC-14
+- [x] T16 [P] „Seite nicht gefunden“: angemeldet im App-Rahmen mit Weg zu „Heute“, sonst mit Marke ohne Navigation und Weg zum Einstieg. · files: `src/app/not-found.tsx` · → AC-16
+- [x] T17 [P] PULSE-Marke auf den öffentlichen Seiten aus PROJ-1 statt des Schriftzugs „PULSE“; keine App-Navigation. · files: `src/app/page.tsx`, `src/app/(auth)/anmelden/page.tsx`, `src/app/(auth)/registrieren/page.tsx`, `src/app/(auth)/passwort-vergessen/page.tsx` · → AC-7, AC-10
 
 ## Parallelisierung
 
