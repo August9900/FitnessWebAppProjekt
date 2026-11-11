@@ -33,7 +33,7 @@ _Grundlage: `docs/PRD.md` und `features/INDEX.md`, durch `/init` am 23.09.2026 e
 
 - Ein Konto hat ein Kurzprofil und kann viele Check-ins, Vorschläge, Aktionen und Rückmeldungen haben.
 - Schutz-Zähler beziehen sich auf ein Konto oder eine anfragende IP-Adresse; sie werden nach Ablauf der Schutzfrist gelöscht.
-- Ein kurzes Workout verwendet geprüfte Übungen. Ein Tagesvorschlag bezieht sich auf einen Check-in und eine Bewegungs- oder Mahlzeitenoption.
+- Ein kurzes Workout besteht aus einer geordneten Folge von Schritten; jeder Schritt verweist auf genau eine Übung (mit Dauer oder Wiederholungen). Jede Übung hat eine leichtere Variante. Workouts tragen einen Prüfstatus; vor dem ersten Deploy sind nur geprüfte öffentlich sichtbar (PROJ-4). Ein Tagesvorschlag bezieht sich auf einen Check-in und eine Bewegungs- oder Mahlzeitenoption.
 - Ein Aktionsverlauf und ein mögliches Abschlussfeedback beziehen sich auf den gewählten Tagesvorschlag.
 - Der Wochenblick wird aus dem Aktionsverlauf abgeleitet; dafür ist zunächst kein eigenes gespeichertes Ding vorgesehen.
 - Spätere eigene Pläne, Gewichtseinträge, Bestleistungen, Nährwertziele und Chatverläufe gehören jeweils genau einem Konto.
