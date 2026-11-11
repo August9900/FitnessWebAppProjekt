@@ -24,7 +24,7 @@
 
 ## Stufe 4 — Server-Actions
 
-- [ ] T8 Server-Actions `saveOnboardingAnswer`, `finishOnboarding` und `updateProfileAnswers`: Sitzung und Eingabe prüfen, Ausstattung ohne „Zuhause“ leeren bzw. ablehnen, Feldfehler und „Erneut versuchen“-Meldung, Weiterleitung nach `/heute` bei vollständigen Angaben; mit Test. · files: `src/features/profile/profile.actions.ts`, `src/features/profile/profile.actions.test.ts` · → AC-3, AC-4, AC-5, AC-6, AC-7, AC-8, AC-9, AC-13, AC-14, AC-17; EC-3, EC-5
+- [x] T8 Server-Actions `saveOnboardingAnswer`, `finishOnboarding` und `updateProfileAnswers`: Sitzung und Eingabe prüfen, Ausstattung ohne „Zuhause“ leeren bzw. ablehnen, Feldfehler und „Erneut versuchen“-Meldung, Weiterleitung nach `/heute` bei vollständigen Angaben; mit Test. · files: `src/features/profile/profile.actions.ts`, `src/features/profile/profile.actions.test.ts` · → AC-3, AC-4, AC-5, AC-6, AC-7, AC-8, AC-9, AC-13, AC-14, AC-17; EC-3, EC-5
 
 ## Stufe 5 — Oberfläche
 
