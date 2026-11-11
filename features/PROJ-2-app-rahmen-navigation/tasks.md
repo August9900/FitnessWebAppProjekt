@@ -17,9 +17,9 @@
 
 ## Stufe 2 — Bausteine
 
-- [ ] T7 [P] Seitenleiste ab 1024 px aus den shadcn-`Sidebar`-Bausteinen (nicht einklappbar, mit Marke) und fixierte untere Navigation darunter (5 gleich breite Felder ≥ 64 px, Symbol + 14-px-Beschriftung, weiche Trennung „Wochen-blick“, Sicherheitsabstand); aktiver Eintrag mit Balken, kräftiger Schrift und `aria-current="page"`; Render-Test. · files: `src/components/shell/desktop-nav.tsx`, `src/components/shell/mobile-nav.tsx`, `src/components/shell/navigation.test.tsx` · → AC-1, AC-2, AC-3, AC-8, AC-9; EC-4
-- [ ] T8 [P] Platzhalteransicht für leere Bereiche: Kopfbereich, kurzer ermutigender Text, Link „Zu Heute“; mit Test. · files: `src/components/shell/area-placeholder.tsx`, `src/components/shell/area-placeholder.test.tsx` · → AC-5
-- [ ] T9 [P] Darstellungs-Provider (`next-themes` mit Klasse `dark`, Standard `system`, Schlüssel `pulse-theme`, Übergänge beim Umschalten aus; „Bewegung reduzieren“ mit Gerätespeicher und Attribut) und Skript, das das Attribut vor dem ersten Zeichnen setzt; mit Test. · files: `src/features/appearance/appearance-provider.tsx`, `src/features/appearance/appearance-script.tsx`, `src/features/appearance/appearance-provider.test.tsx` · → AC-13, AC-15; EC-1, EC-2
+- [x] T7 [P] Seitenleiste ab 1024 px aus den shadcn-`Sidebar`-Bausteinen (nicht einklappbar, mit Marke) und fixierte untere Navigation darunter (5 gleich breite Felder ≥ 64 px, Symbol + 14-px-Beschriftung, weiche Trennung „Wochen-blick“, Sicherheitsabstand); aktiver Eintrag mit Balken, kräftiger Schrift und `aria-current="page"`; Render-Test. · files: `src/components/shell/desktop-nav.tsx`, `src/components/shell/mobile-nav.tsx`, `src/components/shell/navigation.test.tsx` · → AC-1, AC-2, AC-3, AC-8, AC-9; EC-4
+- [x] T8 [P] Platzhalteransicht für leere Bereiche: Kopfbereich, kurzer ermutigender Text, Link „Zu Heute“; mit Test. · files: `src/components/shell/area-placeholder.tsx`, `src/components/shell/area-placeholder.test.tsx` · → AC-5
+- [x] T9 [P] Darstellungs-Provider (`next-themes` mit Klasse `dark`, Standard `system`, Schlüssel `pulse-theme`, Übergänge beim Umschalten aus; „Bewegung reduzieren“ mit Gerätespeicher und Attribut) und Skript, das das Attribut vor dem ersten Zeichnen setzt; mit Test. · files: `src/features/appearance/appearance-provider.tsx`, `src/features/appearance/appearance-script.tsx`, `src/features/appearance/appearance-provider.test.tsx` · → AC-13, AC-15; EC-1, EC-2
 
 ## Stufe 3 — Zusammensetzen
 
