@@ -38,7 +38,8 @@ Nach der Anmeldung öffnet sich **Heute**. PROJ-7 ergänzt die Rückmeldung nach
 ## Anmeldestatus
 
 - **Ohne Anmeldung:** Nur Einstieg und Konto-Zugang sind erreichbar; sie zeigen die PULSE-Marke, aber keine App-Navigation. Persönliche Bereiche und Daten bleiben geschützt.
-- **Angemeldet:** Die fünf Hauptbereiche sind erreichbar; Einstiegspunkt ist „Heute“.
+- **Angemeldet, Angaben unvollständig:** Heute, Bewegung, Essen und Wochenblick führen zum Einstieg (`/einstieg`, PROJ-3). Der Einstieg ist eine schlichte Seite ohne App-Navigation mit PULSE-Marke, „Konto verwalten“ und „Abmelden“. Das Profil bleibt erreichbar.
+- **Angemeldet, Angaben vollständig:** Die fünf Hauptbereiche sind erreichbar; Einstiegspunkt ist „Heute“.
 - **Weitere Rollen:** Für die erste Version sind keine zusätzlichen Nutzendenrollen festgelegt. Berechtigungen für die Pflege geprüfter Inhalte werden in den betreffenden Feature-Designs entschieden.
 
 ## Gemeinsame Bausteine
@@ -52,6 +53,7 @@ Festgelegt durch `/architecture PROJ-2`. Features verwenden diese Bausteine und 
 | Kopfbereich | `src/components/shell/page-header.tsx` | Jede geschützte Seite beginnt damit: Titel und optional genau eine Hauptaktion. |
 | Platzhalter für leere Bereiche | `src/components/shell/area-placeholder.tsx` | Für Bereiche, deren Feature noch fehlt. |
 | PULSE-Marke | `src/components/shell/brand-mark.tsx` | Seitenleiste, öffentliche Seiten, „Seite nicht gefunden“. |
+| Gate für Hauptbereiche | `src/app/(protected)/(bereiche)/layout.tsx` (PROJ-3) | Seiten von Heute, Bewegung, Essen und Wochenblick liegen in dieser Gruppe und öffnen sich erst mit vollständigen Angaben; das Profil liegt außerhalb. |
 | Lade- und Fehlerzustand | `src/app/(protected)/loading.tsx`, `error.tsx` | Gelten automatisch für alle geschützten Seiten; Features können eigene, feinere Zustände ergänzen. |
 
 ## Darstellung
