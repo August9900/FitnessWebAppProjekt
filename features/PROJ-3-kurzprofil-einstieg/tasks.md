@@ -20,7 +20,7 @@
 
 ## Stufe 3 — Datenzugriff
 
-- [ ] T7 Datenmodul (`server-only`): eigene Angaben lesen, eine Antwort speichern, alle fünf in einer Änderung speichern, `requireCompletedProfile` (Weiterleitung nach `/einstieg`); mit Test; Live-Prüfung gegen die lokale Datenbank für fremde Zeile, gesperrte Spalte und ungültige Werte. · files: `src/features/profile/profile.data.ts`, `src/features/profile/profile.data.test.ts` · → AC-1, AC-9, AC-13, AC-16; EC-1, EC-2, EC-6
+- [x] T7 Datenmodul (`server-only`): eigene Angaben lesen, eine Antwort speichern, alle fünf in einer Änderung speichern, `requireCompletedProfile` (Weiterleitung nach `/einstieg`); mit Test; Live-Prüfung gegen die lokale Datenbank für fremde Zeile, gesperrte Spalte und ungültige Werte. · files: `src/features/profile/profile.data.ts`, `src/features/profile/profile.data.test.ts` · → AC-1, AC-9, AC-13, AC-16; EC-1, EC-2, EC-6
 
 ## Stufe 4 — Server-Actions
 
