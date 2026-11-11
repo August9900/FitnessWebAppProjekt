@@ -1,3 +1,5 @@
+export {}
+
 vi.mock('server-only', () => ({}))
 
 const serverAuth = { getUser: vi.fn() }
