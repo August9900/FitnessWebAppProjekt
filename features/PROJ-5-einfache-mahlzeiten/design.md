@@ -138,3 +138,11 @@ Keine.
 ## Offene Fragen
 
 - [ ] Vor dem ersten Deploy: Migration, die das Lesen auf `review_status = reviewed` beschränkt, und fachliche Prüfung aller Inhalte (siehe `spec.md`).
+
+## Umsetzungsnotizen (`/build`, 2026-11-13)
+
+- **Beispielinhalte:** 17 Mahlzeiten, je drei vegane pro Aufwandsstufe, vier vegetarische und vier mit Fleisch oder Fisch; zwei ohne Hauptallergene. Allergenangaben für Gemüsebrühe (Sellerie), Sojasoße (Soja, Gluten), Hummus (Sesam) und Senf beruhen auf typischen Supermarktprodukten und gehören zur fachlichen Prüfung vor dem Deploy.
+- **Hilfsfunktion:** `private.array_lengths_between` prüft die Länge jedes Eintrags von Zutaten und Schritten, weil Prüfregeln keine Unterabfragen enthalten dürfen.
+- **Leerzustand ohne passende Mahlzeit:** Ohne passende Mahlzeit entfällt auch der Aufwandsfilter; es bleibt der Hinweis „Zu deiner Essensweise gibt es gerade keine Mahlzeit.“ mit „Zu Heute“.
+- **Kopfbereich „Essen“:** Orientierung „Einfache Mahlzeiten, die zu deiner Essensweise passen.“
+- **Status der Seite „gibt es nicht (mehr)“:** wie bei PROJ-4 HTTP 200 statt 404, weil der Ladezustand vorab gesendet wird.

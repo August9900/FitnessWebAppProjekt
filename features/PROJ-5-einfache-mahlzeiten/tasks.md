@@ -25,8 +25,8 @@
 
 ## Stufe 4 — Seiten
 
-- [ ] T9 [P] `/essen` ersetzt den Platzhalter aus PROJ-2: Mahlzeiten und Essensweise laden, auf dem Server auf passende filtern, an die Liste übergeben. · files: `src/app/(protected)/(bereiche)/essen/page.tsx` · → AC-1, AC-2; EC-1
-- [ ] T10 [P] `/essen/[id]`: Detailseite mit „passt“ aus der Essensweise; unbekannte oder nicht angebotene ID zeigt „Diese Mahlzeit gibt es nicht (mehr)“ mit Link „Zu Essen“. · files: `src/app/(protected)/(bereiche)/essen/[id]/page.tsx`, `src/app/(protected)/(bereiche)/essen/[id]/not-found.tsx` · → AC-5; EC-2, EC-3
+- [x] T9 [P] `/essen` ersetzt den Platzhalter aus PROJ-2: Mahlzeiten und Essensweise laden, auf dem Server auf passende filtern, an die Liste übergeben. · files: `src/app/(protected)/(bereiche)/essen/page.tsx` · → AC-1, AC-2; EC-1
+- [x] T10 [P] `/essen/[id]`: Detailseite mit „passt“ aus der Essensweise; unbekannte oder nicht angebotene ID zeigt „Diese Mahlzeit gibt es nicht (mehr)“ mit Link „Zu Essen“. · files: `src/app/(protected)/(bereiche)/essen/[id]/page.tsx`, `src/app/(protected)/(bereiche)/essen/[id]/not-found.tsx` · → AC-5; EC-2, EC-3
 
 ## Parallelisierung
 
