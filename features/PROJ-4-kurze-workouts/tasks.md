@@ -26,9 +26,9 @@
 
 ## Stufe 4 — Seiten
 
-- [ ] T10 [P] `/bewegung` ersetzt den Platzhalter aus PROJ-2: Workouts und Profilangaben laden, „passt / Grund“ auf dem Server berechnen, an die Liste übergeben. · files: `src/app/(protected)/(bereiche)/bewegung/page.tsx` · → AC-1, AC-2; EC-1
-- [ ] T11 [P] `/bewegung/[id]`: Detailseite; unbekannte oder nicht angebotene ID zeigt „Dieses Workout gibt es nicht (mehr)“ mit Link „Zu Bewegung“. · files: `src/app/(protected)/(bereiche)/bewegung/[id]/page.tsx`, `src/app/(protected)/(bereiche)/bewegung/[id]/not-found.tsx` · → AC-6; EC-2
-- [ ] T12 [P] `/bewegung/[id]/los`: geführte Ansicht; liest die Auswahl „leichter“ aus der Adresse und ignoriert ungültige Positionen. · files: `src/app/(protected)/(bereiche)/bewegung/[id]/los/page.tsx` · → AC-8
+- [x] T10 [P] `/bewegung` ersetzt den Platzhalter aus PROJ-2: Workouts und Profilangaben laden, „passt / Grund“ auf dem Server berechnen, an die Liste übergeben. · files: `src/app/(protected)/(bereiche)/bewegung/page.tsx` · → AC-1, AC-2; EC-1
+- [x] T11 [P] `/bewegung/[id]`: Detailseite; unbekannte oder nicht angebotene ID zeigt „Dieses Workout gibt es nicht (mehr)“ mit Link „Zu Bewegung“. · files: `src/app/(protected)/(bereiche)/bewegung/[id]/page.tsx`, `src/app/(protected)/(bereiche)/bewegung/[id]/not-found.tsx` · → AC-6; EC-2
+- [x] T12 [P] `/bewegung/[id]/los`: geführte Ansicht; liest die Auswahl „leichter“ aus der Adresse und ignoriert ungültige Positionen. · files: `src/app/(protected)/(bereiche)/bewegung/[id]/los/page.tsx` · → AC-8
 
 ## Parallelisierung
 

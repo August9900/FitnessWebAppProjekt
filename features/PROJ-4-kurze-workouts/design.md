@@ -168,3 +168,11 @@ Keine.
 ## Offene Fragen
 
 - [ ] Vor dem ersten Deploy: Migration, die das Lesen auf `review_status = reviewed` beschränkt, und fachliche Prüfung aller Inhalte (siehe `spec.md`).
+
+## Umsetzungsnotizen (`/build`, 2026-11-13)
+
+- **Status der Seite „gibt es nicht (mehr)“:** Die Ansicht erscheint wie vorgesehen, die Antwort hat aber HTTP-Status 200 statt 404. Der Ladezustand aus `(bereiche)/loading.tsx` wird schon gesendet, bevor die Seite `notFound()` aufruft; danach lässt sich der Status nicht mehr ändern. Für Nutzende ändert das nichts. Erst wenn Suchmaschinen oder Monitoring den Status brauchen, wäre eine Änderung am Ladezustand nötig, und das ist eine Frage an PROJ-2.
+- **Fokus in der geführten Ansicht:** Beim Übungswechsel bleibt der Fokus auf „Weiter“, und der Ansagebereich meldet „Übung X von Y: Name“. Nur wenn der Fokus verloren geht, etwa weil „Zurück“ auf Übung 1 gesperrt wird, springt er auf den Übungsbereich. Am Timer-Ende wandert der Fokus von der verschwundenen Timer-Schaltfläche auf „Weiter“, im Abschluss auf „Geschafft. Gut gemacht.“
+- **Ansagen:** Zusätzlich zu „Zeit abgelaufen“ meldet der Timer „Timer gestartet“, damit wie in der Spec verlangt Start und Ende angesagt werden.
+- **Workout ohne Übungen:** Die Datenschicht sortiert es bereits aus (`toWorkout`); die Ansichten brauchen dafür keinen eigenen Zustand.
+- **Kopfbereich „Bewegung“:** Kurze Orientierung „Kurze Workouts, die zu deinen Orten und deiner Ausstattung passen.“; Detail und geführte Ansicht tragen den Workout-Titel als Seitenüberschrift.
