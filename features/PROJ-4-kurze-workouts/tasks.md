@@ -20,9 +20,9 @@
 
 ## Stufe 3 — Ansichten
 
-- [ ] T7 [P] Liste: Karten mit Titel, Dauer, Intensität, Orten, Ausstattung und ggf. Hinweis; Dauerfilter im Browser; „Alle Workouts anzeigen“ mit Grund; Leerzustand mit Ausweg; mit Test. · files: `src/features/workouts/components/workout-list.tsx`, `src/features/workouts/components/workout-list.test.tsx` · → AC-1, AC-3, AC-4, AC-5, AC-12
-- [ ] T8 [P] Detailansicht: Beschreibung, Eckdaten, Sicherheitshinweis, Übungsfolge mit „Leichter“, Hauptaktion „Los geht's“, die die Auswahl an die geführte Ansicht weitergibt; mit Test. · files: `src/features/workouts/components/workout-detail.tsx`, `src/features/workouts/components/workout-detail.test.tsx` · → AC-6, AC-7, AC-12
-- [ ] T9 [P] Geführte Durchführung: eine Übung pro Bildschirm mit „Übung X von Y“, Timer mit Start/Pause/Weiter zählen und ruhigem Ende ohne automatischen Wechsel, Wiederholungen, „Zurück“/„Weiter“/„Fertig“/„Beenden“, Ansagen für Screenreader, 400-ms-Sperre gegen Doppeltipps, nur Zahl ohne Animation, Abschluss „Geschafft. Gut gemacht.“; mit Test. · files: `src/features/workouts/components/guided-workout.tsx`, `src/features/workouts/components/guided-workout.test.tsx` · → AC-8, AC-9, AC-10, AC-11; EC-3, EC-4, EC-5, EC-6
+- [x] T7 [P] Liste: Karten mit Titel, Dauer, Intensität, Orten, Ausstattung und ggf. Hinweis; Dauerfilter im Browser; „Alle Workouts anzeigen“ mit Grund; Leerzustand mit Ausweg; mit Test. · files: `src/features/workouts/components/workout-list.tsx`, `src/features/workouts/components/workout-list.test.tsx` · → AC-1, AC-3, AC-4, AC-5, AC-12
+- [x] T8 [P] Detailansicht: Beschreibung, Eckdaten, Sicherheitshinweis, Übungsfolge mit „Leichter“, Hauptaktion „Los geht's“, die die Auswahl an die geführte Ansicht weitergibt; mit Test. · files: `src/features/workouts/components/workout-detail.tsx`, `src/features/workouts/components/workout-detail.test.tsx` · → AC-6, AC-7, AC-12
+- [x] T9 [P] Geführte Durchführung: eine Übung pro Bildschirm mit „Übung X von Y“, Timer mit Start/Pause/Weiter zählen und ruhigem Ende ohne automatischen Wechsel, Wiederholungen, „Zurück“/„Weiter“/„Fertig“/„Beenden“, Ansagen für Screenreader, 400-ms-Sperre gegen Doppeltipps, nur Zahl ohne Animation, Abschluss „Geschafft. Gut gemacht.“; mit Test. · files: `src/features/workouts/components/guided-workout.tsx`, `src/features/workouts/components/guided-workout.test.tsx` · → AC-8, AC-9, AC-10, AC-11; EC-3, EC-4, EC-5, EC-6
 
 ## Stufe 4 — Seiten
 
