@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { createTimer, formatSeconds, isExpired, pause, remainingSeconds, start, type TimerState } from '../timer.rules'
 import { amountLabel, shownExercise, type Workout } from '../workouts.rules'
 import { ExerciseView } from './exercise-view'
-import { SampleContentBadge } from './sample-content-badge'
+import { SampleContentBadge } from '@/components/content/sample-content-badge'
 
 /** After every change of exercise, "Weiter" ignores taps this long, so a double tap skips nothing (EC-5). */
 export const ADVANCE_LOCK_MS = 400

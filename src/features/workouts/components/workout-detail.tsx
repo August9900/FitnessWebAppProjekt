@@ -16,7 +16,7 @@ import {
   type Workout,
 } from '../workouts.rules'
 import { ExerciseView } from './exercise-view'
-import { SampleContentBadge } from './sample-content-badge'
+import { SampleContentBadge } from '@/components/content/sample-content-badge'
 
 /**
  * The workout detail: description, key facts, the safety note and the exercise sequence, each

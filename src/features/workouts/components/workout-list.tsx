@@ -19,7 +19,7 @@ import {
   type Fit,
   type Workout,
 } from '../workouts.rules'
-import { SampleContentBadge } from './sample-content-badge'
+import { SampleContentBadge } from '@/components/content/sample-content-badge'
 
 /** What a card needs; "passt" and the reason are decided on the server (AC-2). */
 export type WorkoutListItem = Pick<Workout, 'id' | 'title' | 'durationMinutes' | 'intensity' | 'places' | 'reviewStatus'> & {

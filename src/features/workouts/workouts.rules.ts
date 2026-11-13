@@ -76,7 +76,6 @@ export function durationLabel(minutes: number): string {
 }
 
 export const SAFETY_NOTE = 'Hör auf deinen Körper. Bei Schmerzen hörst du auf.'
-export const SAMPLE_CONTENT_LABEL = 'Beispielinhalt – noch nicht fachlich geprüft'
 
 /** "30 Sekunden" or "10 Wiederholungen" (AC-6, AC-8). */
 export function amountLabel(step: Pick<WorkoutStep, 'mode' | 'amount'>): string {

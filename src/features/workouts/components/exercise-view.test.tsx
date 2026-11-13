@@ -2,7 +2,6 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { useState } from 'react'
 import type { WorkoutStep } from '../workouts.rules'
 import { ExerciseView } from './exercise-view'
-import { SampleContentBadge } from './sample-content-badge'
 
 const step: WorkoutStep = {
   position: 1,
@@ -65,17 +64,5 @@ describe('ExerciseView (AC-6, AC-7)', () => {
     expect(screen.getByText('45 Sekunden')).toBeInTheDocument()
     rerender(<ExerciseView step={timed} easier={false} onEasierChange={() => {}} showAmount={false} />)
     expect(screen.queryByText('45 Sekunden')).not.toBeInTheDocument()
-  })
-})
-
-describe('SampleContentBadge (AC-12)', () => {
-  it('markiert ungeprüfte Inhalte sichtbar', () => {
-    render(<SampleContentBadge reviewStatus="unreviewed" />)
-    expect(screen.getByText('Beispielinhalt – noch nicht fachlich geprüft')).toBeInTheDocument()
-  })
-
-  it('zeigt bei geprüften Inhalten nichts', () => {
-    const { container } = render(<SampleContentBadge reviewStatus="reviewed" />)
-    expect(container).toBeEmptyDOMElement()
   })
 })
