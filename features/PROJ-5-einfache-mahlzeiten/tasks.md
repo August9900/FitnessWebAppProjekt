@@ -20,8 +20,8 @@
 
 ## Stufe 3 — Ansichten
 
-- [ ] T7 [P] Liste: Karten mit Titel, Aufwandsstufe, „X Min“, Essensweise und ggf. Hinweis „Beispielinhalt“, Link zum Detail; Aufwandsfilter („Alle“, „Ohne Kochen“, „Schnell gekocht“, „Bis 20 Min“) im Browser; Leerzustand für den Filter mit „Alle Aufwandsstufen anzeigen“, Leerzustand ohne passende Mahlzeit mit „Zu Heute“; Anzahl für Screenreader; mit Test. · files: `src/features/meals/components/meal-list.tsx`, `src/features/meals/components/meal-list.test.tsx` · → AC-1, AC-3, AC-4, AC-8
-- [ ] T8 [P] Detailansicht (Server-Komponente): Kopfbereich mit Titel, Hinweis „Beispielinhalt“, ggf. „Passt nicht zu deiner Essensweise“, Eckdaten, Zutatenliste, nummerierte Schritte, „Noch einfacher: …“, Allergene mit Verpackungssatz; mit Test. · files: `src/features/meals/components/meal-detail.tsx`, `src/features/meals/components/meal-detail.test.tsx` · → AC-5, AC-6, AC-7, AC-8; EC-3, EC-4
+- [x] T7 [P] Liste: Karten mit Titel, Aufwandsstufe, „X Min“, Essensweise und ggf. Hinweis „Beispielinhalt“, Link zum Detail; Aufwandsfilter („Alle“, „Ohne Kochen“, „Schnell gekocht“, „Bis 20 Min“) im Browser; Leerzustand für den Filter mit „Alle Aufwandsstufen anzeigen“, Leerzustand ohne passende Mahlzeit mit „Zu Heute“; Anzahl für Screenreader; mit Test. · files: `src/features/meals/components/meal-list.tsx`, `src/features/meals/components/meal-list.test.tsx` · → AC-1, AC-3, AC-4, AC-8
+- [x] T8 [P] Detailansicht (Server-Komponente): Kopfbereich mit Titel, Hinweis „Beispielinhalt“, ggf. „Passt nicht zu deiner Essensweise“, Eckdaten, Zutatenliste, nummerierte Schritte, „Noch einfacher: …“, Allergene mit Verpackungssatz; mit Test. · files: `src/features/meals/components/meal-detail.tsx`, `src/features/meals/components/meal-detail.test.tsx` · → AC-5, AC-6, AC-7, AC-8; EC-3, EC-4
 
 ## Stufe 4 — Seiten
 
