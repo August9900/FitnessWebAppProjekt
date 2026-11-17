@@ -28,6 +28,7 @@ const suggested = (kind: 'move' | 'eat', items: SuggestionItem[], fitsLine = 'Pa
   checkInId: CHECK_IN_ID,
   kind,
   fitsLine,
+  note: null as string | null,
   items,
 })
 
@@ -177,6 +178,21 @@ describe('Vorschlag (AC-9, AC-10, EC-1, EC-2)', () => {
     expect(alternatives[0]).toHaveTextContent('Titel w_two')
     expect(alternatives[0]).toHaveTextContent('5 Min')
     expect(within(alternatives[0]).getByRole('button', { name: /Stattdessen das/ })).toBeInTheDocument()
+  })
+
+  it('zeigt die Erklärungszeile unter „Passt zu“, wenn eine Rückmeldung den Vorschlag geändert hat (PROJ-7 AC-15)', async () => {
+    requestSuggestion.mockResolvedValue({
+      ...suggested('move', [item('w_one'), item('w_two')]),
+      note: 'Etwas sanfter, weil es letztes Mal zu viel war.',
+    })
+    await toSuggestion()
+    const card = screen.getByRole('heading', { level: 3, name: 'Titel w_one' }).closest('div')!
+    expect(within(card).getByText('Etwas sanfter, weil es letztes Mal zu viel war.')).toBeInTheDocument()
+  })
+
+  it('zeigt keine Erklärungszeile ohne Änderung durch eine Rückmeldung', async () => {
+    await toSuggestion()
+    expect(screen.queryByText(/weil es letztes Mal/)).toBeNull()
   })
 
   it('verlinkt die Titel nur auf das Detail, ohne etwas zu beginnen (AC-10)', async () => {

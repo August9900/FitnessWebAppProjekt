@@ -61,7 +61,7 @@
 
 ## Stufe 4 — Ansichten
 
-- [ ] T9 [P] Fragen-Block (Client):
+- [x] T9 [P] Fragen-Block (Client):
   - „Wie war der Aufwand?“ und „Wieder vorschlagen?“ als benannte Gruppen
   - Vorauswahl aus der gespeicherten Rückmeldung; Markierung über `aria-pressed` und Häkchen; mindestens 48 px hohe, zurückhaltende Knöpfe
   - je Frage nacheinander senden, nur den letzten Tipp vormerken
@@ -70,7 +70,7 @@
   - mit Test
 
   · files: `src/features/feedback/components/feedback-questions.tsx`, `src/features/feedback/components/feedback-questions.test.tsx` · → AC-1, AC-3, AC-4, AC-6; EC-1, EC-3
-- [ ] T10 [P] Änderung PROJ-6: Erklärungszeile in gedämpfter Schrift unter „Passt zu: …“ im Hauptvorschlag, nur wenn vorhanden; mit Test. · files: `src/features/today/components/today-flow.tsx`, `src/features/today/components/today-flow.test.tsx` · → AC-15
+- [x] T10 [P] Änderung PROJ-6: Erklärungszeile in gedämpfter Schrift unter „Passt zu: …“ im Hauptvorschlag, nur wenn vorhanden; mit Test. · files: `src/features/today/components/today-flow.tsx`, `src/features/today/components/today-flow.test.tsx` · → AC-15
 
 ## Stufe 5 — Einbau und Live-Prüfung
 

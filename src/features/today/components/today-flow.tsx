@@ -39,7 +39,7 @@ import {
 
 type Question = 'minutes' | 'energy' | 'place' | 'effort'
 type Draft = { minutes?: Minutes; energy?: Energy; place?: Place; effort?: Effort }
-type Suggestion = { checkInId: string; kind: Kind; fitsLine: string; items: SuggestionItem[] }
+type Suggestion = { checkInId: string; kind: Kind; fitsLine: string; note: string | null; items: SuggestionItem[] }
 
 type Step =
   | { name: 'choice' }
@@ -364,6 +364,8 @@ export function TodayFlow({
           </h3>
           <p>{main.detail}</p>
           <p className="text-muted-foreground">{suggestion.fitsLine}</p>
+          {/* PROJ-7 AC-15: only when the latest effort feedback changed the main suggestion. */}
+          {suggestion.note && <p className="text-sm text-muted-foreground">{suggestion.note}</p>}
           <SampleContentBadge reviewStatus={main.reviewStatus} />
           <Button type="button" size="lg" onClick={() => start(suggestion, main)} disabled={busy} className="w-full sm:w-auto">
             {START_LABELS[suggestion.kind]}
