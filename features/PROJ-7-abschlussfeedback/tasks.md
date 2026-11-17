@@ -8,7 +8,7 @@
 
 ## Stufe 1 — Grundlagen
 
-- [ ] T1 [P] Migration `action_feedback`:
+- [x] T1 [P] Migration `action_feedback`:
   - Tabelle mit Aktion als Primärschlüssel, Person, Aufwand und „Wieder vorschlagen“ (jeweils mit Zeitpunkt), `created_at`, `updated_at`
   - Prüfregeln: erlaubte Werte, Zeitpunkt leer genau bei leerem Wert, mindestens eine Antwort
   - Zeitstempel-Trigger je Frage (nur bei geändertem Wert) und `updated_at`-Pflege
@@ -19,14 +19,14 @@
   - lokal angewendet und mit zwei Testkonten sowie anonym geprüft
 
   · files: `supabase/migrations/20261117120000_action_feedback.sql` · → AC-7, AC-8, AC-16, AC-18; EC-1, EC-2, EC-4, EC-6, EC-8
-- [ ] T2 [P] Reine Regeln:
+- [x] T2 [P] Reine Regeln:
   - Typen und Beschriftungen für Aufwand und „Wieder vorschlagen“, dazu die Fragetitel
   - Signale: „Lieber nicht“-Inhalte je Art (je Inhalt zählt die zuletzt gespeicherte Antwort); Intensitätsverschiebung −1/0/+1 aus der jüngsten Workout-Aufwand-Rückmeldung, höchstens 14 Tage alt; Zeit als Eingabe
   - Texte der beiden Erklärungszeilen
   - mit Tabellen-Tests
 
   · files: `src/features/feedback/feedback.rules.ts`, `src/features/feedback/feedback.rules.test.ts` · → AC-1, AC-9, AC-10, AC-11, AC-12, AC-13, AC-14; EC-6, EC-8
-- [ ] T3 [P] Eingabeprüfung von `saveFeedback`: Aktions-ID, Frage `effort` bzw. `suggestAgain` und ein zur Frage passender Wert; unbekannte Schlüssel werden abgelehnt; mit Test. · files: `src/features/feedback/feedback.schema.ts`, `src/features/feedback/feedback.schema.test.ts` · → AC-3, AC-16
+- [x] T3 [P] Eingabeprüfung von `saveFeedback`: Aktions-ID, Frage `effort` bzw. `suggestAgain` und ein zur Frage passender Wert; unbekannte Schlüssel werden abgelehnt; mit Test. · files: `src/features/feedback/feedback.schema.ts`, `src/features/feedback/feedback.schema.test.ts` · → AC-3, AC-16
 
 ## Stufe 2 — Datenzugriff und Auswahlregel
 
