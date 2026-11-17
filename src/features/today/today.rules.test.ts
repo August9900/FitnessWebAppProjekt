@@ -11,6 +11,7 @@ import {
   isAnswersStillValid,
   isOpenOnToday,
   isRecent,
+  openSince,
   placesToAsk,
   recentSince,
   selectMeals,
@@ -281,6 +282,10 @@ describe('Zeitfenster (AC-13, EC-8, AC-7)', () => {
     expect(isOpenOnToday({ status: 'started', startedAt: hoursAgo(11.99) }, now)).toBe(true)
     expect(isOpenOnToday({ status: 'started', startedAt: hoursAgo(12) }, now)).toBe(false)
     expect(isOpenOnToday({ status: 'started', startedAt: hoursAgo(30) }, now)).toBe(false)
+  })
+
+  it('beginnt das 12-Stunden-Fenster genau 12 Stunden vor jetzt', () => {
+    expect(openSince(now)).toEqual(hoursAgo(12))
   })
 
   it('zeigt abgeschlossene Aktionen nicht als offen', () => {

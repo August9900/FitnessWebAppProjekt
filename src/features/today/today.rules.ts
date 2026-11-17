@@ -167,7 +167,12 @@ export function isAnswersStillValid(answers: CheckInAnswers, profile: Pick<Profi
 
 /** A started action shows on "Heute" for 12 hours, then it is no longer shown or nagged (AC-13, EC-8). */
 export function isOpenOnToday(action: { status: ActionStatus; startedAt: Date }, now: Date): boolean {
-  return action.status === 'started' && action.startedAt.getTime() > now.getTime() - OPEN_WINDOW_HOURS * HOUR_MS
+  return action.status === 'started' && action.startedAt.getTime() > openSince(now).getTime()
+}
+
+/** Start of the 12-hour window in which a started action shows on "Heute" (AC-13, EC-8). */
+export function openSince(now: Date): Date {
+  return new Date(now.getTime() - OPEN_WINDOW_HOURS * HOUR_MS)
 }
 
 /** Start of the 72-hour window used for variety (AC-7, AC-8). */

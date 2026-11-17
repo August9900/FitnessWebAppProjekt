@@ -14,7 +14,7 @@
 
 ## Stufe 2 — Datenzugriff
 
-- [ ] T4 Datenzugriff (`server-only`): Check-in mit Vorschlag anlegen; letzte Antworten je Art; in den letzten 72 Stunden begonnene Inhalte; Aktion anlegen bzw. bestehende des Check-ins liefern; bedingt markieren (nur wenn `started`) mit tatsächlichem Zustand als Ergebnis; zurücknehmen nur ohne neueren Check-in; offene Aktionen und letzte Markierung mit Titeln; alle eigenen Check-ins und Aktionen für den Export; mit Test. · files: `src/features/today/today.data.ts`, `src/features/today/today.data.test.ts` · → AC-5, AC-11, AC-12, AC-13, AC-14, AC-15, AC-18; EC-4, EC-5, EC-8
+- [x] T4 Datenzugriff (`server-only`): Check-in mit Vorschlag anlegen; letzte Antworten je Art; in den letzten 72 Stunden begonnene Inhalte; Aktion anlegen bzw. bestehende des Check-ins liefern; bedingt markieren (nur wenn `started`) mit tatsächlichem Zustand als Ergebnis; zurücknehmen nur ohne neueren Check-in; offene Aktionen und letzte Markierung mit Titeln; alle eigenen Check-ins und Aktionen für den Export; mit Test. · files: `src/features/today/today.data.ts`, `src/features/today/today.data.test.ts` · → AC-5, AC-11, AC-12, AC-13, AC-14, AC-15, AC-18; EC-4, EC-5, EC-8
 
 ## Stufe 3 — Server Actions und Export
 
