@@ -166,3 +166,12 @@ Keine.
 ## Offene Fragen
 
 - [ ] Vor dem ersten Deploy: Aufbewahrungsfrist für Check-ins und Aktionen nach `/dsgvo PROJ-6` (bisher bis zur Kontolöschung).
+
+## Umsetzungshinweise (/build, 2026-11-17)
+
+- **Zeitfenster mit der Serveruhr:** Die 12- und 72-Stunden-Fenster und `concluded_at` werden mit der Uhr des Next.js-Servers berechnet, nicht mit `now()` der Datenbank. Die Geräteuhr spielt wie geplant keine Rolle; zwischen Server- und Datenbankuhr sind nur Abweichungen im Millisekundenbereich zu erwarten. Gilt auch für die Rückgängig-Prüfung (Markierung gegen jüngsten Check-in).
+- **Aktualisierung von „Heute“:** Jede Server Action ruft nach Erfolg `revalidatePath('/heute')` auf. Offene Aktionen und letzte Markierung zeigen deshalb immer den Serverzustand, auch wenn ein anderes Gerät zuerst markiert hat (EC-5). Die Antworten des Check-ins bleiben dabei im Browser erhalten.
+- **Inhalt nicht mehr angeboten:** Offene Aktionen, deren Workout oder Mahlzeit aus dem Angebot genommen wurde, erscheinen mit „Dein Workout“ bzw. „Deine Mahlzeit“ statt des Titels und bleiben markierbar.
+- **Export:** Der neue Abschnitt heißt `dailyDecisions` und enthält `checkIns` und `actions` mit IDs. Über `checkInId` lässt sich die Aktion ihrem Check-in zuordnen.
+- **Ergänzungen in `today.rules.ts`:** `openSince`, `detailHref`, `continueHref` und `TODAY_MESSAGES`. Sie werden von Daten, Actions und beiden Ansichten gemeinsam genutzt.
+- **Live-Prüfung:** Gegen die lokale Datenbank wurden Zugriff, Doppeltipps, zwei Markierungen, Spaltenrechte, Löschsperre, Export, die Sitzungsregel und die Kontolöschung mit zwei Testkonten geprüft (16/16). Zusätzlich wurde `/heute` mit echter Sitzung abgerufen (7/7). Die Browser-Bedienung selbst ist nur durch Komponententests abgedeckt.

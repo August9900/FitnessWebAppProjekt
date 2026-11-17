@@ -28,7 +28,7 @@
 
 ## Stufe 5 — Seite
 
-- [ ] T9 `/heute` ersetzt den Platzhalter aus PROJ-2: Profil, letzte Antworten je Art, offene Aktionen und letzte Markierung laden und an beide Komponenten übergeben; anschließend Live-Prüfung mit zwei Testkonten (Zugriff, Doppeltipps, zwei Markierungen, Export, Kontolöschung). · files: `src/app/(protected)/(bereiche)/heute/page.tsx` · → AC-1, AC-5, AC-13, AC-15, AC-16; EC-7, EC-8
+- [x] T9 `/heute` ersetzt den Platzhalter aus PROJ-2: Profil, letzte Antworten je Art, offene Aktionen und letzte Markierung laden und an beide Komponenten übergeben; anschließend Live-Prüfung mit zwei Testkonten (Zugriff, Doppeltipps, zwei Markierungen, Export, Kontolöschung). · files: `src/app/(protected)/(bereiche)/heute/page.tsx` · → AC-1, AC-5, AC-13, AC-15, AC-16; EC-7, EC-8
 
 ## Parallelisierung
 
