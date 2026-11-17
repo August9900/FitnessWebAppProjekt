@@ -7,6 +7,8 @@ import {
   KIND_LABELS,
   answersSummary,
   canUndo,
+  continueHref,
+  detailHref,
   fitsLine,
   isAnswersStillValid,
   isOpenOnToday,
@@ -316,5 +318,17 @@ describe('canUndo (AC-15)', () => {
   it('verbietet Rückgängig bei einer noch begonnenen Aktion', () => {
     expect(canUndo({ status: 'started', concludedAt: null }, null)).toBe(false)
     expect(canUndo({ status: 'done', concludedAt: null }, null)).toBe(false)
+  })
+})
+
+describe('Adressen (AC-10, AC-12, AC-13)', () => {
+  it('führt der Titel zum Detail aus PROJ-4 bzw. PROJ-5', () => {
+    expect(detailHref('move', 'ruecken_10')).toBe('/bewegung/ruecken_10')
+    expect(detailHref('eat', 'hummus_brot')).toBe('/essen/hummus_brot')
+  })
+
+  it('führt der Start zur geführten Durchführung ohne „leichter“ bzw. zum Mahlzeit-Detail', () => {
+    expect(continueHref('move', 'ruecken_10')).toBe('/bewegung/ruecken_10/los')
+    expect(continueHref('eat', 'hummus_brot')).toBe('/essen/hummus_brot')
   })
 })

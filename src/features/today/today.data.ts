@@ -3,6 +3,7 @@
 // filtered in addition, never instead. Time windows use the server clock, never the device's.
 import 'server-only'
 import { z } from 'zod'
+import type { ExportDailyDecisions } from '@/features/account/account.rules'
 import { createClient } from '@/lib/supabase/server'
 import { ACTION_STATUSES, KINDS, canUndo, openSince, recentSince, type ActionStatus, type CheckInAnswers, type EatAnswers, type Kind, type MoveAnswers } from './today.rules'
 import { eatCheckInSchema, moveCheckInSchema } from './today.schema'
@@ -352,34 +353,11 @@ export async function getUndoableConclusion(userId: string): Promise<ActionWithT
   return action && canUndo(action, latestCheckInAt) ? action : null
 }
 
-export type ExportCheckIn = {
-  id: string
-  kind: string
-  minutes: number | null
-  energy: string | null
-  place: string | null
-  effort: string | null
-  suggested_ids: string[]
-  created_at: string
-}
-
-export type ExportAction = {
-  id: string
-  check_in_id: string
-  kind: string
-  workout_id: string | null
-  meal_id: string | null
-  status: string
-  started_at: string
-  concluded_at: string | null
-  updated_at: string
-}
-
 /**
  * Everything stored about the person's check-ins and actions, oldest first, for the data export
  * (AC-18). Rows are passed on as stored. Throws instead of returning a partial export.
  */
-export async function getOwnTodayExport(userId: string): Promise<{ checkIns: ExportCheckIn[]; actions: ExportAction[] }> {
+export async function getOwnTodayExport(userId: string): Promise<ExportDailyDecisions> {
   const supabase = await createClient()
   const [checkIns, actions] = await Promise.all([
     supabase
@@ -395,7 +373,7 @@ export async function getOwnTodayExport(userId: string): Promise<{ checkIns: Exp
   ])
   if (checkIns.error || actions.error) throw failed('Daily decisions could not be read', checkIns.error ?? actions.error)
   return {
-    checkIns: (checkIns.data ?? []) as ExportCheckIn[],
-    actions: (actions.data ?? []) as ExportAction[],
+    checkIns: (checkIns.data ?? []) as ExportDailyDecisions['checkIns'],
+    actions: (actions.data ?? []) as ExportDailyDecisions['actions'],
   }
 }

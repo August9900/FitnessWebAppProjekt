@@ -120,10 +120,38 @@ export type ExportProfile = {
   diet?: string | null
 }
 
+/** A PROJ-6 check-in as stored: answers of the chosen kind and the ranked suggestion. */
+export type ExportCheckIn = {
+  id: string
+  kind: string
+  minutes: number | null
+  energy: string | null
+  place: string | null
+  effort: string | null
+  suggested_ids: string[]
+  created_at: string
+}
+
+/** A PROJ-6 action as stored: the started content, its state and times. */
+export type ExportAction = {
+  id: string
+  check_in_id: string
+  kind: string
+  workout_id: string | null
+  meal_id: string | null
+  status: string
+  started_at: string
+  concluded_at: string | null
+  updated_at: string
+}
+
+export type ExportDailyDecisions = { checkIns: ExportCheckIn[]; actions: ExportAction[] }
+
 /** Machine-readable copy of the account's stored data (AC-15). Later features add their sections. */
 export function buildAccountExport(input: {
   account: ExportAccount
   profile: ExportProfile | null
+  dailyDecisions: ExportDailyDecisions
   exportedAt: Date
 }) {
   return {
@@ -148,6 +176,30 @@ export function buildAccountExport(input: {
           updatedAt: input.profile.updated_at,
         }
       : null,
+    // PROJ-6 Tagesentscheidung: check-ins with answers and suggestion, actions with state (AC-18).
+    dailyDecisions: {
+      checkIns: input.dailyDecisions.checkIns.map((checkIn) => ({
+        id: checkIn.id,
+        kind: checkIn.kind,
+        minutes: checkIn.minutes,
+        energy: checkIn.energy,
+        place: checkIn.place,
+        effort: checkIn.effort,
+        suggestedIds: checkIn.suggested_ids,
+        createdAt: checkIn.created_at,
+      })),
+      actions: input.dailyDecisions.actions.map((action) => ({
+        id: action.id,
+        checkInId: action.check_in_id,
+        kind: action.kind,
+        workoutId: action.workout_id,
+        mealId: action.meal_id,
+        status: action.status,
+        startedAt: action.started_at,
+        concludedAt: action.concluded_at,
+        updatedAt: action.updated_at,
+      })),
+    },
   }
 }
 

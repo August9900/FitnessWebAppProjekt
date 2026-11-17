@@ -12,6 +12,7 @@ import {
   PLACE_LABELS,
   durationLabel,
   fitOf,
+  guidedHref,
   workoutEquipment,
   type Intensity,
   type Workout,
@@ -188,4 +189,14 @@ export function isRecent(startedAt: Date, now: Date): boolean {
 export function canUndo(action: { status: ActionStatus; concludedAt: Date | null }, latestCheckInAt: Date | null): boolean {
   if (action.status === 'started' || !action.concludedAt) return false
   return latestCheckInAt === null || latestCheckInAt.getTime() <= action.concludedAt.getTime()
+}
+
+/** The detail view of a suggested item; opening it starts nothing (AC-10). */
+export function detailHref(kind: Kind, itemId: string): string {
+  return `${kind === 'move' ? '/bewegung' : '/essen'}/${encodeURIComponent(itemId)}`
+}
+
+/** Where a started action leads: the guided run without "leichter", or the meal detail (AC-12, AC-13). */
+export function continueHref(kind: Kind, itemId: string): string {
+  return kind === 'move' ? guidedHref(itemId, []) : detailHref('eat', itemId)
 }

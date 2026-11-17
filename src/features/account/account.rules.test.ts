@@ -90,6 +90,7 @@ describe('buildAccountExport (AC-15)', () => {
         home_equipment: ['mat'],
         diet: 'vegan',
       },
+      dailyDecisions: { checkIns: [], actions: [] },
       exportedAt,
     })
     expect(result).toEqual({
@@ -107,6 +108,7 @@ describe('buildAccountExport (AC-15)', () => {
         createdAt: '2026-11-01T00:00:00Z',
         updatedAt: '2026-11-01T00:00:00Z',
       },
+      dailyDecisions: { checkIns: [], actions: [] },
     })
     expect(JSON.stringify(result)).not.toContain('hash')
   })
@@ -115,9 +117,92 @@ describe('buildAccountExport (AC-15)', () => {
     const result = buildAccountExport({
       account: { id: 'u1', email: 'a@b.de', created_at: 'c' },
       profile: { age_band_at_signup: '12_15', created_at: 'c', updated_at: 'u' },
+      dailyDecisions: { checkIns: [], actions: [] },
       exportedAt,
     })
     expect(result.profile).toMatchObject({ goal: null, experience: null, places: null, homeEquipment: null, diet: null })
+  })
+
+  it('contains check-ins with answers, suggestion and time, and actions with state and times (AC-18 of PROJ-6)', () => {
+    const result = buildAccountExport({
+      account: { id: 'u1', email: 'a@b.de', created_at: 'c' },
+      profile: null,
+      dailyDecisions: {
+        checkIns: [
+          {
+            id: 'ci1',
+            kind: 'move',
+            minutes: 10,
+            energy: 'low',
+            place: 'home',
+            effort: null,
+            suggested_ids: ['morgen_mobil_5', 'ruecken_10'],
+            created_at: '2026-11-17T08:00:00Z',
+          },
+          {
+            id: 'ci2',
+            kind: 'eat',
+            minutes: null,
+            energy: null,
+            place: null,
+            effort: 'quick',
+            suggested_ids: [],
+            created_at: '2026-11-17T12:00:00Z',
+          },
+        ],
+        actions: [
+          {
+            id: 'a1',
+            check_in_id: 'ci1',
+            kind: 'move',
+            workout_id: 'ruecken_10',
+            meal_id: null,
+            status: 'done',
+            started_at: '2026-11-17T08:01:00Z',
+            concluded_at: '2026-11-17T08:20:00Z',
+            updated_at: '2026-11-17T08:20:00Z',
+          },
+        ],
+      },
+      exportedAt,
+    })
+    expect(result.dailyDecisions).toEqual({
+      checkIns: [
+        {
+          id: 'ci1',
+          kind: 'move',
+          minutes: 10,
+          energy: 'low',
+          place: 'home',
+          effort: null,
+          suggestedIds: ['morgen_mobil_5', 'ruecken_10'],
+          createdAt: '2026-11-17T08:00:00Z',
+        },
+        {
+          id: 'ci2',
+          kind: 'eat',
+          minutes: null,
+          energy: null,
+          place: null,
+          effort: 'quick',
+          suggestedIds: [],
+          createdAt: '2026-11-17T12:00:00Z',
+        },
+      ],
+      actions: [
+        {
+          id: 'a1',
+          checkInId: 'ci1',
+          kind: 'move',
+          workoutId: 'ruecken_10',
+          mealId: null,
+          status: 'done',
+          startedAt: '2026-11-17T08:01:00Z',
+          concludedAt: '2026-11-17T08:20:00Z',
+          updatedAt: '2026-11-17T08:20:00Z',
+        },
+      ],
+    })
   })
 
   it('names the file after the export date', () => {

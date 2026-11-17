@@ -9,6 +9,9 @@ vi.mock('@/lib/supabase/server', () => ({
   createClient: async () => ({ auth: serverAuth, from }),
 }))
 
+const getOwnTodayExport = vi.fn()
+vi.mock('@/features/today/today.data', () => ({ getOwnTodayExport }))
+
 const deleteUser = vi.fn()
 vi.mock('@/lib/supabase/admin', () => ({
   createAdminClient: () => ({ auth: { admin: { deleteUser } } }),
@@ -57,6 +60,10 @@ describe('requireUser', () => {
 })
 
 describe('collectAccountExport (AC-15)', () => {
+  beforeEach(() => {
+    getOwnTodayExport.mockResolvedValue({ checkIns: [], actions: [] })
+  })
+
   it('combines account and own profile', async () => {
     serverAuth.getUser.mockResolvedValue({ data: { user }, error: null })
     profileQuery.maybeSingle.mockResolvedValue({
@@ -77,6 +84,30 @@ describe('collectAccountExport (AC-15)', () => {
       updatedAt: 'u',
     })
     expect(JSON.stringify(result)).not.toContain('provider')
+  })
+
+  it('adds the own check-ins and actions (AC-18 of PROJ-6)', async () => {
+    serverAuth.getUser.mockResolvedValue({ data: { user }, error: null })
+    profileQuery.maybeSingle.mockResolvedValue({ data: null, error: null })
+    getOwnTodayExport.mockResolvedValue({
+      checkIns: [
+        { id: 'ci1', kind: 'eat', minutes: null, energy: null, place: null, effort: 'quick', suggested_ids: ['m1'], created_at: 't1' },
+      ],
+      actions: [
+        { id: 'a1', check_in_id: 'ci1', kind: 'eat', workout_id: null, meal_id: 'm1', status: 'started', started_at: 't2', concluded_at: null, updated_at: 't2' },
+      ],
+    })
+    const result = await data.collectAccountExport()
+    expect(getOwnTodayExport).toHaveBeenCalledWith('u1')
+    expect(result?.dailyDecisions.checkIns).toEqual([expect.objectContaining({ id: 'ci1', effort: 'quick', suggestedIds: ['m1'] })])
+    expect(result?.dailyDecisions.actions).toEqual([expect.objectContaining({ id: 'a1', mealId: 'm1', status: 'started' })])
+  })
+
+  it('refuses to produce a partial export when the daily decisions cannot be read', async () => {
+    serverAuth.getUser.mockResolvedValue({ data: { user }, error: null })
+    profileQuery.maybeSingle.mockResolvedValue({ data: null, error: null })
+    getOwnTodayExport.mockRejectedValue(new Error('Daily decisions could not be read (08006).'))
+    await expect(data.collectAccountExport()).rejects.toThrow('Daily decisions could not be read')
   })
 
   it('returns null without a session', async () => {

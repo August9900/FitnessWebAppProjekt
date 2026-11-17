@@ -18,8 +18,8 @@
 
 ## Stufe 3 — Server Actions und Export
 
-- [ ] T5 [P] Server Actions `requestSuggestion`, `startAction`, `concludeAction`, `undoConclusion`: Sitzung und Eingabe prüfen, Profil, Inhalte und Verlauf laden, Regel anwenden, speichern; Ergebnisse „leer“, „gibt es nicht mehr“, „nicht mehr möglich“, „fehlgeschlagen“; Ziel-Adresse nach dem Start; Protokoll ohne Personendaten; mit Test. · files: `src/features/today/today.actions.ts`, `src/features/today/today.actions.test.ts` · → AC-7, AC-8, AC-9, AC-10, AC-11, AC-12, AC-14, AC-15; EC-1, EC-4, EC-5, EC-6, EC-9
-- [ ] T6 [P] Datenexport (PROJ-1) um den Abschnitt „Tagesentscheidung“ mit Check-ins und Aktionen erweitern; übrige Exportteile unverändert; mit Tests. · files: `src/features/account/account.data.ts`, `src/features/account/account.rules.ts`, `src/features/account/account.data.test.ts`, `src/features/account/account.rules.test.ts` · → AC-18
+- [x] T5 [P] Server Actions `requestSuggestion`, `startAction`, `concludeAction`, `undoConclusion`: Sitzung und Eingabe prüfen, Profil, Inhalte und Verlauf laden, Regel anwenden, speichern; Ergebnisse „leer“, „gibt es nicht mehr“, „nicht mehr möglich“, „fehlgeschlagen“; Ziel-Adresse nach dem Start; Protokoll ohne Personendaten; mit Test. · files: `src/features/today/today.actions.ts`, `src/features/today/today.actions.test.ts` · → AC-7, AC-8, AC-9, AC-10, AC-11, AC-12, AC-14, AC-15; EC-1, EC-4, EC-5, EC-6, EC-9
+- [x] T6 [P] Datenexport (PROJ-1) um den Abschnitt „Tagesentscheidung“ mit Check-ins und Aktionen erweitern; übrige Exportteile unverändert; mit Tests. · files: `src/features/account/account.data.ts`, `src/features/account/account.rules.ts`, `src/features/account/account.data.test.ts`, `src/features/account/account.rules.test.ts` · → AC-18
 
 ## Stufe 4 — Ansichten
 
