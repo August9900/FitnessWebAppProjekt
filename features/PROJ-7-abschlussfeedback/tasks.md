@@ -74,7 +74,7 @@
 
 ## Stufe 5 — Einbau und Live-Prüfung
 
-- [ ] T11 Änderung PROJ-6, Einbau:
+- [x] T11 Änderung PROJ-6, Einbau:
   - Die Bestätigungskarte zeigt den Fragen-Block nur bei „Geschafft“, je Aktion neu aufgebaut.
   - `/heute` lädt zur letzten Markierung „Geschafft“ die gespeicherte Rückmeldung und übergibt sie.
   - Anschließend Live-Prüfung mit zwei Testkonten: fremder und anonymer Zugriff, gleichzeitige Speicherungen derselben und verschiedener Fragen, „Rückgängig“ löscht, neuer Check-in sperrt, Inhalt nicht mehr im Angebot, Export, Kontolöschung.

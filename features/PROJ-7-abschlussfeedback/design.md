@@ -158,3 +158,16 @@ Keine.
 ## Offene Fragen
 
 - [ ] Vor dem ersten Deploy: Aufbewahrungsfrist der Rückmeldungen nach `/dsgvo PROJ-7` (bisher bis „Rückgängig“ oder Kontolöschung).
+
+## Umsetzungshinweise (/build, 2026-11-17)
+
+- **„Zu wenig“ ändert die Reihenfolge nie (AC-12 wie spezifiziert):** Die Energie lässt nur Intensitäten bis zu ihrer eigenen Stufe zu. Eine um eine Stufe kräftigere Ziel-Intensität hat deshalb immer dieselbe Reihenfolge wie ohne Verschiebung, und die Zeile „Etwas kräftiger …“ erscheint nie. Ein Test in `today.rules.test.ts` hält das fest. Ob „Zu wenig“ künftig etwas anderes bewirken soll (z. B. längere Dauer bevorzugen), ist eine Produktentscheidung für `/refine PROJ-7`.
+- **Ablehnung durch die Zugriffsregel:** Die Datenbank meldet beim Anlegen *und* beim Ändern den Code `42501`, nicht „0 Zeilen“. Das Anlegen scheitert an der Zugriffsregel schon vor der Eindeutigkeitsprüfung. `feedback.data` übersetzt beides in „nicht mehr möglich“.
+- **Fragen-Block in der Bestätigungskarte:** Er liegt mit `aria-live="off"` in der Live-Region der Karte, damit Tipps nicht die ganze Karte erneut ansagen. Er wird je Aktion neu aufgebaut.
+- **Speicherstand bei schnellen Tipps:** Ein erfolgreich gespeicherter Zwischenstand zählt als „zuletzt gespeichert“, auch wenn danach noch ein Tipp wartet. Scheitert dieser, springt die Markierung auf den Zwischenstand zurück (EC-1, EC-3).
+- **Bau ohne Subagenten:** Die Stufen wurden nacheinander im Hauptkontext gebaut. Die Aufgaben greifen eng in PROJ-6-Dateien ein, und der Kontext war bereits geladen.
+- **Live-Prüfung:**
+  - Tabelle und Zugriffsregeln mit zwei Testkonten und anonym: 18/18.
+  - Gleichzeitige Speicherungen von zwei Sitzungen derselben Person, `/heute` mit echter Sitzung, „Rückgängig“, neuer Check-in, Export und Kontolöschung: 9/9.
+  - Die verknüpfte Abfrage der Signal-Rohdaten wurde live bestätigt.
+  - Die Wirkung auf Vorschläge ist durch Regel- und Action-Tests belegt, nicht durch einen Browserdurchlauf.

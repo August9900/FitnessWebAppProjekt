@@ -4,13 +4,16 @@
 // "Weitermachen", "Geschafft" and "Heute nicht", and the latest marking with "Rückgängig" until the
 // next check-in (AC-13 to AC-15). The page passes the server state; every server action refreshes
 // "Heute", so after a marking the props show the actual state — also when another device was first
-// (EC-5). No points, streaks, counters or reproach (AC-14).
+// (EC-5). No points, streaks, counters or reproach (AC-14). After "Geschafft" the card carries the
+// optional PROJ-7 questions; after "Heute nicht" it does not (PROJ-7 AC-1, AC-2).
 import { Check } from 'lucide-react'
 import Link from 'next/link'
 import { useState, useTransition } from 'react'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { FeedbackQuestions } from '@/features/feedback/components/feedback-questions'
+import { NO_FEEDBACK, type FeedbackAnswers } from '@/features/feedback/feedback.rules'
 import { concludeAction, undoConclusion } from '../today.actions'
 import { CONCLUSION_MESSAGES, TODAY_MESSAGES, type Kind } from '../today.rules'
 
@@ -28,6 +31,8 @@ export type ConclusionItem = {
   kind: Kind
   title: string | null
   status: 'done' | 'skipped'
+  /** The stored PROJ-7 feedback of a "done" action, as preselection (AC-5); null without. */
+  feedback: FeedbackAnswers | null
 }
 
 const FALLBACK_TITLES = { move: 'Dein Workout', eat: 'Deine Mahlzeit' } satisfies Record<Kind, string>
@@ -97,6 +102,12 @@ export function OpenActions({
               Rückgängig
             </Button>
             {errorFor(lastConclusion.id)}
+            {lastConclusion.status === 'done' && (
+              // Taps must not re-announce the whole card; the questions are outside the live region.
+              <div aria-live="off" className="border-t pt-4">
+                <FeedbackQuestions key={lastConclusion.id} actionId={lastConclusion.id} initial={lastConclusion.feedback ?? NO_FEEDBACK} />
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -5,6 +5,9 @@ const concludeAction = vi.fn()
 const undoConclusion = vi.fn()
 vi.mock('../today.actions', () => ({ concludeAction, undoConclusion }))
 
+const saveFeedback = vi.fn()
+vi.mock('@/features/feedback/feedback.actions', () => ({ saveFeedback }))
+
 const { OpenActions } = await import('./open-actions')
 
 const ID_A = '33333333-3333-4333-8333-333333333333'
@@ -21,7 +24,7 @@ async function click(element: HTMLElement) {
 
 beforeEach(() => {
   vi.clearAllMocks()
-  concludeAction.mockResolvedValue({ ok: true, changed: true, status: 'done' })
+  concludeAction.mockResolvedValue({ ok: true, changed: true, status: 'done', feedback: null })
   undoConclusion.mockResolvedValue({ ok: true, status: 'started' })
 })
 
@@ -65,7 +68,7 @@ describe('OpenActions', () => {
   })
 
   it('zeigt die Markierung ruhig und ohne Zähler oder Vorwurf, mit „Rückgängig“ (AC-14, AC-15)', () => {
-    const done: ConclusionItem = { id: ID_A, kind: 'move', title: 'Morgens mobil', status: 'done' }
+    const done: ConclusionItem = { id: ID_A, kind: 'move', title: 'Morgens mobil', status: 'done', feedback: null }
     const { rerender } = render(<OpenActions openActions={[]} lastConclusion={done} />)
     const status = screen.getByRole('status')
     expect(status).toHaveTextContent('Geschafft. Gut gemacht.')
@@ -77,28 +80,55 @@ describe('OpenActions', () => {
     expect(screen.getByRole('status')).toHaveTextContent('Okay. Vielleicht ein andermal.')
   })
 
+  it('zeigt nach „Geschafft“ die Rückmeldungsfragen in der Karte, außerhalb der Ansage (PROJ-7 AC-1)', () => {
+    render(<OpenActions openActions={[]} lastConclusion={{ id: ID_A, kind: 'move', title: 'Morgens mobil', status: 'done', feedback: null }} />)
+    const aufwand = screen.getByRole('group', { name: 'Wie war der Aufwand?' })
+    expect(screen.getByRole('group', { name: 'Wieder vorschlagen?' })).toBeInTheDocument()
+    expect(aufwand.closest('[aria-live]')).toHaveAttribute('aria-live', 'off')
+    expect(screen.queryAllByRole('button', { pressed: true })).toHaveLength(0)
+  })
+
+  it('wählt eine gespeicherte Rückmeldung vor (PROJ-7 AC-5)', () => {
+    render(
+      <OpenActions
+        openActions={[]}
+        lastConclusion={{ id: ID_A, kind: 'move', title: 'Morgens mobil', status: 'done', feedback: { effort: 'too_much', suggestAgain: null } }}
+      />
+    )
+    expect(within(screen.getByRole('group', { name: 'Wie war der Aufwand?' })).getByRole('button', { name: 'Zu viel' })).toHaveAttribute(
+      'aria-pressed',
+      'true'
+    )
+  })
+
+  it('fragt nach „Heute nicht“ nichts (PROJ-7 AC-2)', () => {
+    render(<OpenActions openActions={[]} lastConclusion={{ id: ID_A, kind: 'move', title: 'Morgens mobil', status: 'skipped', feedback: null }} />)
+    expect(screen.queryByRole('group')).toBeNull()
+    expect(screen.queryByText('Wie war der Aufwand?')).toBeNull()
+  })
+
   it('nimmt die Markierung mit „Rückgängig“ zurück (AC-15)', async () => {
-    render(<OpenActions openActions={[]} lastConclusion={{ id: ID_A, kind: 'move', title: 'Morgens mobil', status: 'done' }} />)
+    render(<OpenActions openActions={[]} lastConclusion={{ id: ID_A, kind: 'move', title: 'Morgens mobil', status: 'done', feedback: null }} />)
     await click(screen.getByRole('button', { name: 'Rückgängig' }))
     expect(undoConclusion).toHaveBeenCalledWith({ actionId: ID_A })
     expect(screen.queryByRole('alert')).toBeNull()
   })
 
   it('zeigt keinen Fehler, wenn „Rückgängig“ nicht mehr möglich ist — die Seite zeigt den Zustand', async () => {
-    undoConclusion.mockResolvedValue({ ok: false, reason: 'not_possible', status: 'done' })
-    render(<OpenActions openActions={[]} lastConclusion={{ id: ID_A, kind: 'move', title: 'Morgens mobil', status: 'done' }} />)
+    undoConclusion.mockResolvedValue({ ok: false, reason: 'not_possible', status: 'done', feedback: null })
+    render(<OpenActions openActions={[]} lastConclusion={{ id: ID_A, kind: 'move', title: 'Morgens mobil', status: 'done', feedback: null }} />)
     await click(screen.getByRole('button', { name: 'Rückgängig' }))
     expect(screen.queryByRole('alert')).toBeNull()
   })
 
   it('zeigt den tatsächlichen Zustand ohne Fehler, wenn ein anderes Gerät zuerst markiert hat (EC-5)', async () => {
-    concludeAction.mockResolvedValue({ ok: true, changed: false, status: 'done' })
+    concludeAction.mockResolvedValue({ ok: true, changed: false, status: 'done', feedback: null })
     const { rerender } = render(<OpenActions openActions={[workoutAction]} lastConclusion={null} />)
     await click(screen.getByRole('button', { name: 'Heute nicht' }))
     expect(screen.queryByRole('alert')).toBeNull()
 
     // The action refreshes "Heute"; the page then passes the actual state.
-    rerender(<OpenActions openActions={[]} lastConclusion={{ id: ID_A, kind: 'move', title: 'Morgens mobil', status: 'done' }} />)
+    rerender(<OpenActions openActions={[]} lastConclusion={{ id: ID_A, kind: 'move', title: 'Morgens mobil', status: 'done', feedback: null }} />)
     expect(screen.getByRole('status')).toHaveTextContent('Geschafft. Gut gemacht.')
   })
 
@@ -132,7 +162,7 @@ describe('OpenActions', () => {
     expect(done).toBeDisabled()
     expect(screen.getByRole('button', { name: 'Heute nicht' })).toBeDisabled()
 
-    await act(async () => finish({ ok: true, changed: true, status: 'done' }))
+    await act(async () => finish({ ok: true, changed: true, status: 'done', feedback: null }))
     expect(done).toBeEnabled()
   })
 })

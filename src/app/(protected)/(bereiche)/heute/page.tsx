@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/shell/page-header'
+import { getOwnFeedback } from '@/features/feedback/feedback.data'
 import { requireCompletedProfile } from '@/features/profile/profile.data'
 import { OpenActions } from '@/features/today/components/open-actions'
 import { TodayFlow } from '@/features/today/components/today-flow'
@@ -9,7 +10,8 @@ import { continueHref, placesToAsk } from '@/features/today/today.rules'
 export const metadata: Metadata = { title: 'Heute · PULSE' }
 
 // "Heute" (PROJ-6): open actions and the latest marking on top, below the daily decision
-// (AC-1, AC-13). Reading fails → the error boundary of the protected area shows.
+// (AC-1, AC-13). A "Geschafft" marking brings its stored PROJ-7 feedback as preselection (PROJ-7
+// AC-5). Reading fails → the error boundary of the protected area shows.
 export default async function TodayPage() {
   const { user, answers } = await requireCompletedProfile()
   const [lastAnswers, openActions, lastConclusion] = await Promise.all([
@@ -17,6 +19,7 @@ export default async function TodayPage() {
     getOpenActions(user.id, new Date()),
     getUndoableConclusion(user.id),
   ])
+  const feedback = lastConclusion?.status === 'done' ? await getOwnFeedback(user.id, lastConclusion.id) : null
 
   return (
     <div className="space-y-8">
@@ -30,7 +33,13 @@ export default async function TodayPage() {
         }))}
         lastConclusion={
           lastConclusion && lastConclusion.status !== 'started'
-            ? { id: lastConclusion.id, kind: lastConclusion.kind, title: lastConclusion.title, status: lastConclusion.status }
+            ? {
+                id: lastConclusion.id,
+                kind: lastConclusion.kind,
+                title: lastConclusion.title,
+                status: lastConclusion.status,
+                feedback,
+              }
             : null
         }
       />
