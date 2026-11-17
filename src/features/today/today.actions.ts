@@ -6,6 +6,8 @@
 // no answers, no user id (EC-9).
 import { revalidatePath } from 'next/cache'
 import { requireUser } from '@/features/account/account.data'
+import { getFeedbackSignalRows } from '@/features/feedback/feedback.data'
+import { dislikedIds, intensityShift } from '@/features/feedback/feedback.rules'
 import { getMeal, getOfferedMeals } from '@/features/meals/meals.data'
 import { EFFORT_LABELS, type Meal } from '@/features/meals/meals.rules'
 import { getOwnAnswers } from '@/features/profile/profile.data'
@@ -27,7 +29,7 @@ import {
   fitsLine,
   placesToAsk,
   selectMeals,
-  selectWorkouts,
+  suggestWorkouts,
   type ActionStatus,
   type Kind,
 } from './today.rules'
@@ -46,9 +48,12 @@ export type SuggestionItem = {
   href: string
 }
 
-/** `items` empty = "Gerade passt nichts genau." (EC-1); otherwise main suggestion first (AC-9). */
+/**
+ * `items` empty = "Gerade passt nichts genau." (EC-1); otherwise main suggestion first (AC-9).
+ * `note` explains a main suggestion changed by the latest effort feedback (PROJ-7 AC-15), else null.
+ */
 export type SuggestionResult =
-  | { ok: true; checkInId: string; kind: Kind; fitsLine: string; items: SuggestionItem[] }
+  | { ok: true; checkInId: string; kind: Kind; fitsLine: string; note: string | null; items: SuggestionItem[] }
   | { ok: false; reason: 'invalid' | 'failed' }
 
 /** `href` leads to the guided run or the meal detail (AC-12); "gone" = no longer offered (EC-6). */
@@ -107,12 +112,26 @@ export async function requestSuggestion(input: unknown): Promise<SuggestionResul
 
     const now = new Date()
     let items: SuggestionItem[]
+    let note: string | null = null
     if (answers.kind === 'move') {
-      const [workouts, recentIds] = await Promise.all([getOfferedWorkouts(), getRecentlyStartedIds(user.id, 'move', now)])
-      items = selectWorkouts(answers, profile, workouts, recentIds).map(workoutItem)
+      const [workouts, recentIds, feedback] = await Promise.all([
+        getOfferedWorkouts(),
+        getRecentlyStartedIds(user.id, 'move', now),
+        getFeedbackSignalRows(user.id, 'move'),
+      ])
+      // PROJ-7: "Lieber nicht" ranks last; the latest effort feedback shifts the aimed intensity (AC-9, AC-11 to AC-13).
+      const signals = { dislikedIds: dislikedIds(feedback), intensityShift: intensityShift(feedback, now) }
+      const suggestion = suggestWorkouts(answers, profile, workouts, recentIds, signals)
+      items = suggestion.workouts.map(workoutItem)
+      note = suggestion.note
     } else {
-      const [meals, recentIds] = await Promise.all([getOfferedMeals(), getRecentlyStartedIds(user.id, 'eat', now)])
-      items = selectMeals(answers, profile.diet, meals, recentIds).map(mealItem)
+      const [meals, recentIds, feedback] = await Promise.all([
+        getOfferedMeals(),
+        getRecentlyStartedIds(user.id, 'eat', now),
+        getFeedbackSignalRows(user.id, 'eat'),
+      ])
+      // Meal effort feedback is only stored; only "Lieber nicht" changes the order (AC-9, AC-14).
+      items = selectMeals(answers, profile.diet, meals, recentIds, dislikedIds(feedback)).map(mealItem)
     }
 
     const checkIn = await createCheckIn(
@@ -122,7 +141,7 @@ export async function requestSuggestion(input: unknown): Promise<SuggestionResul
     )
     // A new check-in ends "Rückgängig" for the last marking (AC-15).
     revalidatePath(TODAY_PATH)
-    return { ok: true, checkInId: checkIn.id, kind: answers.kind, fitsLine: fitsLine(answers), items }
+    return { ok: true, checkInId: checkIn.id, kind: answers.kind, fitsLine: fitsLine(answers), note, items }
   } catch (error) {
     logFailure('requestSuggestion', error)
     return { ok: false, reason: 'failed' }

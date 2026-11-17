@@ -16,6 +16,9 @@ const getOfferedMeals = vi.fn()
 const getMeal = vi.fn()
 vi.mock('@/features/meals/meals.data', () => ({ getOfferedMeals, getMeal }))
 
+const getFeedbackSignalRows = vi.fn()
+vi.mock('@/features/feedback/feedback.data', () => ({ getFeedbackSignalRows }))
+
 const revalidatePath = vi.fn()
 vi.mock('next/cache', () => ({ revalidatePath }))
 
@@ -85,6 +88,7 @@ beforeEach(() => {
   requireUser.mockResolvedValue({ id: 'u1', email: 'a@b.de', created_at: 'c', last_sign_in_at: null })
   getOwnAnswers.mockResolvedValue(profile)
   getRecentlyStartedIds.mockResolvedValue([])
+  getFeedbackSignalRows.mockResolvedValue([])
   createCheckIn.mockImplementation(async (_user, answers, suggestedIds) => ({
     id: CHECK_IN_ID,
     answers,
@@ -127,6 +131,7 @@ describe('requestSuggestion (AC-7 bis AC-11, EC-1, EC-9)', () => {
       checkInId: CHECK_IN_ID,
       kind: 'move',
       fitsLine: 'Passt zu: 10 Min · wenig Energie · Zuhause',
+      note: null,
       items: [
         { id: 'w_exact', title: 'Workout w_exact', detail: '10 Min', reviewStatus: 'unreviewed', href: '/bewegung/w_exact' },
         { id: 'w_short', title: 'Workout w_short', detail: '5 Min', reviewStatus: 'unreviewed', href: '/bewegung/w_short' },
@@ -203,6 +208,70 @@ describe('requestSuggestion (AC-7 bis AC-11, EC-1, EC-9)', () => {
     const logged = JSON.stringify(vi.mocked(console.error).mock.calls)
     expect(logged).toContain('requestSuggestion')
     expect(logged).not.toMatch(/u1|home|low/)
+  })
+})
+
+describe('requestSuggestion mit Rückmeldungen (PROJ-7 AC-9 bis AC-15)', () => {
+  const daysAgo = (days: number) => new Date(Date.now() - days * 24 * 3600_000)
+  const signal = (itemId: string, overrides: Record<string, unknown>) => ({
+    itemId,
+    effort: null,
+    effortAt: null,
+    suggestAgain: null,
+    suggestAgainAt: null,
+    ...overrides,
+  })
+
+  it('liest die Rückmeldungen der gewählten Art und stellt „Lieber nicht“ ganz nach hinten', async () => {
+    getOfferedWorkouts.mockResolvedValue([workout('w_exact'), workout('w_short', { durationMinutes: 5 })])
+    getFeedbackSignalRows.mockResolvedValue([signal('w_exact', { suggestAgain: 'no', suggestAgainAt: daysAgo(2) })])
+
+    const result = await requestSuggestion(moveInput)
+
+    expect(getFeedbackSignalRows).toHaveBeenCalledWith('u1', 'move')
+    expect(createCheckIn).toHaveBeenCalledWith('u1', moveInput, ['w_short', 'w_exact'])
+    expect(result).toMatchObject({ ok: true, note: null })
+  })
+
+  it('verschiebt nach „Zu viel“ die Intensität und erklärt den geänderten Hauptvorschlag', async () => {
+    getOwnAnswers.mockResolvedValue({ ...profile, experience: 'regular' })
+    getOfferedWorkouts.mockResolvedValue([workout('w_moderate', { intensity: 'moderate' }), workout('w_gentle')])
+    getFeedbackSignalRows.mockResolvedValue([signal('w_old', { effort: 'too_much', effortAt: daysAgo(3) })])
+
+    const result = await requestSuggestion({ ...moveInput, energy: 'medium' })
+
+    expect(createCheckIn).toHaveBeenCalledWith('u1', { ...moveInput, energy: 'medium' }, ['w_gentle', 'w_moderate'])
+    expect(result).toMatchObject({ ok: true, note: 'Etwas sanfter, weil es letztes Mal zu viel war.' })
+  })
+
+  it('lässt eine Aufwand-Rückmeldung älter als 14 Tage unberücksichtigt', async () => {
+    getOwnAnswers.mockResolvedValue({ ...profile, experience: 'regular' })
+    getOfferedWorkouts.mockResolvedValue([workout('w_moderate', { intensity: 'moderate' }), workout('w_gentle')])
+    getFeedbackSignalRows.mockResolvedValue([signal('w_old', { effort: 'too_much', effortAt: daysAgo(15) })])
+
+    const result = await requestSuggestion({ ...moveInput, energy: 'medium' })
+    expect(createCheckIn).toHaveBeenCalledWith('u1', { ...moveInput, energy: 'medium' }, ['w_moderate', 'w_gentle'])
+    expect(result).toMatchObject({ ok: true, note: null })
+  })
+
+  it('wendet bei „Essen“ nur „Lieber nicht“ an, der Aufwand ändert nichts (AC-14)', async () => {
+    getOfferedMeals.mockResolvedValue([meal('m_a'), meal('m_b')])
+    getFeedbackSignalRows.mockResolvedValue([
+      signal('m_a', { suggestAgain: 'no', suggestAgainAt: daysAgo(1), effort: 'too_much', effortAt: daysAgo(1) }),
+    ])
+
+    const result = await requestSuggestion({ kind: 'eat', effort: 'quick' })
+
+    expect(getFeedbackSignalRows).toHaveBeenCalledWith('u1', 'eat')
+    expect(createCheckIn).toHaveBeenCalledWith('u1', { kind: 'eat', effort: 'quick' }, ['m_b', 'm_a'])
+    expect(result).toMatchObject({ ok: true, note: null })
+  })
+
+  it('meldet „fehlgeschlagen“, wenn die Rückmeldungen nicht lesbar sind — ohne Vorschlag ohne Signale', async () => {
+    getOfferedWorkouts.mockResolvedValue([workout('w_exact')])
+    getFeedbackSignalRows.mockRejectedValue(new Error('Feedback signals could not be read (08006).'))
+    expect(await requestSuggestion(moveInput)).toEqual({ ok: false, reason: 'failed' })
+    expect(createCheckIn).not.toHaveBeenCalled()
   })
 })
 

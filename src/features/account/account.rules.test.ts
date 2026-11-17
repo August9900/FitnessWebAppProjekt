@@ -91,6 +91,7 @@ describe('buildAccountExport (AC-15)', () => {
         diet: 'vegan',
       },
       dailyDecisions: { checkIns: [], actions: [] },
+      feedback: [],
       exportedAt,
     })
     expect(result).toEqual({
@@ -109,6 +110,7 @@ describe('buildAccountExport (AC-15)', () => {
         updatedAt: '2026-11-01T00:00:00Z',
       },
       dailyDecisions: { checkIns: [], actions: [] },
+      feedback: [],
     })
     expect(JSON.stringify(result)).not.toContain('hash')
   })
@@ -118,6 +120,7 @@ describe('buildAccountExport (AC-15)', () => {
       account: { id: 'u1', email: 'a@b.de', created_at: 'c' },
       profile: { age_band_at_signup: '12_15', created_at: 'c', updated_at: 'u' },
       dailyDecisions: { checkIns: [], actions: [] },
+      feedback: [],
       exportedAt,
     })
     expect(result.profile).toMatchObject({ goal: null, experience: null, places: null, homeEquipment: null, diet: null })
@@ -164,6 +167,7 @@ describe('buildAccountExport (AC-15)', () => {
           },
         ],
       },
+      feedback: [],
       exportedAt,
     })
     expect(result.dailyDecisions).toEqual({
@@ -203,6 +207,37 @@ describe('buildAccountExport (AC-15)', () => {
         },
       ],
     })
+  })
+
+  it('contains each feedback with both answers, their times and the action (AC-17 of PROJ-7)', () => {
+    const result = buildAccountExport({
+      account: { id: 'u1', email: 'a@b.de', created_at: 'c' },
+      profile: null,
+      dailyDecisions: { checkIns: [], actions: [] },
+      feedback: [
+        {
+          action_id: 'a1',
+          effort: 'too_much',
+          effort_at: '2026-11-17T08:21:00Z',
+          suggest_again: null,
+          suggest_again_at: null,
+          created_at: '2026-11-17T08:21:00Z',
+          updated_at: '2026-11-17T08:22:00Z',
+        },
+      ],
+      exportedAt,
+    })
+    expect(result.feedback).toEqual([
+      {
+        actionId: 'a1',
+        effort: 'too_much',
+        effortAt: '2026-11-17T08:21:00Z',
+        suggestAgain: null,
+        suggestAgainAt: null,
+        createdAt: '2026-11-17T08:21:00Z',
+        updatedAt: '2026-11-17T08:22:00Z',
+      },
+    ])
   })
 
   it('names the file after the export date', () => {

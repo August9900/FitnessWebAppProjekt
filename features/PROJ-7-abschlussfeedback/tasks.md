@@ -49,15 +49,15 @@
 
 ## Stufe 3 — Server Actions und Export
 
-- [ ] T6 [P] Server Action `saveFeedback`:
+- [x] T6 [P] Server Action `saveFeedback`:
   - Sitzung und Eingabe prüfen, speichern
   - Ergebnisse „gespeichert“, „nicht mehr möglich“ (mit Aktualisierung von `/heute`), „ungültig“, „fehlgeschlagen“
   - Protokoll ohne Personendaten
   - mit Test
 
   · files: `src/features/feedback/feedback.actions.ts`, `src/features/feedback/feedback.actions.test.ts` · → AC-3, AC-6, AC-7, AC-16; EC-3, EC-4
-- [ ] T7 [P] Änderung PROJ-6: `requestSuggestion` lädt die Signal-Rohdaten der gewählten Art, berechnet und wendet die Signale an und liefert die Erklärungszeile (leer, wenn keine); Lesefehler → „fehlgeschlagen“; mit Test. · files: `src/features/today/today.actions.ts`, `src/features/today/today.actions.test.ts` · → AC-9, AC-10, AC-11, AC-12, AC-13, AC-14, AC-15
-- [ ] T8 [P] Änderung PROJ-1: Datenexport um den Abschnitt `feedback` erweitern (Aktions-ID, Aufwand, „Wieder vorschlagen“, Zeitpunkte, Anlage und letzte Änderung); übrige Exportteile unverändert; mit Tests. · files: `src/features/account/account.data.ts`, `src/features/account/account.rules.ts`, `src/features/account/account.data.test.ts`, `src/features/account/account.rules.test.ts` · → AC-17
+- [x] T7 [P] Änderung PROJ-6: `requestSuggestion` lädt die Signal-Rohdaten der gewählten Art, berechnet und wendet die Signale an und liefert die Erklärungszeile (leer, wenn keine); Lesefehler → „fehlgeschlagen“; mit Test. · files: `src/features/today/today.actions.ts`, `src/features/today/today.actions.test.ts` · → AC-9, AC-10, AC-11, AC-12, AC-13, AC-14, AC-15
+- [x] T8 [P] Änderung PROJ-1: Datenexport um den Abschnitt `feedback` erweitern (Aktions-ID, Aufwand, „Wieder vorschlagen“, Zeitpunkte, Anlage und letzte Änderung); übrige Exportteile unverändert; mit Tests. · files: `src/features/account/account.data.ts`, `src/features/account/account.rules.ts`, `src/features/account/account.data.test.ts`, `src/features/account/account.rules.test.ts` · → AC-17
 
 ## Stufe 4 — Ansichten
 

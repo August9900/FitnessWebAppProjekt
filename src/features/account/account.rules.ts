@@ -147,11 +147,23 @@ export type ExportAction = {
 
 export type ExportDailyDecisions = { checkIns: ExportCheckIn[]; actions: ExportAction[] }
 
+/** A PROJ-7 feedback as stored: the action it belongs to, both answers and their times. */
+export type ExportFeedback = {
+  action_id: string
+  effort: string | null
+  effort_at: string | null
+  suggest_again: string | null
+  suggest_again_at: string | null
+  created_at: string
+  updated_at: string
+}
+
 /** Machine-readable copy of the account's stored data (AC-15). Later features add their sections. */
 export function buildAccountExport(input: {
   account: ExportAccount
   profile: ExportProfile | null
   dailyDecisions: ExportDailyDecisions
+  feedback: ExportFeedback[]
   exportedAt: Date
 }) {
   return {
@@ -200,6 +212,16 @@ export function buildAccountExport(input: {
         updatedAt: action.updated_at,
       })),
     },
+    // PROJ-7 Abschlussfeedback: both answers with their times and the action they belong to (AC-17).
+    feedback: input.feedback.map((entry) => ({
+      actionId: entry.action_id,
+      effort: entry.effort,
+      effortAt: entry.effort_at,
+      suggestAgain: entry.suggest_again,
+      suggestAgainAt: entry.suggest_again_at,
+      createdAt: entry.created_at,
+      updatedAt: entry.updated_at,
+    })),
   }
 }
 

@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation'
 import { cache } from 'react'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
+import { getOwnFeedbackExport } from '@/features/feedback/feedback.data'
 import { getOwnTodayExport } from '@/features/today/today.data'
 import { buildAccountExport, type ExportProfile } from './account.rules'
 
@@ -54,8 +55,12 @@ export async function getOwnProfile(userId: string): Promise<ExportProfile | nul
 export async function collectAccountExport(now = new Date()) {
   const user = await getCurrentUser()
   if (!user) return null
-  const [profile, dailyDecisions] = await Promise.all([getOwnProfile(user.id), getOwnTodayExport(user.id)])
-  return buildAccountExport({ account: user, profile, dailyDecisions, exportedAt: now })
+  const [profile, dailyDecisions, feedback] = await Promise.all([
+    getOwnProfile(user.id),
+    getOwnTodayExport(user.id),
+    getOwnFeedbackExport(user.id),
+  ])
+  return buildAccountExport({ account: user, profile, dailyDecisions, feedback, exportedAt: now })
 }
 
 export type PasswordCheck = { ok: true } | { ok: false; reason: 'wrong' | 'unavailable' }

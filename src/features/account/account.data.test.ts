@@ -12,6 +12,9 @@ vi.mock('@/lib/supabase/server', () => ({
 const getOwnTodayExport = vi.fn()
 vi.mock('@/features/today/today.data', () => ({ getOwnTodayExport }))
 
+const getOwnFeedbackExport = vi.fn()
+vi.mock('@/features/feedback/feedback.data', () => ({ getOwnFeedbackExport }))
+
 const deleteUser = vi.fn()
 vi.mock('@/lib/supabase/admin', () => ({
   createAdminClient: () => ({ auth: { admin: { deleteUser } } }),
@@ -62,6 +65,7 @@ describe('requireUser', () => {
 describe('collectAccountExport (AC-15)', () => {
   beforeEach(() => {
     getOwnTodayExport.mockResolvedValue({ checkIns: [], actions: [] })
+    getOwnFeedbackExport.mockResolvedValue([])
   })
 
   it('combines account and own profile', async () => {
@@ -108,6 +112,24 @@ describe('collectAccountExport (AC-15)', () => {
     profileQuery.maybeSingle.mockResolvedValue({ data: null, error: null })
     getOwnTodayExport.mockRejectedValue(new Error('Daily decisions could not be read (08006).'))
     await expect(data.collectAccountExport()).rejects.toThrow('Daily decisions could not be read')
+  })
+
+  it('adds the own feedback (AC-17 of PROJ-7)', async () => {
+    serverAuth.getUser.mockResolvedValue({ data: { user }, error: null })
+    profileQuery.maybeSingle.mockResolvedValue({ data: null, error: null })
+    getOwnFeedbackExport.mockResolvedValue([
+      { action_id: 'a1', effort: null, effort_at: null, suggest_again: 'no', suggest_again_at: 't1', created_at: 't1', updated_at: 't1' },
+    ])
+    const result = await data.collectAccountExport()
+    expect(getOwnFeedbackExport).toHaveBeenCalledWith('u1')
+    expect(result?.feedback).toEqual([expect.objectContaining({ actionId: 'a1', suggestAgain: 'no', effort: null })])
+  })
+
+  it('refuses to produce a partial export when the feedback cannot be read', async () => {
+    serverAuth.getUser.mockResolvedValue({ data: { user }, error: null })
+    profileQuery.maybeSingle.mockResolvedValue({ data: null, error: null })
+    getOwnFeedbackExport.mockRejectedValue(new Error('Feedback could not be read (08006).'))
+    await expect(data.collectAccountExport()).rejects.toThrow('Feedback could not be read')
   })
 
   it('returns null without a session', async () => {
