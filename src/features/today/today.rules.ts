@@ -49,6 +49,13 @@ export const CONCLUSION_MESSAGES = {
   skipped: 'Okay. Vielleicht ein andermal.',
 } satisfies Record<Exclude<ActionStatus, 'started'>, string>
 
+/** Calm, neutral texts shared by the flow and the open actions (EC-1, EC-6, EC-9). */
+export const TODAY_MESSAGES = {
+  failed: 'Das hat gerade nicht geklappt. Bitte versuch es noch einmal.',
+  gone: 'Das gibt es leider nicht mehr.',
+  nothingFits: 'Gerade passt nichts genau.',
+} as const
+
 export { PLACE_LABELS }
 export const minutesLabel = durationLabel
 

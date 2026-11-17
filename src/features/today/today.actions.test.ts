@@ -128,8 +128,8 @@ describe('requestSuggestion (AC-7 bis AC-11, EC-1, EC-9)', () => {
       kind: 'move',
       fitsLine: 'Passt zu: 10 Min · wenig Energie · Zuhause',
       items: [
-        { id: 'w_exact', title: 'Workout w_exact', detail: '10 Min', isSample: true, href: '/bewegung/w_exact' },
-        { id: 'w_short', title: 'Workout w_short', detail: '5 Min', isSample: true, href: '/bewegung/w_short' },
+        { id: 'w_exact', title: 'Workout w_exact', detail: '10 Min', reviewStatus: 'unreviewed', href: '/bewegung/w_exact' },
+        { id: 'w_short', title: 'Workout w_short', detail: '5 Min', reviewStatus: 'unreviewed', href: '/bewegung/w_short' },
       ],
     })
     expect(revalidatePath).toHaveBeenCalledWith('/heute')
@@ -151,7 +151,7 @@ describe('requestSuggestion (AC-7 bis AC-11, EC-1, EC-9)', () => {
       kind: 'eat',
       fitsLine: 'Passt zu: Kurz kochen',
       items: [
-        { id: 'm_quick', detail: 'Schnell gekocht', isSample: false, href: '/essen/m_quick' },
+        { id: 'm_quick', detail: 'Schnell gekocht', reviewStatus: 'reviewed', href: '/essen/m_quick' },
         { id: 'm_no_cook', detail: 'Ohne Kochen' },
       ],
     })

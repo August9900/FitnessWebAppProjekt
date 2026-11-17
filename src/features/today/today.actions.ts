@@ -40,8 +40,8 @@ export type SuggestionItem = {
   title: string
   /** "10 Min" for a workout, the effort level for a meal (AC-9). */
   detail: string
-  /** Shows "Beispielinhalt – noch nicht fachlich geprüft" (AC-9). */
-  isSample: boolean
+  /** "unreviewed" shows "Beispielinhalt – noch nicht fachlich geprüft" (AC-9). */
+  reviewStatus: 'unreviewed' | 'reviewed'
   /** The detail view; opening it starts nothing (AC-10). */
   href: string
 }
@@ -74,7 +74,7 @@ function workoutItem(workout: Workout): SuggestionItem {
     id: workout.id,
     title: workout.title,
     detail: durationLabel(workout.durationMinutes),
-    isSample: workout.reviewStatus === 'unreviewed',
+    reviewStatus: workout.reviewStatus,
     href: detailHref('move', workout.id),
   }
 }
@@ -84,7 +84,7 @@ function mealItem(meal: Meal): SuggestionItem {
     id: meal.id,
     title: meal.title,
     detail: EFFORT_LABELS[meal.effort],
-    isSample: meal.reviewStatus === 'unreviewed',
+    reviewStatus: meal.reviewStatus,
     href: detailHref('eat', meal.id),
   }
 }
