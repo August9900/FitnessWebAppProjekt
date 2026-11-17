@@ -18,6 +18,7 @@ import {
   recentSince,
   selectMeals,
   selectWorkouts,
+  suggestWorkouts,
   type MoveAnswers,
 } from './today.rules'
 
@@ -330,5 +331,95 @@ describe('Adressen (AC-10, AC-12, AC-13)', () => {
   it('führt der Start zur geführten Durchführung ohne „leichter“ bzw. zum Mahlzeit-Detail', () => {
     expect(continueHref('move', 'ruecken_10')).toBe('/bewegung/ruecken_10/los')
     expect(continueHref('eat', 'hummus_brot')).toBe('/essen/hummus_brot')
+  })
+})
+
+describe('PROJ-7 — „Lieber nicht“ in der Auswahl (AC-9, EC-5)', () => {
+  const signals = (dislikedIds: string[], intensityShift: -1 | 0 | 1 = 0) => ({ dislikedIds, intensityShift })
+
+  it('stellt Workouts mit „Lieber nicht“ hinter alle anderen passenden, auch vor jede andere Regel', () => {
+    const list = [workout('exact', { durationMinutes: 10 }), workout('short_a', { durationMinutes: 5 }), workout('short_b', { durationMinutes: 5 })]
+    expect(ids(selectWorkouts(move(), profile, list, [], signals(['exact'])))).toEqual(['short_a', 'short_b', 'exact'])
+  })
+
+  it('lässt „Lieber nicht“ nur erscheinen, wenn ohne es weniger als drei passen', () => {
+    const list = [workout('a'), workout('b'), workout('c'), workout('d')]
+    expect(ids(selectWorkouts(move(), profile, list, [], signals(['a'])))).toEqual(['b', 'c', 'd'])
+    expect(ids(selectWorkouts(move(), profile, list.slice(0, 3), [], signals(['a'])))).toEqual(['b', 'c', 'a'])
+  })
+
+  it('schlägt trotzdem vor, wenn alle passenden „Lieber nicht“ haben (EC-5)', () => {
+    const list = [workout('a'), workout('b')]
+    expect(ids(selectWorkouts(move(), profile, list, [], signals(['a', 'b'])))).toEqual(['a', 'b'])
+  })
+
+  it('stellt Mahlzeiten mit „Lieber nicht“ auch hinter aufgefüllte einfachere Stufen', () => {
+    const list = [meal('q_disliked'), meal('q_ok'), meal('nc', { effort: 'no_cook' })]
+    expect(ids(selectMeals({ kind: 'eat', effort: 'quick' }, 'vegan', list, [], ['q_disliked']))).toEqual(['q_ok', 'nc', 'q_disliked'])
+  })
+
+  it('verhält sich ohne Signale wie PROJ-6', () => {
+    const list = [meal('q1'), meal('q2'), meal('nc', { effort: 'no_cook' })]
+    expect(ids(selectMeals({ kind: 'eat', effort: 'quick' }, 'vegan', list, []))).toEqual(['q1', 'q2', 'nc'])
+  })
+})
+
+describe('PROJ-7 — Intensitätsverschiebung (AC-11 bis AC-13, EC-7)', () => {
+  const g = workout('gentle', { intensity: 'gentle' })
+  const m = workout('moderate', { intensity: 'moderate' })
+  const v = workout('vigorous', { intensity: 'vigorous' })
+  const shift = (intensityShift: -1 | 0 | 1) => ({ dislikedIds: [], intensityShift })
+
+  it('strebt nach „Zu viel“ eine Stufe sanfter an', () => {
+    expect(ids(selectWorkouts(move({ energy: 'medium' }), profile, [g, m], [], shift(-1)))).toEqual(['gentle', 'moderate'])
+    expect(ids(selectWorkouts(move({ energy: 'high' }), profile, [g, m, v], [], shift(-1)))[0]).toBe('moderate')
+  })
+
+  it('strebt nach „Zu wenig“ eine Stufe kräftiger an, ohne gesperrte Intensitäten zuzulassen', () => {
+    expect(ids(selectWorkouts(move({ energy: 'low' }), profile, [g, m, v], [], shift(1)))).toEqual(['gentle'])
+    expect(ids(selectWorkouts(move({ energy: 'medium' }), profile, [g, m, v], [], shift(1)))).toEqual(['moderate', 'gentle'])
+  })
+
+  it('bleibt an den Rändern begrenzt (EC-7)', () => {
+    expect(ids(selectWorkouts(move({ energy: 'low' }), profile, [g], [], shift(-1)))).toEqual(['gentle'])
+    expect(ids(selectWorkouts(move({ energy: 'high' }), profile, [g, m, v], [], shift(1)))).toEqual(['vigorous', 'moderate', 'gentle'])
+  })
+
+  it('ändert die Dauer-Regel nicht — sie geht der Intensität weiter vor', () => {
+    const exactStrong = workout('exact_moderate', { intensity: 'moderate', durationMinutes: 10 })
+    const shortGentle = workout('short_gentle', { intensity: 'gentle', durationMinutes: 5 })
+    expect(ids(selectWorkouts(move({ energy: 'medium' }), profile, [shortGentle, exactStrong], [], shift(-1)))[0]).toBe('exact_moderate')
+  })
+})
+
+describe('PROJ-7 — suggestWorkouts mit Erklärung (AC-15, EC-7)', () => {
+  const g = workout('gentle', { intensity: 'gentle' })
+  const m = workout('moderate', { intensity: 'moderate' })
+
+  it('erklärt, wenn die Verschiebung den Hauptvorschlag geändert hat', () => {
+    const result = suggestWorkouts(move({ energy: 'medium' }), profile, [g, m], [], { dislikedIds: [], intensityShift: -1 })
+    expect(ids(result.workouts)).toEqual(['gentle', 'moderate'])
+    expect(result.note).toBe('Etwas sanfter, weil es letztes Mal zu viel war.')
+  })
+
+  it('ändert nach „Zu wenig“ die Reihenfolge nicht, weil die Energie kräftigere Stufen ausschließt (AC-12)', () => {
+    const v = workout('vigorous', { intensity: 'vigorous' })
+    for (const energy of ['low', 'medium', 'high'] as const) {
+      const shifted = suggestWorkouts(move({ energy }), profile, [g, m, v], [], { dislikedIds: [], intensityShift: 1 })
+      expect(ids(shifted.workouts)).toEqual(ids(selectWorkouts(move({ energy }), profile, [g, m, v], [])))
+      expect(shifted.note).toBeNull()
+    }
+  })
+
+  it('schweigt, wenn sich der Hauptvorschlag nicht ändert (EC-7) oder nichts passt', () => {
+    expect(suggestWorkouts(move({ energy: 'low' }), profile, [g], [], { dislikedIds: [], intensityShift: -1 }).note).toBeNull()
+    expect(suggestWorkouts(move({ energy: 'medium' }), profile, [m], [], { dislikedIds: [], intensityShift: -1 }).note).toBeNull()
+    expect(suggestWorkouts(move(), profile, [], [], { dislikedIds: [], intensityShift: 1 })).toEqual({ workouts: [], note: null })
+  })
+
+  it('erwähnt „Lieber nicht“ nie', () => {
+    const result = suggestWorkouts(move({ energy: 'medium' }), profile, [m, g], [], { dislikedIds: ['moderate'], intensityShift: 0 })
+    expect(result.workouts[0].id).toBe('gentle')
+    expect(result.note).toBeNull()
   })
 })

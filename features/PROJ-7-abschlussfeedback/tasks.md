@@ -30,7 +30,7 @@
 
 ## Stufe 2 — Datenzugriff und Auswahlregel
 
-- [ ] T4 [P] Datenzugriff (`server-only`):
+- [x] T4 [P] Datenzugriff (`server-only`):
   - Antwort speichern: anlegen, bei bestehender Zeile nur die Spalte dieser Frage ändern; Ablehnung oder keine geänderte Zeile → „nicht mehr möglich“
   - Rückmeldung einer eigenen Aktion lesen
   - eigene Rückmeldungen einer Art mit Inhalt-ID der Aktion lesen (Signal-Rohdaten)
@@ -38,7 +38,7 @@
   - mit Test
 
   · files: `src/features/feedback/feedback.data.ts`, `src/features/feedback/feedback.data.test.ts` · → AC-3, AC-5, AC-6, AC-7, AC-16, AC-17; EC-1, EC-2, EC-4
-- [ ] T5 [P] Änderung PROJ-6, Auswahlregel:
+- [x] T5 [P] Änderung PROJ-6, Auswahlregel:
   - `selectWorkouts` und `selectMeals` bekommen die Signale als Eingabe; ohne Signale bleibt das Verhalten unverändert
   - „Lieber nicht“ ist der erste Sortierschlüssel, bei Mahlzeiten auch vor den aufgefüllten Stufen
   - verschobene, begrenzte Ziel-Intensität nur im Schlüssel „Abstand der Intensität“

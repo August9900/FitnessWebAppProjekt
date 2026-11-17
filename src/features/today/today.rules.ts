@@ -2,8 +2,11 @@
  * Pure rules for PROJ-6 Tagesentscheidung: check-in answers and labels, the selection of the main
  * suggestion and up to two alternatives (AC-7, AC-8), the "Passt zu" line (AC-9), "Wie letztes Mal"
  * (AC-5, EC-7) and which actions are open or can still be undone (AC-13, AC-15, EC-8).
+ * PROJ-7 adds the feedback signals to the selection: "Lieber nicht" ranks last, the latest effort
+ * feedback shifts the aimed intensity, and a note explains a changed main suggestion.
  * No IO, no framework; the current time is always passed in.
  */
+import { adjustmentNote, type IntensityShift } from '@/features/feedback/feedback.rules'
 import { mealFits, type Effort, type Meal } from '@/features/meals/meals.rules'
 import type { ProfileAnswers } from '@/features/profile/profile.rules'
 import { PLACES, type Diet, type Place } from '@/features/profile/profile.schema'
@@ -89,20 +92,28 @@ function rankBy<T>(items: T[], keys: ((item: T) => number)[]): T[] {
     .map(({ item }) => item)
 }
 
+/** What PROJ-7 feedback contributes to a suggestion; without feedback nothing changes. */
+export type SuggestionSignals = { dislikedIds: string[]; intensityShift: IntensityShift }
+export const NO_SIGNALS: SuggestionSignals = { dislikedIds: [], intensityShift: 0 }
+
 /**
  * Main suggestion and alternatives for "Bewegen" (AC-7): fits the profile (PROJ-4 rule), doable at
  * the chosen place (at home with the equipment from the profile), at most the chosen time, an
- * intensity the energy allows. Sorted by duration (exact first, then shorter ones longest first),
- * closeness of intensity to energy, not recently started, offer order. At most three.
+ * intensity the energy allows. Sorted by "Lieber nicht" last (PROJ-7), duration (exact first, then
+ * shorter ones longest first), closeness of intensity to the aimed level (the energy, shifted by
+ * the latest effort feedback and kept within gentle…vigorous), not recently started, offer order.
+ * The shift only changes the order, never which workouts qualify. At most three.
  */
 export function selectWorkouts(
   answers: MoveAnswers,
   profile: ProfileForToday,
   workouts: Workout[],
-  recentIds: string[]
+  recentIds: string[],
+  signals: SuggestionSignals = NO_SIGNALS
 ): Workout[] {
   const atHome = (profile.homeEquipment ?? []) as string[]
   const allowed: Intensity[] = ALLOWED_BY_ENERGY[answers.energy]
+  const aimed = Math.min(2, Math.max(0, ENERGY_INDEX[answers.energy] + signals.intensityShift))
 
   const candidates = workouts.filter(
     (workout) =>
@@ -114,10 +125,28 @@ export function selectWorkouts(
   )
 
   return rankBy(candidates, [
+    (workout) => (signals.dislikedIds.includes(workout.id) ? 1 : 0),
     (workout) => answers.minutes - workout.durationMinutes,
-    (workout) => Math.abs(INTENSITY_INDEX[workout.intensity] - ENERGY_INDEX[answers.energy]),
+    (workout) => Math.abs(INTENSITY_INDEX[workout.intensity] - aimed),
     (workout) => (recentIds.includes(workout.id) ? 1 : 0),
   ]).slice(0, MAX_SUGGESTIONS)
+}
+
+/**
+ * The workout suggestion with its explanation (PROJ-7 AC-15): the note appears only when the
+ * intensity shift gave a different main suggestion than the PROJ-6 rule alone (EC-7).
+ */
+export function suggestWorkouts(
+  answers: MoveAnswers,
+  profile: ProfileForToday,
+  workouts: Workout[],
+  recentIds: string[],
+  signals: SuggestionSignals
+): { workouts: Workout[]; note: string | null } {
+  const shifted = selectWorkouts(answers, profile, workouts, recentIds, signals)
+  const unshifted = selectWorkouts(answers, profile, workouts, recentIds, { ...signals, intensityShift: 0 })
+  const changed = shifted[0]?.id !== unshifted[0]?.id
+  return { workouts: shifted, note: changed ? adjustmentNote(signals.intensityShift) : null }
 }
 
 /** For a chosen effort level: the level itself, then the easier ones used to fill up (AC-8). */
@@ -129,19 +158,22 @@ const EFFORT_FILL_ORDER = {
 
 /**
  * Main suggestion and alternatives for "Essen" (AC-8): fits the diet, chosen effort level first;
- * with fewer than three there, filled with the easier levels in order. Within a level: not
- * recently started first, then offer order. At most three.
+ * with fewer than three there, filled with the easier levels in order. Meals the person said
+ * "Lieber nicht" to come after all others, also after the filled-up levels (PROJ-7 AC-9). Within a
+ * level: not recently started first, then offer order. At most three.
  */
 export function selectMeals(
   answers: EatAnswers,
   diet: Diet | null | undefined,
   meals: Meal[],
-  recentIds: string[]
+  recentIds: string[],
+  dislikedIds: string[] = []
 ): Meal[] {
   const levels: Effort[] = EFFORT_FILL_ORDER[answers.effort]
   const candidates = meals.filter((meal) => mealFits(meal, diet) && levels.includes(meal.effort))
 
   return rankBy(candidates, [
+    (meal) => (dislikedIds.includes(meal.id) ? 1 : 0),
     (meal) => levels.indexOf(meal.effort),
     (meal) => (recentIds.includes(meal.id) ? 1 : 0),
   ]).slice(0, MAX_SUGGESTIONS)
