@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { PageHeader } from '@/components/shell/page-header'
+import { LIBRARY_TEXTS, libraryHref } from '@/features/exercises/exercises.rules'
 import { requireCompletedProfile } from '@/features/profile/profile.data'
 import { WorkoutList, type WorkoutListItem } from '@/features/workouts/components/workout-list'
 import { getOfferedWorkouts } from '@/features/workouts/workouts.data'
@@ -27,6 +29,12 @@ export default async function BewegungPage() {
     <div className="space-y-8">
       <PageHeader title="Bewegung" description="Kurze Workouts, die zu deinen Orten und deiner Ausstattung passen." />
       <WorkoutList items={items} />
+      {/* PROJ-9 AC-1: a calm way to the exercise library, below the list. */}
+      <p>
+        <Link href={libraryHref()} className="inline-flex min-h-12 items-center font-medium underline-offset-4 hover:underline">
+          {LIBRARY_TEXTS.lookUp} ›
+        </Link>
+      </p>
     </div>
   )
 }

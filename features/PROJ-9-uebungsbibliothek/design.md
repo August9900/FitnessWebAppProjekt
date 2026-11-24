@@ -124,3 +124,18 @@ Keine.
 ## Offene Fragen
 
 - [ ] Aus der Spec übernommen: Prüfung der Übungen vor dem ersten Deploy; „Kurze Pause“ in der Bibliothek.
+
+## Umsetzungshinweise (/build, 2026-11-24)
+
+- **„Nicht gefunden“ mit Status 200:** Unbekannte Übungen zeigen die „Nicht gefunden“-Ansicht mit „Alle Übungen“. Weil der Bereich einen gestreamten Ladezustand hat, ist der Status beim Feststellen schon gesendet und bleibt 200. Das verhält sich genauso wie die bestehende Workout-Seite aus PROJ-4; die Spec verlangt die Ansicht, keinen Statuscode.
+- **Link „Übungen nachschlagen“** steht als zurückhaltender Textlink unter der Workout-Liste in `bewegung/page.tsx`; `WorkoutList` blieb unverändert.
+- **Filter-Links:** Der gewählte Filter ist als primäre Schaltfläche mit Häkchen und `aria-current="page"` gekennzeichnet.
+- **Bau ohne Subagenten:** Die Stufen wurden nacheinander im Hauptkontext gebaut.
+- **Live-Prüfung (16/16)** gegen die lokale Datenbank und den Dev-Server mit zwei Testkonten (mit und ohne „Zuhause“):
+  - Einstieg von „Bewegung“
+  - alphabetische Liste und alle Filter, unbekannter Filter
+  - Detail mit Sicherheitshinweis und ohne Startknopf
+  - „Kommt vor in“, auch mit einem aus dem Angebot genommenen Workout
+  - „Alle Übungen“ mit Filter; unbekannte und ungültige Übung
+  - verlinkte Namen im Workout-Detail, keine Links in der Durchführung
+  - ohne Sitzung zur Anmeldung

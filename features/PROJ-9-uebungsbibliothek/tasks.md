@@ -40,7 +40,7 @@
 
 ## Stufe 3 — Seiten und Live-Prüfung
 
-- [ ] T6 Seiten:
+- [x] T6 Seiten:
   - `/bewegung/uebungen`: Angaben der Person und Übungen laden, Filter lesen und anwenden
   - `/bewegung/uebungen/[id]`: Übung und angebotene Workouts parallel laden; unbekannte Übung → „Nicht gefunden“ mit Weg zur Bibliothek
   - Link „Übungen nachschlagen“ unter der Workout-Liste
