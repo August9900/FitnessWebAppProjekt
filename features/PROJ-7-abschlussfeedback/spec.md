@@ -20,6 +20,7 @@
 ## Nicht enthalten
 
 - Rückmeldung nach „Heute nicht“ — bewusst keine Frage, damit „Heute nicht“ entlastend bleibt.
+- Kräftigere Vorschläge nach „Zu wenig“ — die Angaben des Moments (Zeit, Energie) begrenzen die Auswahl; „Zu wenig“ wird nur gespeichert.
 - Nachträgliche Rückmeldung, nachdem die Bestätigungskarte verschwunden ist, etwa aus dem Wochenblick — höchstens später über `/refine PROJ-8`.
 - Einfluss der Aufwand-Rückmeldung auf Mahlzeiten-Vorschläge — sie wird gespeichert, ändert die Vorschläge aber nicht.
 - Bevorzugung von Inhalten mit „Gern wieder“ — die Abwechslung aus PROJ-6 bleibt unverändert.
@@ -49,10 +50,10 @@
 - [ ] **AC-9** — Angenommen die Person hat bei einem Workout oder einer Mahlzeit zuletzt „Lieber nicht“ gewählt, wenn ein Vorschlag ermittelt wird, für den dieser Inhalt in Frage kommt, dann steht er hinter allen anderen passenden Inhalten; er erscheint nur noch, wenn ohne ihn weniger als drei passende Inhalte übrig bleiben. Bei Mahlzeiten steht er auch hinter den aufgefüllten Mahlzeiten aus einfacheren Stufen (PROJ-6, AC-8).
 - [ ] **AC-10** — Angenommen die Person hat einen Inhalt mit „Lieber nicht“ bewertet und gibt ihm bei einer späteren Aktion „Gern wieder“, wenn danach ein Vorschlag ermittelt wird, dann gilt für diesen Inhalt nur noch die Regel aus PROJ-6; „Gern wieder“ bevorzugt nichts.
 - [ ] **AC-11** — Angenommen die jüngste Aufwand-Rückmeldung der Person zu einem Workout ist „Zu viel“ und höchstens 14 Tage alt, wenn ein Bewegungs-Vorschlag ermittelt wird, dann wird bei der Sortierung nach Intensität (PROJ-6, AC-7, Schritt 2) eine Stufe sanfter angestrebt, als die Energie nahelegt („viel“ → mittel, „mittel“ → sanft, „wenig“ bleibt sanft); welche Workouts überhaupt in Frage kommen, ändert sich nicht.
-- [ ] **AC-12** — Angenommen die jüngste Aufwand-Rückmeldung der Person zu einem Workout ist „Zu wenig“ und höchstens 14 Tage alt, wenn ein Bewegungs-Vorschlag ermittelt wird, dann wird bei der Sortierung nach Intensität eine Stufe kräftiger angestrebt („wenig“ → mittel, „mittel“ → kräftig, „viel“ bleibt kräftig); Intensitäten, die Energie oder Erfahrung nicht erlauben, bleiben ausgeschlossen.
+- [ ] **AC-12** — Angenommen die jüngste Aufwand-Rückmeldung der Person zu einem Workout ist „Zu wenig“, wenn ein Bewegungs-Vorschlag ermittelt wird, dann gilt die Sortierung aus PROJ-6 unverändert — „Zu wenig“ wird nur gespeichert; da nur die jüngste Aufwand-Rückmeldung zählt, hebt es wie „Passte“ eine frühere Verschiebung durch „Zu viel“ auf.
 - [ ] **AC-13** — Angenommen die jüngste Aufwand-Rückmeldung zu einem Workout ist „Passte“ oder älter als 14 Tage, oder es gibt keine, wenn ein Bewegungs-Vorschlag ermittelt wird, dann gilt die Sortierung aus PROJ-6 unverändert.
 - [ ] **AC-14** — Angenommen die Person gibt eine Aufwand-Rückmeldung zu einer Mahlzeit, wenn danach ein Mahlzeiten-Vorschlag ermittelt wird, dann ändert diese Rückmeldung den Vorschlag nicht und ersetzt auch nicht die jüngste Aufwand-Rückmeldung zu einem Workout.
-- [ ] **AC-15** — Angenommen die Verschiebung aus AC-11 bzw. AC-12 hat dazu geführt, dass ein anderer Hauptvorschlag erscheint als ohne sie, wenn der Vorschlag angezeigt wird, dann steht unter „Passt zu: …“ die Zeile „Etwas sanfter, weil es letztes Mal zu viel war.“ bzw. „Etwas kräftiger, weil es letztes Mal zu wenig war.“; ändert sich der Hauptvorschlag nicht, erscheint keine Zeile. „Lieber nicht“ wird nie erwähnt.
+- [ ] **AC-15** — Angenommen die Verschiebung aus AC-11 hat dazu geführt, dass ein anderer Hauptvorschlag erscheint als ohne sie, wenn der Vorschlag angezeigt wird, dann steht unter „Passt zu: …“ die Zeile „Etwas sanfter, weil es letztes Mal zu viel war.“; ändert sich der Hauptvorschlag nicht, erscheint keine Zeile. „Lieber nicht“ wird nie erwähnt.
 
 ### Daten und Zugriff
 
@@ -69,7 +70,7 @@
 - [ ] **EC-5** — Angenommen alle passenden Inhalte sind mit „Lieber nicht“ bewertet, wenn ein Vorschlag ermittelt wird, dann gibt es trotzdem einen Vorschlag aus diesen Inhalten — „Lieber nicht“ ändert nur die Reihenfolge, nie die Auswahl.
 - [ ] **EC-6** — Angenommen der bewertete Inhalt wurde inzwischen aus dem Angebot genommen, wenn die Bestätigungskarte angezeigt wird, dann lässt sich die Rückmeldung trotzdem geben; kommt der Inhalt später zurück, gilt ein „Lieber nicht“ weiter.
 - [ ] **EC-7** — Angenommen die Person hat „Zu viel“ gewählt und die Energie „wenig“ angegeben, wenn der Vorschlag ermittelt wird, dann bleibt die Sortierung wie ohne Rückmeldung (sanfter als sanft gibt es nicht) und es erscheint keine Erklärungszeile.
-- [ ] **EC-8** — Angenommen die Person gibt zu mehreren Workouts nacheinander Aufwand-Rückmeldungen, wenn ein Bewegungs-Vorschlag ermittelt wird, dann zählt nur die zuletzt gespeicherte, und die 14 Tage aus AC-11 und AC-12 rechnen ab deren Speicherzeitpunkt.
+- [ ] **EC-8** — Angenommen die Person gibt zu mehreren Workouts nacheinander Aufwand-Rückmeldungen, wenn ein Bewegungs-Vorschlag ermittelt wird, dann zählt nur die zuletzt gespeicherte, und die 14 Tage aus AC-11 rechnen ab deren Speicherzeitpunkt.
 
 ## Übergreifende Anforderungen
 
@@ -82,7 +83,7 @@
 - [ ] Vor dem ersten Deploy: `/dsgvo PROJ-7` — ob Aufwand-Rückmeldungen zu Workouts als Gesundheitsdaten gelten, Aufbewahrungsfrist (bisher bis zur Kontolöschung), Angaben von 12- bis 15-Jährigen.
 - [ ] Bei der Produktvalidierung prüfen, ob die zwei Fragen nach „Geschafft“ als hilfreich oder als lästig empfunden werden, und wie oft sie beantwortet werden.
 - [ ] Bei der Produktvalidierung prüfen, ob 14 Tage für die Wirkung der Aufwand-Rückmeldung passen.
-- [ ] Fachlich prüfen lassen, ob „Zu wenig“ eine kräftigere Intensität anstreben darf, besonders bei Minderjährigen und Einsteigern (die Grenzen aus Energie und Erfahrung bleiben bestehen).
+- [x] Fachlich prüfen lassen, ob „Zu wenig“ eine kräftigere Intensität anstreben darf → entfällt: „Zu wenig“ wird nur gespeichert und ändert keine Vorschläge (2026-11-24).
 
 ## Entscheidungsprotokoll
 
@@ -100,3 +101,4 @@
 | Aufwand bei Mahlzeiten wird nur gespeichert | Die Person wählt den Aufwand beim Essens-Check-in jedes Mal selbst. | 2026-11-17 |
 | Erklärungszeile nur, wenn die Rückmeldung den Hauptvorschlag tatsächlich verändert hat | Nachvollziehbare Regeln (PRD), ohne bei jedem Vorschlag eine Zeile mehr zu zeigen. | 2026-11-17 |
 | Gewählte Antwort bleibt markiert, keine zusätzliche Dankesmeldung | Die Markierung bestätigt das Speichern; weniger Text auf „Heute“. | 2026-11-17 |
+| „Zu wenig“ wird nur gespeichert und ändert keine Vorschläge; die Zeile „Etwas kräftiger …“ entfällt (ersetzt die Verschiebung um eine Stufe kräftiger aus AC-12, 2026-11-17) | Beim Bauen zeigte sich: Innerhalb von Zeit und Energie des Moments wählt die Regel ohnehin schon das Kräftigste; eine Verschiebung nach oben änderte nie etwas. Kräftigere Vorschläge gegen die Energieangabe sollen nicht entstehen. | 2026-11-24 |
