@@ -66,3 +66,16 @@ describe('ExerciseView (AC-6, AC-7)', () => {
     expect(screen.queryByText('45 Sekunden')).not.toBeInTheDocument()
   })
 })
+
+describe('ExerciseView — Link zur Übungsbibliothek (PROJ-9 AC-2)', () => {
+  it('verlinkt den Namen, wenn eine Adresse übergeben wird', () => {
+    render(<ExerciseView step={step} easier={false} onEasierChange={() => {}} nameHref="/bewegung/uebungen/squat" />)
+    expect(screen.getByRole('link', { name: 'Kniebeuge' })).toHaveAttribute('href', '/bewegung/uebungen/squat')
+  })
+
+  it('zeigt den Namen ohne Link, wenn keine Adresse übergeben wird (geführte Durchführung)', () => {
+    render(<ExerciseView step={step} easier={false} onEasierChange={() => {}} />)
+    expect(screen.getByRole('heading', { name: 'Kniebeuge' })).toBeInTheDocument()
+    expect(screen.queryByRole('link')).toBeNull()
+  })
+})

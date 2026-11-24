@@ -21,7 +21,7 @@
 
 ## Stufe 2 — Ansichten
 
-- [ ] T3 [P] Listenansicht:
+- [x] T3 [P] Listenansicht:
   - Filter-Links mit `aria-current` und Häkchen, mindestens 48 px; „Passt zu meinem Zuhause“ nur wenn angeboten
   - alphabetische Liste mit Ausstattung; Detail-Links mit Filter
   - Leer-Zustand „Keine Übung passt zu diesem Filter.“ mit „Alle zeigen“
@@ -29,14 +29,14 @@
   - mit Test
 
   · files: `src/features/exercises/components/exercise-library.tsx`, `src/features/exercises/components/exercise-library.test.tsx` · → AC-3, AC-4, AC-5, AC-6; EC-1, EC-6
-- [ ] T4 [P] Detailansicht:
+- [x] T4 [P] Detailansicht:
   - Name, Anleitung, leichtere Variante, Ausstattung, Sicherheitshinweis
   - „Kommt vor in“ mit Links oder „Gerade in keinem Workout.“
   - „Alle Übungen“ mit Filter; kein Startknopf
   - mit Test
 
   · files: `src/features/exercises/components/exercise-detail.tsx`, `src/features/exercises/components/exercise-detail.test.tsx` · → AC-7, AC-8, AC-9, AC-10; EC-6
-- [ ] T5 [P] Änderung PROJ-4: `ExerciseView` mit optionaler Adresse für den Namen; das Workout-Detail übergibt die Bibliotheksadresse der Übung, die geführte Durchführung nichts; mit Tests. · files: `src/features/workouts/components/exercise-view.tsx`, `src/features/workouts/components/exercise-view.test.tsx`, `src/features/workouts/components/workout-detail.tsx`, `src/features/workouts/components/workout-detail.test.tsx` · → AC-2
+- [x] T5 [P] Änderung PROJ-4: `ExerciseView` mit optionaler Adresse für den Namen; das Workout-Detail übergibt die Bibliotheksadresse der Übung, die geführte Durchführung nichts; mit Tests. · files: `src/features/workouts/components/exercise-view.tsx`, `src/features/workouts/components/exercise-view.test.tsx`, `src/features/workouts/components/workout-detail.tsx`, `src/features/workouts/components/workout-detail.test.tsx` · → AC-2
 
 ## Stufe 3 — Seiten und Live-Prüfung
 

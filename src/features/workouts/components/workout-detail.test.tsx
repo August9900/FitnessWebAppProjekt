@@ -105,3 +105,10 @@ describe('WorkoutDetail', () => {
     expect(screen.getByText('Dauer').closest('dl')).toHaveTextContent('Ohne Ausstattung')
   })
 })
+
+describe('WorkoutDetail — Übungen nachschlagen (PROJ-9 AC-2)', () => {
+  it('verlinkt jeden Übungsnamen auf die Übung in der Bibliothek', () => {
+    render(<WorkoutDetail workout={workout} />)
+    expect(screen.getByRole('link', { name: 'Rudern mit Band' })).toHaveAttribute('href', '/bewegung/uebungen/band_row')
+  })
+})
