@@ -35,7 +35,7 @@
 
 ## Stufe 3 — Seite und Live-Prüfung
 
-- [ ] T6 `/wochenblick` ersetzt den Platzhalter:
+- [x] T6 `/wochenblick` ersetzt den Platzhalter:
   - Person mit vollständigen Angaben ermitteln (samt Kontozeitpunkt)
   - Cookie `pulse_tz` und Parameter `woche` lesen, Aktionen des Abfragezeitraums laden, Woche aufbauen
   - `WeekView` und den Zeitzonen-Abgleich darstellen

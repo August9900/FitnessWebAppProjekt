@@ -135,3 +135,18 @@ Keine.
 ## Offene Fragen
 
 - [ ] Vor dem ersten Deploy: Cookie `pulse_tz` in `/dsgvo` und `docs/privacy.md` aufnehmen (technisch notwendig für die Anzeige, kein Tracking).
+
+## Umsetzungshinweise (/build, 2026-11-24)
+
+- **Jahresangabe im Datumsbereich:** Liegt eine Woche über einen Jahreswechsel oder in einem anderen Jahr als die laufende Woche, steht das Jahr dabei (z. B. „28. Dez. 2026 – 3. Jan. 2027“). Sonst bleibt es bei „17.–23. Nov.“.
+- **Monatskürzel:** Jan., Feb., März, Apr., Mai, Juni, Juli, Aug., Sept., Okt., Nov., Dez.
+- **Leere Tage für Screenreader:** Der Strich „–“ ist für Screenreader ausgeblendet, stattdessen wird „Kein Eintrag“ vorgelesen.
+- **Zeitzonen-Abgleich ohne Endlosschleife:** Neu geladen wird nur, wenn das Cookie nach dem Setzen wirklich vorhanden ist. Bei blockierten Cookies bleibt es ohne Neuladen bei deutscher Zeit. An den Abgleich wird der rohe Cookie-Wert (höchstens 64 Zeichen) nur zum Vergleich übergeben; der Server nutzt ausschließlich den geprüften Wert.
+- **Bau ohne Subagenten:** Die Stufen wurden nacheinander im Hauptkontext gebaut.
+- **Live-Prüfung (18/18)** gegen die lokale Datenbank und den Dev-Server mit zwei Testkonten:
+  - ohne Sitzung zur Anmeldung; nur eigene Aktionen
+  - leere laufende Woche mit Hinweis; kein „Vorige Woche“ in der Woche der Kontoerstellung; „heute“ markiert
+  - „geschafft“ und „angefangen“ mit Link, Art und Zustand; „heute nicht“ fehlt; Überblickssatz
+  - aktueller Stand nach Markieren; nicht mehr angebotener Inhalt mit Ersatztitel ohne Link
+  - Berlin gegen Lissabon bei 00:30; manipuliertes Cookie
+  - ungültige, zukünftige und zu frühe Woche in der Adresse
