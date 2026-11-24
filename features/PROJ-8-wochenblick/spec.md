@@ -77,6 +77,7 @@
 ## Offene Fragen
 
 - [ ] Vor dem ersten Deploy: `/dsgvo` für die Projektgesamtheit — der Wochenblick liest Aktionsdaten (PROJ-6), speichert aber nichts Neues.
+- [ ] Vor dem ersten Deploy: das technische Cookie mit der Gerätezeitzone (aus `/architecture`) in `/dsgvo` mitbetrachten.
 - [ ] Bei der Produktvalidierung prüfen, ob „angefangen“ im Rückblick als neutral oder als unerledigt empfunden wird.
 - [ ] Bei der Produktvalidierung prüfen, ob der Überblickssatz als ermutigend oder als belanglos empfunden wird.
 
