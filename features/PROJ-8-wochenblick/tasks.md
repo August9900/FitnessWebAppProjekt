@@ -22,7 +22,7 @@
 
 ## Stufe 2 — Ansichten
 
-- [ ] T4 [P] Darstellung (Server-Komponente):
+- [x] T4 [P] Darstellung (Server-Komponente):
   - Wochenkopf mit Überschrift, Datumsbereich und ggf. Überblickssatz
   - Blätter-Links nur wo erlaubt
   - geordnete Tagesliste mit „heute“ als Text und Einträgen: Titel als Link zum Detail bzw. Ersatztitel ohne Link, Art, Zustand; „–“ bei leeren Tagen
@@ -31,7 +31,7 @@
   - mit Test
 
   · files: `src/features/week/components/week-view.tsx`, `src/features/week/components/week-view.test.tsx` · → AC-1, AC-2, AC-3, AC-4, AC-7, AC-8, AC-9, AC-10, AC-11, AC-12, AC-13, AC-14; EC-1, EC-5
-- [ ] T5 [P] Zeitzonen-Abgleich (Client, unsichtbar): Gerätezeitzone lesen; weicht sie vom übergebenen Cookie-Wert ab, Cookie `pulse_tz` setzen (Pfad `/`, SameSite=Lax, ein Jahr) und einmal neu laden; mit Test. · files: `src/features/week/components/time-zone-sync.tsx`, `src/features/week/components/time-zone-sync.test.tsx` · → AC-2, AC-4; EC-2
+- [x] T5 [P] Zeitzonen-Abgleich (Client, unsichtbar): Gerätezeitzone lesen; weicht sie vom übergebenen Cookie-Wert ab, Cookie `pulse_tz` setzen (Pfad `/`, SameSite=Lax, ein Jahr) und einmal neu laden; mit Test. · files: `src/features/week/components/time-zone-sync.tsx`, `src/features/week/components/time-zone-sync.test.tsx` · → AC-2, AC-4; EC-2
 
 ## Stufe 3 — Seite und Live-Prüfung
 
