@@ -83,7 +83,7 @@
 
 ## Stufe 6 — Refine: „Zu wenig“ nur speichern (2026-11-24)
 
-- [ ] T12 „Zu wenig“ ergibt keine Intensitätsverschiebung mehr:
+- [x] T12 „Zu wenig“ ergibt keine Intensitätsverschiebung mehr:
   - In den Feedback-Regeln verschiebt nur „Zu viel“ (−1); „Zu wenig“ und „Passte“ ergeben 0. Ein jüngeres „Zu wenig“ hebt damit ein früheres „Zu viel“ auf.
   - Die Verschiebung kennt nur noch −1 und 0; der Text „Etwas kräftiger …“ entfällt.
   - In der Auswahlregel die Tests anpassen, die bisher eine Verschiebung nach oben verwenden.

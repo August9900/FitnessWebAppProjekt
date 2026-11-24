@@ -171,3 +171,8 @@ Keine.
   - Gleichzeitige Speicherungen von zwei Sitzungen derselben Person, `/heute` mit echter Sitzung, „Rückgängig“, neuer Check-in, Export und Kontolöschung: 9/9.
   - Die verknüpfte Abfrage der Signal-Rohdaten wurde live bestätigt.
   - Die Wirkung auf Vorschläge ist durch Regel- und Action-Tests belegt, nicht durch einen Browserdurchlauf.
+- **Refine „Zu wenig“ umgesetzt (2026-11-24, T12):**
+  - Die Verschiebung kennt nur noch −1 und 0.
+  - Der Text heißt jetzt `ADJUSTMENT_NOTE` (nur „Etwas sanfter …“).
+  - Die Ziel-Intensität wird nur noch nach unten auf „sanft“ begrenzt.
+  - Ohne Datenbank- oder Oberflächenänderung; `today.actions` blieb unverändert.

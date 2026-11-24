@@ -64,10 +64,22 @@ describe('dislikedIds (AC-9, AC-10, EC-6)', () => {
 })
 
 describe('intensityShift (AC-11 bis AC-13, EC-8)', () => {
-  it('verschiebt nach „Zu viel“ eine Stufe sanfter und nach „Zu wenig“ eine Stufe kräftiger', () => {
+  it('verschiebt nur nach „Zu viel“ eine Stufe sanfter; „Zu wenig“ und „Passte“ verschieben nichts (AC-12)', () => {
     expect(intensityShift([row({ effort: 'too_much', effortAt: daysAgo(1) })], now)).toBe(-1)
-    expect(intensityShift([row({ effort: 'too_little', effortAt: daysAgo(1) })], now)).toBe(1)
+    expect(intensityShift([row({ effort: 'too_little', effortAt: daysAgo(1) })], now)).toBe(0)
     expect(intensityShift([row({ effort: 'just_right', effortAt: daysAgo(1) })], now)).toBe(0)
+  })
+
+  it('hebt mit einem jüngeren „Zu wenig“ ein früheres „Zu viel“ auf (AC-12)', () => {
+    expect(
+      intensityShift(
+        [
+          row({ itemId: 'w_a', effort: 'too_much', effortAt: daysAgo(5) }),
+          row({ itemId: 'w_b', effort: 'too_little', effortAt: daysAgo(1) }),
+        ],
+        now
+      )
+    ).toBe(0)
   })
 
   it('wirkt höchstens 14 Tage ab dem Speicherzeitpunkt', () => {
@@ -88,12 +100,12 @@ describe('intensityShift (AC-11 bis AC-13, EC-8)', () => {
     expect(
       intensityShift(
         [
-          row({ itemId: 'w_a', effort: 'too_little', effortAt: daysAgo(1) }),
-          row({ itemId: 'w_b', effort: 'too_much', effortAt: daysAgo(6) }),
+          row({ itemId: 'w_a', effort: 'too_much', effortAt: daysAgo(1) }),
+          row({ itemId: 'w_b', effort: 'just_right', effortAt: daysAgo(6) }),
         ],
         now
       )
-    ).toBe(1)
+    ).toBe(-1)
   })
 
   it('ignoriert Zeilen ohne Aufwand und liefert ohne Rückmeldung keine Verschiebung', () => {
@@ -105,7 +117,6 @@ describe('intensityShift (AC-11 bis AC-13, EC-8)', () => {
 describe('adjustmentNote (AC-15)', () => {
   it('erklärt die Richtung der Verschiebung und schweigt ohne Verschiebung', () => {
     expect(adjustmentNote(-1)).toBe('Etwas sanfter, weil es letztes Mal zu viel war.')
-    expect(adjustmentNote(1)).toBe('Etwas kräftiger, weil es letztes Mal zu wenig war.')
     expect(adjustmentNote(0)).toBeNull()
   })
 })

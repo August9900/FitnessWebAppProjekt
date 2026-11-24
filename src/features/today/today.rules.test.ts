@@ -336,7 +336,7 @@ describe('Adressen (AC-10, AC-12, AC-13)', () => {
 })
 
 describe('PROJ-7 — „Lieber nicht“ in der Auswahl (AC-9, EC-5)', () => {
-  const signals = (dislikedIds: string[], intensityShift: -1 | 0 | 1 = 0) => ({ dislikedIds, intensityShift })
+  const signals = (dislikedIds: string[], intensityShift: -1 | 0 = 0) => ({ dislikedIds, intensityShift })
 
   it('stellt Workouts mit „Lieber nicht“ hinter alle anderen passenden, auch vor jede andere Regel', () => {
     const list = [workout('exact', { durationMinutes: 10 }), workout('short_a', { durationMinutes: 5 }), workout('short_b', { durationMinutes: 5 })]
@@ -369,21 +369,25 @@ describe('PROJ-7 — Intensitätsverschiebung (AC-11 bis AC-13, EC-7)', () => {
   const g = workout('gentle', { intensity: 'gentle' })
   const m = workout('moderate', { intensity: 'moderate' })
   const v = workout('vigorous', { intensity: 'vigorous' })
-  const shift = (intensityShift: -1 | 0 | 1) => ({ dislikedIds: [], intensityShift })
+  const shift = (intensityShift: -1 | 0) => ({ dislikedIds: [], intensityShift })
 
   it('strebt nach „Zu viel“ eine Stufe sanfter an', () => {
     expect(ids(selectWorkouts(move({ energy: 'medium' }), profile, [g, m], [], shift(-1)))).toEqual(['gentle', 'moderate'])
     expect(ids(selectWorkouts(move({ energy: 'high' }), profile, [g, m, v], [], shift(-1)))[0]).toBe('moderate')
   })
 
-  it('strebt nach „Zu wenig“ eine Stufe kräftiger an, ohne gesperrte Intensitäten zuzulassen', () => {
-    expect(ids(selectWorkouts(move({ energy: 'low' }), profile, [g, m, v], [], shift(1)))).toEqual(['gentle'])
-    expect(ids(selectWorkouts(move({ energy: 'medium' }), profile, [g, m, v], [], shift(1)))).toEqual(['moderate', 'gentle'])
+  it('lässt ohne Verschiebung (auch nach „Zu wenig“) die Reihenfolge aus PROJ-6 (AC-12, AC-13)', () => {
+    for (const energy of ['low', 'medium', 'high'] as const) {
+      expect(ids(selectWorkouts(move({ energy }), profile, [g, m, v], [], shift(0)))).toEqual(
+        ids(selectWorkouts(move({ energy }), profile, [g, m, v], []))
+      )
+    }
+    expect(ids(selectWorkouts(move({ energy: 'medium' }), profile, [g, m, v], [], shift(0)))).toEqual(['moderate', 'gentle'])
   })
 
   it('bleibt an den Rändern begrenzt (EC-7)', () => {
     expect(ids(selectWorkouts(move({ energy: 'low' }), profile, [g], [], shift(-1)))).toEqual(['gentle'])
-    expect(ids(selectWorkouts(move({ energy: 'high' }), profile, [g, m, v], [], shift(1)))).toEqual(['vigorous', 'moderate', 'gentle'])
+    expect(ids(selectWorkouts(move({ energy: 'low' }), profile, [g, m, v], [], shift(-1)))).toEqual(['gentle'])
   })
 
   it('ändert die Dauer-Regel nicht — sie geht der Intensität weiter vor', () => {
@@ -403,19 +407,17 @@ describe('PROJ-7 — suggestWorkouts mit Erklärung (AC-15, EC-7)', () => {
     expect(result.note).toBe('Etwas sanfter, weil es letztes Mal zu viel war.')
   })
 
-  it('ändert nach „Zu wenig“ die Reihenfolge nicht, weil die Energie kräftigere Stufen ausschließt (AC-12)', () => {
+  it('zeigt ohne Verschiebung nie eine Erklärung und nie „kräftiger“ (AC-12, AC-15)', () => {
     const v = workout('vigorous', { intensity: 'vigorous' })
     for (const energy of ['low', 'medium', 'high'] as const) {
-      const shifted = suggestWorkouts(move({ energy }), profile, [g, m, v], [], { dislikedIds: [], intensityShift: 1 })
-      expect(ids(shifted.workouts)).toEqual(ids(selectWorkouts(move({ energy }), profile, [g, m, v], [])))
-      expect(shifted.note).toBeNull()
+      expect(suggestWorkouts(move({ energy }), profile, [g, m, v], [], { dislikedIds: [], intensityShift: 0 }).note).toBeNull()
     }
   })
 
   it('schweigt, wenn sich der Hauptvorschlag nicht ändert (EC-7) oder nichts passt', () => {
     expect(suggestWorkouts(move({ energy: 'low' }), profile, [g], [], { dislikedIds: [], intensityShift: -1 }).note).toBeNull()
     expect(suggestWorkouts(move({ energy: 'medium' }), profile, [m], [], { dislikedIds: [], intensityShift: -1 }).note).toBeNull()
-    expect(suggestWorkouts(move(), profile, [], [], { dislikedIds: [], intensityShift: 1 })).toEqual({ workouts: [], note: null })
+    expect(suggestWorkouts(move(), profile, [], [], { dislikedIds: [], intensityShift: -1 })).toEqual({ workouts: [], note: null })
   })
 
   it('erwähnt „Lieber nicht“ nie', () => {

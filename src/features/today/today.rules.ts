@@ -120,7 +120,7 @@ export function selectWorkouts(
 ): Workout[] {
   const atHome = (profile.homeEquipment ?? []) as string[]
   const allowed: Intensity[] = ALLOWED_BY_ENERGY[answers.energy]
-  const aimed = Math.min(2, Math.max(0, ENERGY_INDEX[answers.energy] + signals.intensityShift))
+  const aimed = Math.max(0, ENERGY_INDEX[answers.energy] + signals.intensityShift)
 
   const candidates = workouts.filter(
     (workout) =>

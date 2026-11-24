@@ -44,13 +44,17 @@ export type FeedbackSignalRow = {
   suggestAgainAt: Date | null
 }
 
-/** −1 aims one intensity level gentler, +1 one level stronger, 0 leaves the PROJ-6 rule as it is. */
-export type IntensityShift = -1 | 0 | 1
+/**
+ * −1 aims one intensity level gentler, 0 leaves the PROJ-6 rule as it is. There is no shift up:
+ * "Zu wenig" is only stored — the energy of the moment already caps the intensity (AC-12).
+ */
+export type IntensityShift = -1 | 0
 
 export const EFFORT_WINDOW_DAYS = 14
 const DAY_MS = 24 * 60 * 60 * 1000
 
-const SHIFT_BY_EFFORT = { too_little: 1, just_right: 0, too_much: -1 } satisfies Record<EffortRating, IntensityShift>
+/** Only "Zu viel" shifts; "Zu wenig" and "Passte" give 0, so either lifts an earlier "Zu viel" (AC-11 to AC-13). */
+const SHIFT_BY_EFFORT = { too_little: 0, just_right: 0, too_much: -1 } satisfies Record<EffortRating, IntensityShift>
 
 /**
  * Content the person last answered "Lieber nicht" for (AC-9). Per content only the most recently
@@ -83,13 +87,8 @@ export function intensityShift(workoutRows: FeedbackSignalRow[], now: Date): Int
 }
 
 /** The line under "Passt zu: …" when the shift changed the main suggestion (AC-15). */
-export const ADJUSTMENT_NOTES = {
-  gentler: 'Etwas sanfter, weil es letztes Mal zu viel war.',
-  stronger: 'Etwas kräftiger, weil es letztes Mal zu wenig war.',
-} as const
+export const ADJUSTMENT_NOTE = 'Etwas sanfter, weil es letztes Mal zu viel war.'
 
 export function adjustmentNote(shift: IntensityShift): string | null {
-  if (shift < 0) return ADJUSTMENT_NOTES.gentler
-  if (shift > 0) return ADJUSTMENT_NOTES.stronger
-  return null
+  return shift < 0 ? ADJUSTMENT_NOTE : null
 }
