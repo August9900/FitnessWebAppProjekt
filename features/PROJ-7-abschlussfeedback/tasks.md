@@ -81,9 +81,19 @@
 
   · files: `src/features/today/components/open-actions.tsx`, `src/features/today/components/open-actions.test.tsx`, `src/app/(protected)/(bereiche)/heute/page.tsx` · → AC-1, AC-2, AC-5, AC-7, AC-8, AC-16, AC-17, AC-18; EC-2, EC-4, EC-6
 
+## Stufe 6 — Refine: „Zu wenig“ nur speichern (2026-11-24)
+
+- [ ] T12 „Zu wenig“ ergibt keine Intensitätsverschiebung mehr:
+  - In den Feedback-Regeln verschiebt nur „Zu viel“ (−1); „Zu wenig“ und „Passte“ ergeben 0. Ein jüngeres „Zu wenig“ hebt damit ein früheres „Zu viel“ auf.
+  - Die Verschiebung kennt nur noch −1 und 0; der Text „Etwas kräftiger …“ entfällt.
+  - In der Auswahlregel die Tests anpassen, die bisher eine Verschiebung nach oben verwenden.
+  - Neue Tests: „Zu wenig“ verschiebt nichts; „Zu wenig“ hebt ein früheres „Zu viel“ auf.
+
+  · files: `src/features/feedback/feedback.rules.ts`, `src/features/feedback/feedback.rules.test.ts`, `src/features/today/today.rules.ts`, `src/features/today/today.rules.test.ts` · → AC-11, AC-12, AC-13, AC-15; EC-7, EC-8
+
 ## Parallelisierung
 
-- **Stufen sind Schranken.** Grundlagen (1) → Datenzugriff und Auswahlregel (2) → Server Actions und Export (3) → Ansichten (4) → Einbau (5).
+- **Stufen sind Schranken.** Grundlagen (1) → Datenzugriff und Auswahlregel (2) → Server Actions und Export (3) → Ansichten (4) → Einbau (5) → Refine „Zu wenig“ (6).
 - **`[P]` setzt getrennte Dateien voraus.** Die `files:`-Mengen aller `[P]`-Aufgaben einer Stufe sind paarweise verschieden.
 - AC-8, AC-16, AC-18, EC-1, EC-2, EC-4 und EC-6 werden nach Stufe 5 zusätzlich live gegen die lokale Datenbank geprüft.
 - Während `/build` läuft jede `[P]`-Aufgabe einer Stufe in einem eigenen Subagenten oder nacheinander. Der Hauptagent integriert, prüft gegen die AC-IDs der Stufe und hakt hier ab.
