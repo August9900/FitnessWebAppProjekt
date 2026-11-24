@@ -4,7 +4,7 @@ import 'server-only'
 import { z } from 'zod'
 import { PLACES } from '@/features/profile/profile.schema'
 import { createClient } from '@/lib/supabase/server'
-import { DURATIONS, EXERCISE_EQUIPMENT, INTENSITIES, REVIEW_STATUSES, STEP_MODES, type Workout } from './workouts.rules'
+import { DURATIONS, EXERCISE_EQUIPMENT, INTENSITIES, REVIEW_STATUSES, STEP_MODES, type Exercise, type Workout } from './workouts.rules'
 
 const ID_PATTERN = /^[a-z0-9_]{3,40}$/
 
@@ -97,4 +97,38 @@ export async function getWorkout(id: string): Promise<Workout | null> {
   const { data, error } = await supabase.from('workouts').select(COLUMNS).eq('id', id).eq('is_offered', true).maybeSingle()
   if (error) throw new Error(`Workout could not be read (${error.code ?? 'unknown'}).`)
   return data ? toWorkout(data) : null
+}
+
+const EXERCISE_COLUMNS = 'id, name, instructions, easier_name, easier_instructions, equipment'
+
+/** Database row → exercise; a row that does not fit is left out instead of breaking the view. */
+export function toExercise(row: unknown): Exercise | null {
+  const parsed = exerciseRow.safeParse(row)
+  if (!parsed.success) return null
+  const data = parsed.data
+  return {
+    id: data.id,
+    name: data.name,
+    instructions: data.instructions,
+    easierName: data.easier_name,
+    easierInstructions: data.easier_instructions,
+    equipment: data.equipment,
+  }
+}
+
+/** All exercises for the PROJ-9 library (AC-3). Throws when reading fails — the error state shows (EC-5). */
+export async function getAllExercises(): Promise<Exercise[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase.from('exercises').select(EXERCISE_COLUMNS).order('name')
+  if (error) throw new Error(`Exercises could not be read (${error.code ?? 'unknown'}).`)
+  return (data ?? []).map(toExercise).filter((exercise): exercise is Exercise => exercise !== null)
+}
+
+/** One exercise, or null for an invalid or unknown id (PROJ-9 AC-7, EC-2). */
+export async function getExercise(id: string): Promise<Exercise | null> {
+  if (!ID_PATTERN.test(id)) return null
+  const supabase = await createClient()
+  const { data, error } = await supabase.from('exercises').select(EXERCISE_COLUMNS).eq('id', id).maybeSingle()
+  if (error) throw new Error(`Exercise could not be read (${error.code ?? 'unknown'}).`)
+  return data ? toExercise(data) : null
 }

@@ -152,3 +152,46 @@ describe('getWorkout (AC-6, EC-2)', () => {
     await expect(data.getWorkout('morgen_mobil_5')).rejects.toThrow('could not be read')
   })
 })
+
+describe('Übungen für die Bibliothek (PROJ-9 AC-3, AC-7, EC-2, EC-5)', () => {
+  it('liest alle Übungen in einer Abfrage', async () => {
+    listResult = { data: [exercise('kniebeuge', ['mat']), exercise('marschieren')], error: null }
+    const exercises = await data.getAllExercises()
+
+    expect(from).toHaveBeenCalledTimes(1)
+    expect(calls.table).toBe('exercises')
+    expect(calls.select).toContain('easier_instructions')
+    expect(exercises).toEqual([
+      { id: 'kniebeuge', name: 'Übung kniebeuge', instructions: 'Mach es so.', easierName: 'Leicht kniebeuge', easierInstructions: 'Mach es leichter.', equipment: ['mat'] },
+      { id: 'marschieren', name: 'Übung marschieren', instructions: 'Mach es so.', easierName: 'Leicht marschieren', easierInstructions: 'Mach es leichter.', equipment: [] },
+    ])
+  })
+
+  it('lässt unpassende Zeilen weg und wirft bei Lesefehlern (EC-5)', async () => {
+    listResult = { data: [exercise('ok'), { ...exercise('kaputt'), equipment: ['trampolin'] }], error: null }
+    expect((await data.getAllExercises()).map((entry) => entry.id)).toEqual(['ok'])
+    listResult = { data: null, error: { code: '08006' } }
+    await expect(data.getAllExercises()).rejects.toThrow('Exercises could not be read (08006)')
+  })
+
+  it('liest eine Übung nach ID', async () => {
+    singleResult = { data: exercise('kniebeuge', ['mat']), error: null }
+    await expect(data.getExercise('kniebeuge')).resolves.toMatchObject({ id: 'kniebeuge', equipment: ['mat'] })
+    expect(calls.table).toBe('exercises')
+    expect(calls.eq).toEqual([['id', 'kniebeuge']])
+  })
+
+  it('liefert null für eine unbekannte oder ungültige ID, ohne ungültige IDs abzufragen (EC-2)', async () => {
+    singleResult = { data: null, error: null }
+    await expect(data.getExercise('gibt_es_nicht')).resolves.toBeNull()
+    from.mockClear()
+    await expect(data.getExercise('../x')).resolves.toBeNull()
+    await expect(data.getExercise('Kniebeuge')).resolves.toBeNull()
+    expect(from).not.toHaveBeenCalled()
+  })
+
+  it('wirft, wenn das Lesen einer Übung scheitert', async () => {
+    singleResult = { data: null, error: { code: '08006' } }
+    await expect(data.getExercise('kniebeuge')).rejects.toThrow('Exercise could not be read (08006)')
+  })
+})

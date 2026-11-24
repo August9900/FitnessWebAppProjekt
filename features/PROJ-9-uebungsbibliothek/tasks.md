@@ -8,7 +8,7 @@
 
 ## Stufe 1 — Grundlagen
 
-- [ ] T1 [P] Reine Regeln:
+- [x] T1 [P] Reine Regeln:
   - Filter `alle` / `ohne-ausstattung` / `zuhause` mit Beschriftungen
   - Filter aus der Adresse lesen: Unbekanntes sowie `zuhause` ohne „Zuhause“ im Profil ergeben `alle`; angebotene Filter
   - Übungen filtern (ohne Ausstattung; Ausstattung vollständig in der Ausstattung zuhause); nach deutscher Reihenfolge sortieren
@@ -17,7 +17,7 @@
   - Tabellen-Tests
 
   · files: `src/features/exercises/exercises.rules.ts`, `src/features/exercises/exercises.rules.test.ts` · → AC-3, AC-4, AC-5, AC-6, AC-8, AC-9; EC-1, EC-2, EC-3, EC-4
-- [ ] T2 [P] Änderung PROJ-4, Datenzugriff: alle Übungen; eine Übung nach ID (ungültige oder unbekannte ID → nichts); bestehende Zeilenprüfung wiederverwenden; Lesefehler werfen ohne Personendaten; mit Test. · files: `src/features/workouts/workouts.data.ts`, `src/features/workouts/workouts.data.test.ts` · → AC-3, AC-7; EC-2, EC-5
+- [x] T2 [P] Änderung PROJ-4, Datenzugriff: alle Übungen; eine Übung nach ID (ungültige oder unbekannte ID → nichts); bestehende Zeilenprüfung wiederverwenden; Lesefehler werfen ohne Personendaten; mit Test. · files: `src/features/workouts/workouts.data.ts`, `src/features/workouts/workouts.data.test.ts` · → AC-3, AC-7; EC-2, EC-5
 
 ## Stufe 2 — Ansichten
 
