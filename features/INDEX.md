@@ -30,7 +30,7 @@
 | PROJ-6 | Tagesentscheidung | Ein kurzer Check-in führt zu einer passenden Aktion und verständlichen Alternativen. | In Progress | [Spec](PROJ-6-tagesentscheidung/) | 2026-09-23 |
 | PROJ-7 | Abschlussfeedback | Nach einer Aktion können Nutzende melden, ob Aufwand und Inhalt gepasst haben. | In Progress | [Spec](PROJ-7-abschlussfeedback/) | 2026-09-23 |
 | PROJ-8 | Wochenblick | Nutzende sehen ihre begonnenen und abgeschlossenen Aktionen ohne Streak-Strafe oder Nachholpflicht. | In Progress | [Spec](PROJ-8-wochenblick/) | 2026-09-23 |
-| PROJ-9 | Übungsbibliothek | Nutzende können Übungen mit ihren Eigenschaften und Einsatzmöglichkeiten nachschlagen. | Architected | [Spec](PROJ-9-uebungsbibliothek/) | 2026-09-23 |
+| PROJ-9 | Übungsbibliothek | Nutzende können Übungen mit ihren Eigenschaften und Einsatzmöglichkeiten nachschlagen. | Tasked | [Spec](PROJ-9-uebungsbibliothek/) | 2026-09-23 |
 | PROJ-10 | Eigene Trainingspläne | Nutzende können Trainingspläne selbst zusammenstellen und speichern. | Roadmap | — | 2026-09-23 |
 | PROJ-11 | Gewichtsverlauf | Nutzende können Gewichtseinträge und deren Verlauf einsehen. | Roadmap | — | 2026-09-23 |
 | PROJ-12 | Nährwertübersicht | Nutzende können berechnete Kalorien- und Makrowerte einsehen. | Roadmap | — | 2026-09-23 |
