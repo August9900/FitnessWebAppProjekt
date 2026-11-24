@@ -17,7 +17,6 @@ Heute  /heute  (PROJ-6, unverändert im App-Rahmen)
     └── Vorschlag
         ├── Hauptvorschlag: Titel · Dauer · „Passt zu: …“
         │   └── NEU, nur wenn zutreffend: „Etwas sanfter, weil es letztes Mal zu viel war.“
-        │                                 bzw. „Etwas kräftiger, weil es letztes Mal zu wenig war.“
         └── Alternativen (unverändert)
 ```
 
@@ -30,7 +29,7 @@ Heute  /heute  (PROJ-6, unverändert im App-Rahmen)
 
 | Modul / Pfad | Verantwortung und Schnittstelle | Erlaubte Abhängigkeiten / wiederverwendet |
 | --- | --- | --- |
-| `src/features/feedback/feedback.rules.ts` | Rein. Typen und Beschriftungen: Aufwand (`too_little` „Zu wenig“, `just_right` „Passte“, `too_much` „Zu viel“), „Wieder vorschlagen“ (`yes` „Gern wieder“, `no` „Lieber nicht“), Fragetitel. **Signale für die Auswahl** aus gespeicherten Rückmeldungen: die Liste der „Lieber nicht“-Inhalte je Art (je Inhalt zählt die zuletzt gespeicherte Antwort, AC-9, AC-10) und die Intensitätsverschiebung −1/0/+1 aus der jüngsten Aufwand-Rückmeldung zu einem Workout, höchstens 14 Tage alt (AC-11 bis AC-14, EC-8). Die aktuelle Zeit kommt als Eingabe. Außerdem die Texte der beiden Erklärungszeilen. | `features/today/today.rules` (Typ `Kind`), Zod. |
+| `src/features/feedback/feedback.rules.ts` | Rein. Typen und Beschriftungen: Aufwand (`too_little` „Zu wenig“, `just_right` „Passte“, `too_much` „Zu viel“), „Wieder vorschlagen“ (`yes` „Gern wieder“, `no` „Lieber nicht“), Fragetitel. **Signale für die Auswahl** aus gespeicherten Rückmeldungen: die Liste der „Lieber nicht“-Inhalte je Art (je Inhalt zählt die zuletzt gespeicherte Antwort, AC-9, AC-10) und die Intensitätsverschiebung −1 oder 0 aus der jüngsten Aufwand-Rückmeldung zu einem Workout, höchstens 14 Tage alt (AC-11 bis AC-14, EC-8): nur „Zu viel“ verschiebt, „Zu wenig“ und „Passte“ ergeben 0. Die aktuelle Zeit kommt als Eingabe. Außerdem der Text der Erklärungszeile. | `features/today/today.rules` (Typ `Kind`), Zod. |
 | `src/features/feedback/feedback.schema.ts` | Zod-Schema der Eingabe von `saveFeedback`: Aktions-ID (UUID), Frage (`effort` oder `suggestAgain`) und ein zur Frage passender Wert. Unbekannte Schlüssel werden abgelehnt. | Zod, Rules. |
 | `src/features/feedback/feedback.data.ts` | `server-only`. **Antwort speichern** (eine Frage einer eigenen Aktion; Ergebnis „gespeichert“ oder „nicht mehr möglich“). **Rückmeldung einer Aktion lesen** (für die Vorauswahl, AC-5). **Signal-Rohdaten lesen** (eigene Rückmeldungen mit Art und Inhalt-ID der Aktion). **Alle eigenen Rückmeldungen für den Export** lesen. | `src/lib/supabase/server.ts`, Rules. |
 | `src/features/feedback/feedback.actions.ts` | `'use server'`. `saveFeedback`: Sitzung prüfen, Eingabe prüfen, speichern. Liefert ein Ergebnis statt zu werfen: „gespeichert“, „nicht mehr möglich“ (dann wird `/heute` aktualisiert, EC-4), „ungültig“, „fehlgeschlagen“. Protokolliert nur Action-Name und Datenbankcode. | `features/account/account.data` (`requireUser`), Data, Schema. |
@@ -63,7 +62,7 @@ Abhängigkeitsrichtung: Die Module unter `features/feedback` dürfen `today.rule
 | AC/EC | Bedingung und Grenze | Mechanismus | Geplanter Nachweis |
 | --- | --- | --- | --- |
 | AC-9, AC-10, EC-5 | „Lieber nicht“ sortiert ganz nach hinten, schließt nie aus; je Inhalt zählt die zuletzt gespeicherte Antwort. | Reine Signal-Funktion in `feedback.rules`; erster Sortierschlüssel in `today.rules`. | Unit-Tests mit Tabellen (auch: alle Kandidaten „Lieber nicht“, Mahlzeiten mit Auffüllen). |
-| AC-11 bis AC-14, EC-7, EC-8 | Verschiebung um genau eine Stufe, begrenzt; nur jüngste Workout-Aufwand-Rückmeldung, ≤ 14 Tage ab deren Speicherzeitpunkt; Mahlzeiten unberührt. | Datenbank setzt den Zeitpunkt je Frage beim Ändern des Werts; reine Funktionen berechnen Verschiebung und Sortierung. | Unit-Tests an den Grenzen (13,99 / 14 Tage, „wenig“ + „Zu viel“, „viel“ + „Zu wenig“, Mahlzeit jünger als Workout). |
+| AC-11 bis AC-14, EC-7, EC-8 | Verschiebung um genau eine Stufe, begrenzt; nur jüngste Workout-Aufwand-Rückmeldung, ≤ 14 Tage ab deren Speicherzeitpunkt; Mahlzeiten unberührt. | Datenbank setzt den Zeitpunkt je Frage beim Ändern des Werts; reine Funktionen berechnen Verschiebung und Sortierung. | Unit-Tests an den Grenzen (13,99 / 14 Tage, „wenig“ + „Zu viel“, „Zu wenig“ ergibt keine Verschiebung und hebt ein früheres „Zu viel“ auf, Mahlzeit jünger als Workout). |
 | AC-15 | Erklärung nur bei verändertem Hauptvorschlag. | Auswahl mit und ohne Verschiebung vergleichen (rein). | Unit-Tests; Action-Test für die Rückgabe. |
 | AC-8 | „Rückgängig“ löscht die Rückmeldung – auch wenn das Zurücknehmen von einem anderen Gerät kommt. | Datenbank-Trigger an `actions`: Verlässt eine Aktion den Zustand „geschafft“, wird ihre Rückmeldung in derselben Änderung gelöscht. | Live-Prüfung: Rückmeldung geben, zurücknehmen, Zeile ist weg. |
 | EC-1 | Mehrfache schnelle Tipps: die zuletzt getippte Antwort gilt; höchstens eine Antwort je Frage und Aktion. | Eine Zeile pro Aktion (Primärschlüssel = Aktion); jede Frage schreibt nur ihre Spalte; die Oberfläche sendet je Frage nacheinander und merkt nur den letzten Tipp vor. | Komponententest mit verzögerter Action; Live-Prüfung zweier gleichzeitiger Speicherungen derselben Frage (eine Zeile). |
@@ -97,7 +96,7 @@ Eine neue Tabelle mit persönlichen Daten. Jede Zeile gehört genau einer Person
 
 **Abgeleitet, nicht gespeichert:**
 - **„Lieber nicht“-Inhalte je Art:** Je Inhalt zählt die Rückmeldung mit dem jüngsten `suggest_again_at` über alle Aktionen zu diesem Inhalt. Ist sie `no`, gilt der Inhalt als „Lieber nicht“ (AC-9, AC-10).
-- **Intensitätsverschiebung:** Die Rückmeldung mit dem jüngsten `effort_at` unter allen Aktionen der Art „Bewegen“. Ist sie höchstens 14 Tage alt, ergibt `too_much` −1, `too_little` +1 und `just_right` 0; sonst 0 (AC-11 bis AC-14).
+- **Intensitätsverschiebung:** Die Rückmeldung mit dem jüngsten `effort_at` unter allen Aktionen der Art „Bewegen“. Ist sie höchstens 14 Tage alt, ergibt `too_much` −1; `too_little` und `just_right` ergeben 0, ebenso eine ältere oder fehlende Rückmeldung (AC-11 bis AC-14). Ein jüngeres „Zu wenig“ hebt damit ein früheres „Zu viel“ auf.
 
 **Automatik in der Datenbank:**
 - **Zeitstempel je Frage:** Vor dem Anlegen und Ändern setzt die Datenbank `effort_at` bzw. `suggest_again_at`, wenn sich der jeweilige Wert ändert. Die Oberfläche und die Server Action übergeben keine Zeitpunkte.
@@ -154,6 +153,7 @@ Keine.
 | Erklärung durch Vergleich der Auswahl mit und ohne Verschiebung | Genau die Bedingung der Spec (AC-15, EC-7), ohne Sonderfälle für Begrenzungen. | Zeile immer, wenn eine Verschiebung aktiv ist | Die Auswahl wird zweimal berechnet; bei ≈ 30 Inhalten vernachlässigbar. | 2026-11-17 |
 | Kein `revalidatePath` nach erfolgreichem Speichern, nur bei „nicht mehr möglich“ | Die Karte behält ihren eigenen Zustand; kein Neuladen der Seite bei jedem Tipp. Bei EC-4 zeigt die Aktualisierung den tatsächlichen Zustand. | Nach jedem Speichern aktualisieren | Ein zweites Gerät sieht neue Antworten erst beim nächsten Öffnen von „Heute“ (so in EC-2 vorgesehen). | 2026-11-17 |
 | Zugriffsregeln verlangen eine aktive Sitzung | Gleiches Muster wie PROJ-1 und PROJ-6. | Nur `user_id` prüfen | Keiner. | 2026-11-17 |
+| „Zu wenig“ ergibt keine Intensitätsverschiebung mehr; nur „Zu viel“ verschiebt (−1). Die Verschiebungsart bleibt eine Zahl, kennt aber nur noch −1 und 0; der Text „Etwas kräftiger …“ entfällt. Ersetzt die Zuordnung `too_little` → +1 vom 2026-11-17 (Refine nach dem Bau). | Die Verschiebung nach oben konnte die Reihenfolge nie ändern, weil die Energie kräftigere Stufen ausschließt; die Spec legt „Zu wenig“ jetzt als „nur speichern“ fest. Speicherung und Datenbank bleiben unverändert. | +1 behalten (wirkungslos) | Keiner; kleinere Regel. | 2026-11-24 |
 
 ## Offene Fragen
 
@@ -161,7 +161,7 @@ Keine.
 
 ## Umsetzungshinweise (/build, 2026-11-17)
 
-- **„Zu wenig“ ändert die Reihenfolge nie (AC-12 wie spezifiziert):** Die Energie lässt nur Intensitäten bis zu ihrer eigenen Stufe zu. Eine um eine Stufe kräftigere Ziel-Intensität hat deshalb immer dieselbe Reihenfolge wie ohne Verschiebung, und die Zeile „Etwas kräftiger …“ erscheint nie. Ein Test in `today.rules.test.ts` hält das fest. Ob „Zu wenig“ künftig etwas anderes bewirken soll (z. B. längere Dauer bevorzugen), ist eine Produktentscheidung für `/refine PROJ-7`.
+- **„Zu wenig“ ändert die Reihenfolge nie (AC-12 in der damaligen Fassung):** Die Energie lässt nur Intensitäten bis zu ihrer eigenen Stufe zu. Eine um eine Stufe kräftigere Ziel-Intensität hat deshalb immer dieselbe Reihenfolge wie ohne Verschiebung, und die Zeile „Etwas kräftiger …“ erscheint nie. → Am 2026-11-24 per `/refine PROJ-7` entschieden: „Zu wenig“ wird nur gespeichert (siehe Technische Entscheidungen).
 - **Ablehnung durch die Zugriffsregel:** Die Datenbank meldet beim Anlegen *und* beim Ändern den Code `42501`, nicht „0 Zeilen“. Das Anlegen scheitert an der Zugriffsregel schon vor der Eindeutigkeitsprüfung. `feedback.data` übersetzt beides in „nicht mehr möglich“.
 - **Fragen-Block in der Bestätigungskarte:** Er liegt mit `aria-live="off"` in der Live-Region der Karte, damit Tipps nicht die ganze Karte erneut ansagen. Er wird je Aktion neu aufgebaut.
 - **Speicherstand bei schnellen Tipps:** Ein erfolgreich gespeicherter Zwischenstand zählt als „zuletzt gespeichert“, auch wenn danach noch ein Tipp wartet. Scheitert dieser, springt die Markierung auf den Zwischenstand zurück (EC-1, EC-3).
