@@ -47,6 +47,13 @@ export const EAT_EFFORT_ANSWER_LABELS = {
   quick: 'Kurz kochen',
   up_to_20: 'Bis 20 Min',
 } satisfies Record<Effort, string>
+/** Shown instead of the title when the content is no longer offered (PROJ-6, PROJ-8 EC-1). */
+export const ACTION_FALLBACK_TITLES = { move: 'Dein Workout', eat: 'Deine Mahlzeit' } satisfies Record<Kind, string>
+
+export function actionTitle(item: { kind: Kind; title: string | null }): string {
+  return item.title ?? ACTION_FALLBACK_TITLES[item.kind]
+}
+
 export const CONCLUSION_MESSAGES = {
   done: 'Geschafft. Gut gemacht.',
   skipped: 'Okay. Vielleicht ein andermal.',

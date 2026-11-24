@@ -15,7 +15,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { FeedbackQuestions } from '@/features/feedback/components/feedback-questions'
 import { NO_FEEDBACK, type FeedbackAnswers } from '@/features/feedback/feedback.rules'
 import { concludeAction, undoConclusion } from '../today.actions'
-import { CONCLUSION_MESSAGES, TODAY_MESSAGES, type Kind } from '../today.rules'
+import { CONCLUSION_MESSAGES, TODAY_MESSAGES, actionTitle, type Kind } from '../today.rules'
 
 export type OpenActionItem = {
   id: string
@@ -35,11 +35,6 @@ export type ConclusionItem = {
   feedback: FeedbackAnswers | null
 }
 
-const FALLBACK_TITLES = { move: 'Dein Workout', eat: 'Deine Mahlzeit' } satisfies Record<Kind, string>
-
-function titleOf(item: { kind: Kind; title: string | null }): string {
-  return item.title ?? FALLBACK_TITLES[item.kind]
-}
 
 type Failure = { actionId: string; retry: () => void }
 
@@ -97,7 +92,7 @@ export function OpenActions({
               <Check aria-hidden="true" className="size-5 shrink-0" />
               <span>{CONCLUSION_MESSAGES[lastConclusion.status]}</span>
             </p>
-            <p className="text-sm text-muted-foreground">{titleOf(lastConclusion)}</p>
+            <p className="text-sm text-muted-foreground">{actionTitle(lastConclusion)}</p>
             <Button type="button" variant="ghost" onClick={() => undo(lastConclusion.id)} disabled={pending}>
               Rückgängig
             </Button>
@@ -118,7 +113,7 @@ export function OpenActions({
             <li key={action.id}>
               <Card>
                 <CardContent className="space-y-4 p-4">
-                  <p className="font-medium [overflow-wrap:anywhere]">{titleOf(action)}</p>
+                  <p className="font-medium [overflow-wrap:anywhere]">{actionTitle(action)}</p>
                   <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
                     <Button asChild variant="secondary">
                       <Link href={action.href}>Weitermachen</Link>

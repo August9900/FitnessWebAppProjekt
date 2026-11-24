@@ -6,6 +6,7 @@ import {
   ENERGY_LABELS,
   KIND_LABELS,
   answersSummary,
+  actionTitle,
   canUndo,
   continueHref,
   detailHref,
@@ -421,5 +422,13 @@ describe('PROJ-7 — suggestWorkouts mit Erklärung (AC-15, EC-7)', () => {
     const result = suggestWorkouts(move({ energy: 'medium' }), profile, [m, g], [], { dislikedIds: ['moderate'], intensityShift: 0 })
     expect(result.workouts[0].id).toBe('gentle')
     expect(result.note).toBeNull()
+  })
+})
+
+describe('actionTitle (PROJ-6, PROJ-8 EC-1)', () => {
+  it('nimmt den Titel oder einen neutralen Ersatz, wenn der Inhalt nicht mehr angeboten wird', () => {
+    expect(actionTitle({ kind: 'move', title: 'Morgens mobil' })).toBe('Morgens mobil')
+    expect(actionTitle({ kind: 'move', title: null })).toBe('Dein Workout')
+    expect(actionTitle({ kind: 'eat', title: null })).toBe('Deine Mahlzeit')
   })
 })

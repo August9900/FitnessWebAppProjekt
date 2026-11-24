@@ -336,6 +336,25 @@ export async function getOpenActions(userId: string, now: Date): Promise<ActionW
   return (data ?? []).map(toActionWithTitle).filter((action): action is ActionWithTitle => action !== null)
 }
 
+/**
+ * The person's actions "begonnen" or "geschafft" whose start lies in [from, to), oldest first,
+ * with titles (null when the content is no longer offered) — the input of the Wochenblick
+ * (PROJ-8 AC-4 to AC-6, EC-1, EC-6). "Heute nicht" is left out. Throws when reading fails (EC-4).
+ */
+export async function getOwnActionsStartedBetween(userId: string, from: Date, to: Date): Promise<ActionWithTitle[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('actions')
+    .select(ACTION_WITH_TITLE_COLUMNS)
+    .eq('user_id', userId)
+    .in('status', ['started', 'done'])
+    .gte('started_at', from.toISOString())
+    .lt('started_at', to.toISOString())
+    .order('started_at', { ascending: true })
+  if (error) throw failed('Week actions could not be read', error)
+  return (data ?? []).map(toActionWithTitle).filter((action): action is ActionWithTitle => action !== null)
+}
+
 /** The latest marking, while it can still be undone (AC-15); otherwise null. */
 export async function getUndoableConclusion(userId: string): Promise<ActionWithTitle | null> {
   const supabase = await createClient()

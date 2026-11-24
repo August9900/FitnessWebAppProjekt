@@ -8,7 +8,7 @@
 
 ## Stufe 1 — Grundlagen
 
-- [ ] T1 [P] Reine Regeln:
+- [x] T1 [P] Reine Regeln:
   - Zeitzone prüfen (ungültig → `Europe/Berlin`); Ortsdatum eines Zeitpunkts; Montag einer Woche
   - Parameter `woche` streng als `JJJJ-MM-TT` lesen; ungültig, Zukunft oder vor der Woche der Kontoerstellung → laufende Woche
   - Abfragezeitraum mit einem Tag Puffer
@@ -17,8 +17,8 @@
   - Tabellen-Tests: Berlin, Lissabon, Helsinki, Mitternacht, Wochengrenze, Sommer- und Winterzeit
 
   · files: `src/features/week/week.rules.ts`, `src/features/week/week.rules.test.ts` · → AC-1, AC-2, AC-3, AC-4, AC-5, AC-6, AC-9, AC-10, AC-11, AC-12, AC-13, AC-14, AC-15; EC-2, EC-6
-- [ ] T2 [P] Änderung PROJ-6, Datenzugriff: Lesefunktion für eigene Aktionen mit Zustand `started` oder `done`, deren Beginn im Zeitraum liegt; mit Titeln (leer, wenn nicht mehr angeboten), aufsteigend nach Beginn; wirft bei Lesefehlern ohne Personendaten; mit Test. · files: `src/features/today/today.data.ts`, `src/features/today/today.data.test.ts` · → AC-4, AC-5, AC-6, AC-16; EC-1, EC-4, EC-6
-- [ ] T3 [P] Änderung PROJ-6: Ersatztitel „Dein Workout“ / „Deine Mahlzeit“ in `today.rules`; `open-actions` nutzt sie von dort, Verhalten unverändert; mit Tests. · files: `src/features/today/today.rules.ts`, `src/features/today/today.rules.test.ts`, `src/features/today/components/open-actions.tsx`, `src/features/today/components/open-actions.test.tsx` · → EC-1
+- [x] T2 [P] Änderung PROJ-6, Datenzugriff: Lesefunktion für eigene Aktionen mit Zustand `started` oder `done`, deren Beginn im Zeitraum liegt; mit Titeln (leer, wenn nicht mehr angeboten), aufsteigend nach Beginn; wirft bei Lesefehlern ohne Personendaten; mit Test. · files: `src/features/today/today.data.ts`, `src/features/today/today.data.test.ts` · → AC-4, AC-5, AC-6, AC-16; EC-1, EC-4, EC-6
+- [x] T3 [P] Änderung PROJ-6: Ersatztitel „Dein Workout“ / „Deine Mahlzeit“ in `today.rules`; `open-actions` nutzt sie von dort, Verhalten unverändert; mit Tests. · files: `src/features/today/today.rules.ts`, `src/features/today/today.rules.test.ts`, `src/features/today/components/open-actions.tsx`, `src/features/today/components/open-actions.test.tsx` · → EC-1
 
 ## Stufe 2 — Ansichten
 

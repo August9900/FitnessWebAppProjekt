@@ -15,7 +15,7 @@ function nextResult(): Promise<Result> {
 
 function chain(query: Query) {
   const builder: Record<string, unknown> = {}
-  for (const method of ['select', 'insert', 'update', 'eq', 'in', 'gt', 'order', 'limit']) {
+  for (const method of ['select', 'insert', 'update', 'eq', 'in', 'gt', 'gte', 'lt', 'order', 'limit']) {
     builder[method] = (...args: unknown[]) => {
       query.ops.push([method, ...args])
       return builder
@@ -408,6 +408,40 @@ describe('getOpenActions (AC-13, EC-8)', () => {
     results = [{ data: [{ ...actionRow(), workout: null, meal: null }], error: null }]
     const [action] = await data.getOpenActions('u1', now)
     expect(action.title).toBeNull()
+  })
+})
+
+describe('getOwnActionsStartedBetween (PROJ-8 AC-4 bis AC-6, EC-1, EC-4)', () => {
+  const from = new Date('2026-11-16T00:00:00Z')
+  const to = new Date('2026-11-25T00:00:00Z')
+
+  it('liest eigene begonnene und geschaffte Aktionen im Zeitraum mit Titel, älteste zuerst', async () => {
+    results = [
+      {
+        data: [
+          { ...actionRow({ status: 'done', concluded_at: hoursAgo(1) }), workout: { title: 'Morgens mobil' }, meal: null },
+          { ...actionRow({ id: '44444444-4444-4444-8444-444444444444' }), workout: null, meal: null },
+        ],
+        error: null,
+      },
+    ]
+    const actions = await data.getOwnActionsStartedBetween('u1', from, to)
+
+    expect(op(queries[0], 'select')[0][0]).toContain('workout:workouts(title)')
+    expect(op(queries[0], 'eq')).toEqual([['user_id', 'u1']])
+    expect(op(queries[0], 'in')).toEqual([['status', ['started', 'done']]])
+    expect(op(queries[0], 'gte')).toEqual([['started_at', from.toISOString()]])
+    expect(op(queries[0], 'lt')).toEqual([['started_at', to.toISOString()]])
+    expect(op(queries[0], 'order')).toEqual([['started_at', { ascending: true }]])
+    expect(actions.map((action) => [action.status, action.title])).toEqual([
+      ['done', 'Morgens mobil'],
+      ['started', null],
+    ])
+  })
+
+  it('wirft, statt eine leere Woche zu liefern, wenn das Lesen scheitert (EC-4)', async () => {
+    results = [{ data: null, error: { code: '08006' } }]
+    await expect(data.getOwnActionsStartedBetween('u1', from, to)).rejects.toBeInstanceOf(data.TodayDataError)
   })
 })
 
