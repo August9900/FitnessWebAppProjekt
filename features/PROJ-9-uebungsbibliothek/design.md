@@ -50,6 +50,23 @@ Workout-Detail  /bewegung/[id]  (PROJ-4)
 
 Abhängigkeitsrichtung: `features/exercises` benutzt die Regeln von PROJ-4. Umgekehrt beziehen die Workout-Komponenten aus `features/exercises` nur die Adresse und den Text. Ein Kreis entsteht nicht, weil `workouts.rules` `exercises.rules` nicht kennt.
 
+## Pausen (AC-11, Refine 2026-11-25)
+
+Eine Übung trägt künftig die Kennzeichnung **„Pause“**. Die Bibliothek blendet so gekennzeichnete Übungen aus und verlinkt ihre Namen nicht; der Auswahl-Dialog für eigene Workouts (PROJ-10) zeigt sie weiterhin.
+
+| Modul / Pfad | Änderung | Bezug |
+| --- | --- | --- |
+| `supabase/migrations/<Zeitstempel>_exercises_is_pause.sql` (neu) | Neue Spalte `is_pause` an `exercises`: Wahrheitswert, Pflicht, Standard „nein“. „Kurze Pause“ (`kurze_pause`) wird als Pause gekennzeichnet. Rechte und Zugriffsregeln bleiben, wie sie sind; Übungen sind weiter für Angemeldete nur lesbar. | AC-11 |
+| **Änderung PROJ-4:** `src/features/workouts/workouts.rules.ts` | Die Übung kennt das Merkmal „ist Pause“. Fehlt es, gilt die Übung nicht als Pause, damit bestehende Testdaten gültig bleiben. | AC-11 |
+| **Änderung PROJ-4:** `src/features/workouts/workouts.data.ts` | Alle Abfragen mit Übungen lesen `is_pause` mit: alle Übungen, eine Übung sowie die Übungen in den Workout-Schritten. | AC-11 |
+| `src/features/exercises/exercises.rules.ts` | Zwei neue reine Funktionen: **Übungen für die Bibliothek** (ohne Pausen; danach greifen Filter und Sortierung wie bisher) und **Bibliotheksadresse einer Übung** (für Pausen keine Adresse, also kein Link). | AC-3, AC-11 |
+| `src/app/(protected)/(bereiche)/bewegung/uebungen/page.tsx` | Die Liste nimmt nur Übungen für die Bibliothek. | AC-3, AC-11 |
+| `src/app/(protected)/(bereiche)/bewegung/uebungen/[id]/page.tsx` | Eine Pause gilt wie eine unbekannte Übung → „Nicht gefunden“. | AC-11 |
+| **Änderung PROJ-4:** `src/features/workouts/components/workout-detail.tsx` | Übungsname nur verlinkt, wenn die Übung eine Bibliotheksadresse hat. | AC-2, AC-11 |
+| **Änderung PROJ-10:** `src/features/custom-workouts/components/custom-workout-detail.tsx` | Ebenso. | AC-11 |
+
+Der Auswahl-Dialog (PROJ-10) bekommt weiter alle Übungen samt Pausen und bleibt unverändert. Die Auswahlregel auf „Heute“ (PROJ-6) bleibt unberührt: Sie wählt Workouts, nicht Übungen.
+
 ## Footprint
 
 - **Code und Tests:**
@@ -57,7 +74,7 @@ Abhängigkeitsrichtung: `features/exercises` benutzt die Regeln von PROJ-4. Umge
   - `src/features/exercises/components/exercise-library.tsx` und `exercise-detail.tsx`, jeweils mit Test
   - Änderungen mit Tests an `src/features/workouts/workouts.data.ts`, `components/exercise-view.tsx` und `components/workout-detail.tsx`
   - Seiten `bewegung/uebungen/page.tsx`, `bewegung/uebungen/[id]/page.tsx` und `not-found.tsx`; geändert wird `bewegung/page.tsx`
-- **Migrationen, Tabellen und Zugriffsregeln:** keine. Gelesen werden `exercises` (für Angemeldete lesbar) sowie `workouts` und `workout_steps` (nur angebotene) aus PROJ-4.
+- **Migrationen, Tabellen und Zugriffsregeln:** eine neue Migration mit der Spalte `is_pause` an `exercises` und der Kennzeichnung von „Kurze Pause“ (AC-11); keine neuen Tabellen oder Zugriffsregeln. Gelesen werden `exercises` (für Angemeldete lesbar) sowie `workouts` und `workout_steps` (nur angebotene) aus PROJ-4.
 - **Namen der Umgebungsvariablen:** keine.
 - **Pakete:** keine neuen.
 - **Routen, Rahmen und externe Dienste:** neu `/bewegung/uebungen` und `/bewegung/uebungen/[id]` (Parameter `filter`). Geändert werden `/bewegung` (Link) und `/bewegung/[id]` (Übungsnamen verlinkt). Keine Navigationseinträge, keine externen Dienste.
@@ -82,7 +99,7 @@ Abhängigkeitsrichtung: `features/exercises` benutzt die Regeln von PROJ-4. Umge
 
 ## Datenmodell
 
-Keine neuen Tabellen, Spalten oder Zugriffsregeln. Gelesen werden die gemeinsamen Inhalte aus PROJ-4:
+Keine neuen Tabellen oder Zugriffsregeln. Seit dem Refine vom 25.11. gibt es eine neue Spalte `is_pause` an `exercises` (siehe „Pausen“). Gelesen werden die gemeinsamen Inhalte aus PROJ-4:
 - **Übung** (`exercises`): `id`, `name`, `instructions`, `easier_name`, `easier_instructions`, `equipment` (Liste aus `mat`, `dumbbells`, `resistance_band`, `pull_up_bar`, `kettlebell`; leer = ohne Ausstattung).
 - **Kurzes Workout mit Schritten** (`workouts`, `workout_steps`): nur angebotene, über die bestehende Abfrage.
 
@@ -114,6 +131,8 @@ Keine.
 | Entscheidung | Begründung | Erwogene Alternative | Nachteil / Grenze | Datum |
 | --- | --- | --- | --- | --- |
 | Keine Datenänderung; Bibliothek liest die PROJ-4-Inhalte | Die Spec verlangt nur vorhandene Merkmale; „Kommt vor in“ ergibt sich aus den Workout-Schritten. | Eigene Tabelle oder Merkmale für die Bibliothek | Keine. | 2026-11-24 |
+| Pausen als Merkmal `is_pause` an der Übung (ersetzt „keine Datenänderung“ für diesen einen Punkt) | Inhalte werden über Migrationen gepflegt; weitere Pausen lassen sich später ohne Codeänderung kennzeichnen; eine Stelle der Wahrheit für Bibliothek und Links. | Fest eingetragene ID `kurze_pause` in den Regeln | Eine Migration und ein Feld mehr in den Übungsabfragen. | 2026-11-25 |
+| Ausblenden über eine eigene Regel „Übungen für die Bibliothek“, nicht im Filter selbst | Der Auswahl-Dialog (PROJ-10) nutzt dieselben Filter und soll Pausen weiter zeigen. | Pausen in der Filterfunktion ausschließen | Zwei Schritte statt einem beim Aufbau der Liste. | 2026-11-25 |
 | Lesefunktionen für Übungen im Datenmodul von PROJ-4 | Übungen gehören zu PROJ-4; dieselbe Zeilenprüfung, ein Ort pro Tabelle (wie PROJ-8 beim Aktionsverlauf). | Eigenes Datenmodul der Bibliothek | Kleine Änderung an einer PROJ-4-Datei. | 2026-11-24 |
 | „Kommt vor in“ aus der bestehenden Abfrage der angebotenen Workouts | Eine erprobte Abfrage ohne N+1; berücksichtigt automatisch „nicht mehr angeboten“ (EC-3). | Eigene Abfrage über die Schritte je Übung | Lädt alle angebotenen Workouts (≈ 15) pro Detailaufruf; vernachlässigbar. | 2026-11-24 |
 | Filter als Parameter in der Adresse, Filter-Links statt Zustand im Browser | Bleibt beim Zurückkehren und Neuladen erhalten (AC-6, AC-9); reine Server-Seiten. | Filter im Browser-Zustand wie die Workout-Liste | Jeder Filterwechsel lädt die Seite neu (schnell, kleine Liste). | 2026-11-24 |
