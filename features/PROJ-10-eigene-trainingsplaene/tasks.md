@@ -48,8 +48,8 @@
 
 ## Stufe 4 — Ansichten
 
-- [ ] T8 [P] Abschnitt „Deine Workouts“: alphabetische Liste mit „N Übungen“, Leer-Zustand, „Neues Workout“; mit Test. · files: `src/features/custom-workouts/components/custom-workout-list.tsx`, `src/features/custom-workouts/components/custom-workout-list.test.tsx` · → AC-1; EC-7
-- [ ] T9 [P] Editor:
+- [x] T8 [P] Abschnitt „Deine Workouts“: alphabetische Liste mit „N Übungen“, Leer-Zustand, „Neues Workout“; mit Test. · files: `src/features/custom-workouts/components/custom-workout-list.tsx`, `src/features/custom-workouts/components/custom-workout-list.test.tsx` · → AC-1; EC-7
+- [x] T9 [P] Editor:
   - Name und Folge mit Art, Wert, „Nach oben“, „Nach unten“, „Entfernen“
   - Prüfung im Browser, Hinweise am Feld
   - Sperre während des Speicherns
@@ -58,8 +58,8 @@
   - mit Test
 
   · files: `src/features/custom-workouts/components/custom-workout-editor.tsx`, `src/features/custom-workouts/components/custom-workout-editor.test.tsx` · → AC-2, AC-3, AC-5, AC-6, AC-9, AC-11; EC-2, EC-3, EC-4, EC-5, EC-8
-- [ ] T10 [P] Auswahl-Dialog „Übung hinzufügen“: Filter wie in der Bibliothek, alphabetische Liste mit Ausstattung, „Hinzufügen“ mehrfach möglich, Dialog bleibt offen; mit Test. · files: `src/features/custom-workouts/components/exercise-picker.tsx`, `src/features/custom-workouts/components/exercise-picker.test.tsx` · → AC-2, AC-4
-- [ ] T11 [P] Detail:
+- [x] T10 [P] Auswahl-Dialog „Übung hinzufügen“: Filter wie in der Bibliothek, alphabetische Liste mit Ausstattung, „Hinzufügen“ mehrfach möglich, Dialog bleibt offen; mit Test. · files: `src/features/custom-workouts/components/exercise-picker.tsx`, `src/features/custom-workouts/components/exercise-picker.test.tsx` · → AC-2, AC-4
+- [x] T11 [P] Detail:
   - Ausstattung, Sicherheitshinweis, Folge mit „Leichter“ und Links zur Bibliothek
   - „Los geht's“ mit „leichter“-Auswahl, „Bearbeiten“
   - „Löschen“ mit Bestätigung, Sperre und Fehlermeldung
