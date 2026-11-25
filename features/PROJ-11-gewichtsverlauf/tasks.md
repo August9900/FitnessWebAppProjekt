@@ -35,7 +35,7 @@
 
 ## Stufe 3 — Aktionen und Export
 
-- [ ] T7 [P] Server Actions `saveWeightEntry`, `deleteWeightEntry`, `deleteAllWeightEntries`, `setWeightVisibility`: Sitzung, Schema und Zugang prüfen (Speichern/Löschen: „Gewicht sichtbar“; Einstellung: „ab 16“); Ergebnisse gespeichert · schon vorhanden · gibt es nicht mehr · ungültig · Fehler; `/gewicht` bzw. Rahmen neu laden; mit Test. · files: `src/features/weight/weight.actions.ts`, `src/features/weight/weight.actions.test.ts` · → AC-2, AC-4, AC-5, AC-6, AC-11, AC-12, AC-13, AC-14; EC-2, EC-3, EC-4
+- [x] T7 [P] Server Actions `saveWeightEntry`, `deleteWeightEntry`, `deleteAllWeightEntries`, `setWeightVisibility`: Sitzung, Schema und Zugang prüfen (Speichern/Löschen: „Gewicht sichtbar“; Einstellung: „ab 16“); Ergebnisse gespeichert · schon vorhanden · gibt es nicht mehr · ungültig · Fehler; `/gewicht` bzw. Rahmen neu laden; mit Test. · files: `src/features/weight/weight.actions.ts`, `src/features/weight/weight.actions.test.ts` · → AC-2, AC-4, AC-5, AC-6, AC-11, AC-12, AC-13, AC-14; EC-2, EC-3, EC-4
 - [x] T8 [P] Änderung PROJ-1: Datenexport liest die Gewichtseinträge mit; mit Test. · files: `src/features/account/account.data.ts`, `src/features/account/account.data.test.ts` · → AC-16
 
 ## Stufe 4 — Bausteine der Ansicht
