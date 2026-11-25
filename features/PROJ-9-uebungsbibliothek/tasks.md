@@ -65,7 +65,7 @@
 
 ## Stufe 7 — Pausen: Live-Prüfung
 
-- [ ] T13 Live-Prüfung gegen die lokale Datenbank und den Dev-Server (Skript im Scratchpad, keine Projektdateien): „Kurze Pause“ fehlt in Liste und allen Filtern; ihre Adresse zeigt „Nicht gefunden“; im Workout-Detail und im Detail eines eigenen Workouts ist ihr Name kein Link, andere Namen bleiben verlinkt; im Auswahl-Dialog bleibt sie wählbar. · files: — · → AC-2, AC-3, AC-11
+- [x] T13 Live-Prüfung gegen die lokale Datenbank und den Dev-Server (Skript im Scratchpad, keine Projektdateien): „Kurze Pause“ fehlt in Liste und allen Filtern; ihre Adresse zeigt „Nicht gefunden“; im Workout-Detail und im Detail eines eigenen Workouts ist ihr Name kein Link, andere Namen bleiben verlinkt; im Auswahl-Dialog bleibt sie wählbar. · files: — · → AC-2, AC-3, AC-11
 
 ## Parallelisierung
 
