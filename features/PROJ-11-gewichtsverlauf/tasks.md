@@ -40,15 +40,15 @@
 
 ## Stufe 4 — Bausteine der Ansicht
 
-- [ ] T9 [P] Kurve als SVG: Linie mit Punkten, Beschriftung nur kleinster/größter Wert und erstes/letztes Datum; keine Zielmarken, Trendpfeile, wertenden Farben oder Animation; für Screenreader verborgen; mit Test. · files: `src/features/weight/components/weight-chart.tsx`, `src/features/weight/components/weight-chart.test.tsx` · → AC-7, AC-8
-- [ ] T10 [P] Dialog „Eintragen“ / „Eintrag ändern“:
+- [x] T9 [P] Kurve als SVG: Linie mit Punkten, Beschriftung nur kleinster/größter Wert und erstes/letztes Datum; keine Zielmarken, Trendpfeile, wertenden Farben oder Animation; für Screenreader verborgen; mit Test. · files: `src/features/weight/components/weight-chart.tsx`, `src/features/weight/components/weight-chart.test.tsx` · → AC-7, AC-8
+- [x] T10 [P] Dialog „Eintragen“ / „Eintrag ändern“:
   - Datum (vorausgefüllt mit heute, höchstens heute) und Gewicht; Prüfung vor dem Senden mit Hinweisen je Feld
   - Rückfrage „Für diesen Tag gibt es schon einen Eintrag (<Wert> kg). Ersetzen?“ aus den geladenen Einträgen und aus der Serverantwort
   - „Diesen Eintrag gibt es nicht mehr.“; gesperrt während des Speicherns; Eingaben bleiben bei Fehler
   - mit Test
 
   · files: `src/features/weight/components/weight-entry-dialog.tsx`, `src/features/weight/components/weight-entry-dialog.test.tsx` · → AC-4, AC-5, AC-6, AC-11; EC-2, EC-3, EC-4, EC-5
-- [ ] T11 [P] Schalter „Gewicht in der Navigation zeigen“: sofort gespeichert, bei Fehler zurück mit Meldung; mit Test. · files: `src/features/weight/components/weight-visibility-switch.tsx`, `src/features/weight/components/weight-visibility-switch.test.tsx` · → AC-14
+- [x] T11 [P] Schalter „Gewicht in der Navigation zeigen“: sofort gespeichert, bei Fehler zurück mit Meldung; mit Test. · files: `src/features/weight/components/weight-visibility-switch.tsx`, `src/features/weight/components/weight-visibility-switch.test.tsx` · → AC-14
 
 ## Stufe 5 — Verlauf und Anschlüsse
 
