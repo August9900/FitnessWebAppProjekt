@@ -52,7 +52,7 @@
 
 ## Stufe 5 — Verlauf und Anschlüsse
 
-- [ ] T12 [P] Verlaufsansicht:
+- [x] T12 [P] Verlaufsansicht:
   - Zeitraum-Wahl als Links mit `aria-current` und Häkchen
   - Kurve oder „Zu wenige Einträge für eine Kurve.“
   - Liste neueste zuerst mit „Ändern“ und „Löschen“ (Bestätigung „Eintrag vom <Datum> löschen?“)
@@ -61,7 +61,7 @@
   - mit Test
 
   · files: `src/features/weight/components/weight-view.tsx`, `src/features/weight/components/weight-view.test.tsx` · → AC-7, AC-8, AC-9, AC-10, AC-12, AC-13; EC-2, EC-3, EC-4
-- [ ] T13 [P] Anschlüsse: Das geschützte Layout liest den Zugang und reicht die Bereiche an den Rahmen (Lesefehler → ohne „Gewicht“); Profil-Abschnitt „Gewicht“ mit dem Schalter zwischen „Darstellung“ und „Passwort“, nur ab 16. · files: `src/app/(protected)/layout.tsx`, `src/app/(protected)/profil/page.tsx` · → AC-1, AC-2, AC-14
+- [x] T13 [P] Anschlüsse: Das geschützte Layout liest den Zugang und reicht die Bereiche an den Rahmen (Lesefehler → ohne „Gewicht“); Profil-Abschnitt „Gewicht“ mit dem Schalter zwischen „Darstellung“ und „Passwort“, nur ab 16. · files: `src/app/(protected)/layout.tsx`, `src/app/(protected)/profil/page.tsx` · → AC-1, AC-2, AC-14
 
 ## Stufe 6 — Seite und Live-Prüfung
 

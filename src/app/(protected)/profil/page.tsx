@@ -13,6 +13,8 @@ import { AppearanceSettings } from '@/features/appearance/appearance-settings'
 import { AnswersForm } from '@/features/profile/components/answers-form'
 import { getOwnAnswers } from '@/features/profile/profile.data'
 import { isComplete } from '@/features/profile/profile.rules'
+import { WeightVisibilitySwitch } from '@/features/weight/components/weight-visibility-switch'
+import { WEIGHT_TEXTS, canUseWeight } from '@/features/weight/weight.rules'
 
 export const metadata: Metadata = { title: 'Profil · PULSE' }
 
@@ -88,6 +90,16 @@ export default async function ProfilePage() {
         </h2>
         <AppearanceSettings />
       </section>
+
+      {/* PROJ-11: only "ab 16" has the area at all (AC-2, AC-14). */}
+      {canUseWeight(profile?.age_band_at_signup) && (
+        <section aria-labelledby="gewicht" className="mt-12 space-y-4">
+          <h2 id="gewicht" className="text-xl font-semibold">
+            {WEIGHT_TEXTS.sectionTitle}
+          </h2>
+          <WeightVisibilitySwitch initial={profile?.show_weight_in_nav !== false} />
+        </section>
+      )}
 
       <section aria-labelledby="passwort" className="mt-12 space-y-4">
         <h2 id="passwort" className="text-xl font-semibold">
