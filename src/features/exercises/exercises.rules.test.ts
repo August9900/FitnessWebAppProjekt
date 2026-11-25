@@ -4,6 +4,8 @@ import {
   exerciseEquipmentText,
   exerciseHref,
   filterExercises,
+  libraryExerciseHref,
+  libraryExercises,
   libraryHref,
   offeredFilters,
   parseFilter,
@@ -93,6 +95,27 @@ describe('Liste (AC-3)', () => {
   it('nennt die Ausstattung oder „Ohne Ausstattung“', () => {
     expect(exerciseEquipmentText(all[4])).toBe('Kurzhanteln, Matte')
     expect(exerciseEquipmentText(all[2])).toBe('Ohne Ausstattung')
+  })
+})
+
+describe('Pausen (AC-3, AC-11)', () => {
+  const pause: Exercise = { ...exercise('kurze_pause', 'Kurze Pause'), isPause: true }
+  const notPause: Exercise = { ...exercise('marschieren', 'Marschieren'), isPause: false }
+
+  it('lässt Pausen aus der Bibliothek weg, Übungen ohne Merkmal bleiben', () => {
+    expect(names(libraryExercises([pause, ...all, notPause]))).toEqual([...names(all), 'Marschieren'])
+  })
+
+  it('in keinem Filter erscheint eine Pause', () => {
+    for (const filter of ['alle', 'ohne-ausstattung', 'zuhause'] as const) {
+      expect(names(filterExercises(libraryExercises([pause, ...all]), filter, profile(homeNothing)))).not.toContain('Kurze Pause')
+    }
+  })
+
+  it('gibt Pausen keine Bibliotheksadresse, anderen Übungen schon', () => {
+    expect(libraryExerciseHref(pause)).toBeNull()
+    expect(libraryExerciseHref(notPause)).toBe('/bewegung/uebungen/marschieren')
+    expect(libraryExerciseHref(all[0])).toBe(`/bewegung/uebungen/${all[0].id}`)
   })
 })
 

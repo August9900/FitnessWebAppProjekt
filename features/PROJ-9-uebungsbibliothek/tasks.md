@@ -55,7 +55,7 @@
 
 ## Stufe 5 — Pausen: Regeln
 
-- [ ] T9 Neue reine Regeln „Übungen für die Bibliothek“ (ohne Pausen; Filter und Sortierung wie bisher) und „Bibliotheksadresse einer Übung“ (für Pausen keine Adresse); Tabellen-Tests. · files: `src/features/exercises/exercises.rules.ts`, `src/features/exercises/exercises.rules.test.ts` · → AC-3, AC-11
+- [x] T9 Neue reine Regeln „Übungen für die Bibliothek“ (ohne Pausen; Filter und Sortierung wie bisher) und „Bibliotheksadresse einer Übung“ (für Pausen keine Adresse); Tabellen-Tests. · files: `src/features/exercises/exercises.rules.ts`, `src/features/exercises/exercises.rules.test.ts` · → AC-3, AC-11
 
 ## Stufe 6 — Pausen: Ansichten und Seiten
 

@@ -1,7 +1,7 @@
 /**
  * Pure rules for PROJ-9 Übungsbibliothek: which filters exist and apply (AC-4, AC-5, EC-2, EC-4),
  * the alphabetical order (AC-3), where an exercise occurs (AC-8, EC-3), the addresses that keep the
- * chosen filter (AC-6, AC-9) and the texts. No IO, no framework.
+ * chosen filter (AC-6, AC-9), that pauses stay out of the library (AC-11) and the texts. No IO, no framework.
  */
 import type { ProfileAnswers } from '@/features/profile/profile.rules'
 import { durationLabel, equipmentText, type Exercise, type Workout } from '@/features/workouts/workouts.rules'
@@ -49,6 +49,11 @@ export function parseFilter(value: unknown, profile: ProfileForLibrary): Exercis
   return filter && offeredFilters(profile).includes(filter) ? filter : 'alle'
 }
 
+/** The exercises the library shows: everything except pauses such as „Kurze Pause“ (AC-3, AC-11). */
+export function libraryExercises(exercises: Exercise[]): Exercise[] {
+  return exercises.filter((exercise) => exercise.isPause !== true)
+}
+
 const collator = new Intl.Collator('de', { sensitivity: 'base' })
 
 /** All exercises the filter lets through, alphabetically in German order (AC-3 to AC-5). */
@@ -78,6 +83,11 @@ export function libraryHref(filter: ExerciseFilter = 'alle'): string {
 /** An exercise's detail; the filter travels along so "Alle Übungen" returns to it (AC-6, AC-9). */
 export function exerciseHref(exerciseId: string, filter: ExerciseFilter = 'alle'): string {
   return withFilter(`${LIBRARY_PATH}/${encodeURIComponent(exerciseId)}`, filter)
+}
+
+/** An exercise's library address for a linked name, or null for a pause — its name stays plain text (AC-2, AC-11). */
+export function libraryExerciseHref(exercise: Pick<Exercise, 'id' | 'isPause'>): string | null {
+  return exercise.isPause === true ? null : exerciseHref(exercise.id)
 }
 
 export type UsedInWorkout = { id: string; title: string; duration: string; href: string }
