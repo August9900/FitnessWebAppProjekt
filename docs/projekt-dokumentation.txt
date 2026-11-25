@@ -1,0 +1,338 @@
+PULSE – Projektdokumentation
+============================
+
+Stand: 25.11.2026
+Umfang: PROJ-1 bis PROJ-9 (PROJ-10 „Eigene Trainingspläne“ ist in Arbeit und wird später ergänzt)
+
+
+1. Worum geht es?
+-----------------
+
+PULSE ist eine Fitness- und Ernährungs-Web-App für Menschen ab 12 Jahren, denen Planung und
+Entscheidungen schwerfallen (z. B. bei ADHS, Autismus oder ähnlichen Schwierigkeiten). Eine Diagnose
+wird weder vorausgesetzt noch abgefragt.
+
+Statt eines perfekten Wochenplans hilft PULSE, auch an unruhigen Tagen schnell den nächsten
+machbaren Schritt zu finden: eine kurze Bewegung oder eine einfache Mahlzeit. Ziel ist, in unter
+30 Sekunden vom Öffnen der App bis zum Start einer Aktion zu kommen.
+
+Grundsätze, die sich durch alle Features ziehen:
+  - Keine Streaks, Punkte, Zähler, Ranglisten oder Nachholpflicht.
+  - Keine Körper-, Gewichts- oder Gesundheitsdaten.
+  - Feste, nachvollziehbare Regeln statt KI oder Zufall.
+  - Ruhige Oberfläche, wenig Entscheidungen pro Bildschirm, kurze Texte in Du-Form.
+  - Bedienbar mit Tastatur, Screenreader und Touch (Schaltflächen mindestens 48 px hoch).
+
+
+2. Technik in Kürze
+-------------------
+
+  - Next.js 16 (App Router) mit TypeScript
+  - Tailwind CSS und shadcn/ui
+  - Supabase (PostgreSQL, Anmeldung, Zugriffsregeln je Person)
+  - Zod und react-hook-form für Eingabeprüfung
+  - Vitest für Unit-Tests, Playwright für spätere E2E-Tests
+
+Code-Aufbau: Jedes Feature hat einen eigenen Ordner unter src/features/ (account, appearance,
+profile, workouts, meals, today, feedback, week, exercises). Seiten liegen unter src/app/,
+Datenbankänderungen unter supabase/migrations/.
+
+Wichtige Befehle:
+  npm run dev     Entwicklungsserver (localhost:3000)
+  npm test        Unit-Tests
+  npm run check   Lint, Typprüfung, Strukturprüfung, Tests und Build
+
+
+3. Aktueller Gesamtstand
+------------------------
+
+Alle Features von PROJ-1 bis PROJ-9 sind gebaut und laufen lokal mit Supabase in Docker und
+Testdaten. Der Status in features/INDEX.md ist überall „In Progress“: Die Umsetzung ist fertig,
+die formale Prüfung mit /qa wurde aber bewusst auf die Zeit vor dem ersten Deploy verschoben
+(Prototyp-Phase).
+
+Noch nicht veröffentlicht. Vor dem ersten Deploy sind unter anderem nötig:
+  - QA aller Features
+  - die zurückgestellten Schutzfunktionen der Anmeldung (siehe PROJ-1)
+  - Datenschutzprüfung mit /dsgvo (u. a. Minderjährige, Energie- und Aufwandsangaben)
+  - fachliche Prüfung aller Workouts, Übungen und Mahlzeiten durch Sport- und
+    Ernährungsfachleute
+  - Einrichtung von Hoster, E-Mail-Dienst und gehostetem Supabase-Projekt (Frankfurt)
+
+Seiten der App:
+  /                         öffentliche Einstiegsseite
+  /anmelden                 Anmeldung
+  /registrieren             Registrierung
+  /passwort-vergessen       Passwort zurücksetzen
+  /einstieg                 Fragen zum Kurzprofil (PROJ-3)
+  /heute                    Tagesentscheidung (PROJ-6, PROJ-7)
+  /bewegung                 Workout-Liste (PROJ-4)
+  /bewegung/[id]            Workout-Detail
+  /bewegung/[id]/los        geführte Durchführung
+  /bewegung/uebungen        Übungsbibliothek (PROJ-9)
+  /bewegung/uebungen/[id]   Übungsdetail
+  /essen                    Mahlzeiten-Liste (PROJ-5)
+  /essen/[id]               Mahlzeit-Detail
+  /wochenblick              Wochenrückblick (PROJ-8)
+  /profil                   Angaben, Darstellung, Konto
+  /profil/export            Datenexport (Download)
+
+
+4. Die Features im Einzelnen
+----------------------------
+
+PROJ-1 – Konto & Anmeldung
+..........................
+
+Was es kann:
+  - Registrierung mit E-Mail, Passwort und Altersgruppe („12–15“ oder „ab 16“). Kein
+    Geburtsdatum. Wer angibt, jünger als 12 zu sein, kann kein Konto anlegen.
+  - Passwörter müssen mindestens 12 Zeichen haben; lange Passphrasen sind erlaubt.
+  - Anmelden, Abmelden, angemeldet bleiben beim Seitenwechsel.
+  - Passwort vergessen: Zurücksetzen über einen einmal gültigen Code per E-Mail.
+  - Passwort ändern mit erneuter Bestätigung; andere Sitzungen verlieren dabei den Zugang.
+  - „Meine Daten herunterladen“: maschinenlesbarer Export aller eigenen Daten (alle Features
+    hängen ihre Daten dort an).
+  - Konto löschen: sofort wirksam, alle Sitzungen enden, alle Daten werden gelöscht, keine
+    Wiederherstellung.
+  - Fehlermeldungen verraten nicht, ob es zu einer E-Mail-Adresse ein Konto gibt.
+  - Jede Person sieht und ändert nur ihre eigenen Daten – auch bei direkten Datenbankanfragen.
+  - Beim Anlegen entsteht automatisch ein leeres Kurzprofil für PROJ-3.
+
+Bewusst nicht enthalten: Anmeldung über Google/Apple, Mehrfaktor-Anmeldung, Familienkonten.
+
+Stand: gebaut. Für den lokalen Prototyp zurückgestellt und Pflicht vor dem ersten Deploy:
+E-Mail-Bestätigung bei der Registrierung, E-Mail-Adresse ändern, Sperren nach zu vielen
+Fehlversuchen und Anfragegrenzen, Bot-Prüfung, Ablehnung bekannter kompromittierter Passwörter.
+Offen sind außerdem die Go-live-Einstellungen (Auth-Einstellungen, E-Mail-Dienst, Schlüssel beim
+Hoster).
+
+
+PROJ-2 – App-Rahmen & Navigation
+................................
+
+Was es kann:
+  - Fünf feste Bereiche: Heute, Bewegung, Essen, Wochenblick, Profil.
+  - Ab 1024 px Breite eine Seitenleiste mit PULSE-Marke, darunter eine untere Navigation mit
+    Symbol und Beschriftung (auch bei 320 px ohne seitliches Scrollen).
+  - Der aktive Bereich ist sichtbar markiert – nicht nur durch Farbe – und für Screenreader
+    ausgezeichnet. Der Bereichstitel steht im Kopfbereich.
+  - „Zum Inhalt springen“-Link, deutliche Fokusrahmen, volle Tastaturbedienung.
+  - Öffentliche Seiten zeigen nur die Marke, keine App-Navigation.
+  - Einheitliche Zustände: ruhiger Lade-Platzhalter, Fehlermeldung mit „Erneut versuchen“,
+    „Seite nicht gefunden“ mit Weg zurück.
+  - Designbasis der ganzen App: PULSE-Farben, Schriften Unbounded und Inter, Kontrast
+    mindestens 4,5:1. Schriften werden von der eigenen Adresse geladen, nicht von Google Fonts
+    (Datenschutz).
+  - Darstellung im Profil: Farbschema „System“, „Hell“ oder „Dunkel“ und „Bewegung reduzieren“.
+    Die Wahl wird nur auf dem Gerät gespeichert, wirkt sofort und ohne Aufblitzen beim Neuladen.
+    Ohne Wahl folgt die App dem Gerät.
+
+Stand: vollständig gebaut.
+
+
+PROJ-3 – Kurzprofil & Einstieg
+..............................
+
+Was es kann:
+  - Pflicht-Einstieg nach der Registrierung, bevor Heute, Bewegung, Essen und Wochenblick
+    erreichbar sind.
+  - Höchstens fünf Fragen, eine pro Bildschirm, mit „Frage X von Y“ und „Zurück“:
+      1. Ziel (genau eins): Mich mehr bewegen / Fitter und ausdauernder werden / Kräftiger
+         werden / Besser essen / Mich insgesamt wohler fühlen
+      2. Erfahrung: Ich fange gerade an / Ich bewege mich ab und zu / Ich trainiere regelmäßig
+      3. Orte (mindestens einer): Zuhause / Draußen / Fitnessstudio
+      4. Ausstattung zuhause (nur wenn „Zuhause“ gewählt): Matte, Kurzhanteln,
+         Widerstandsband, Klimmzugstange, Kettlebell – oder „Nichts davon“
+      5. Essensweise: Ich esse alles / Vegetarisch / Vegan
+  - Jede Antwort wird sofort gespeichert. Nach einer Unterbrechung geht es bei der ersten offenen
+    Frage weiter, auch auf einem anderen Gerät.
+  - Während des Einstiegs bleiben Abmelden, Datenexport und Kontolöschung erreichbar.
+  - Im Profil unter „Meine Angaben“ lassen sich alle Angaben jederzeit ändern. Wird „Zuhause“
+    abgewählt, wird die Ausstattung entfernt.
+  - Ungültige Kombinationen werden auch serverseitig abgelehnt.
+
+Bewusst nicht enthalten: Körperdaten, Gewicht, Gesundheitsangaben, Allergien, Freitext.
+
+Stand: vollständig gebaut.
+
+
+PROJ-4 – Kurze Workouts
+.......................
+
+Was es kann:
+  - Bereich „Bewegung“ zeigt die passenden Workouts mit Titel, Dauer, Intensität (sanft, mittel,
+    kräftig), Orten und Ausstattung.
+  - Passt-Regel: Das Workout ist an einem Ort der Person machbar (zuhause nur mit vorhandener
+    Ausstattung) und die Intensität passt zur Erfahrung (Anfang → sanft; ab und zu → sanft oder
+    mittel; regelmäßig → alle).
+  - Filter nach Dauer: Alle, 5, 10, 15 Minuten.
+  - „Alle Workouts anzeigen“ zeigt auch nicht passende, jeweils mit Grund
+    (z. B. „braucht Kurzhanteln“).
+  - Detailansicht: Beschreibung, Übungsfolge mit Sekunden oder Wiederholungen, kurze Anleitungen,
+    Sicherheitshinweis „Hör auf deinen Körper. Bei Schmerzen hörst du auf.“
+  - „Leichter“: Zu jeder Übung gibt es eine leichtere Variante, umschaltbar pro Durchgang.
+  - Geführte Durchführung: eine Übung pro Bildschirm, Timer mit Pause, kein automatisches
+    Weiterschalten, „Beenden“ jederzeit ohne Rückfrage. Der Timer stimmt auch, wenn das Handy
+    zwischendurch im Hintergrund war. Bei „Bewegung reduzieren“ nur Zahlen, keine Animation.
+  - Abschluss „Geschafft. Gut gemacht.“ – es wird hier nichts gespeichert (das übernimmt PROJ-6).
+  - Ungeprüfte Inhalte tragen den Hinweis „Beispielinhalt – noch nicht fachlich geprüft“.
+  - Inhalte sind für Nutzende nur lesbar.
+
+Inhalt im Prototyp: 12 Beispiel-Workouts mit 27 Übungen (jeweils mit leichterer Variante).
+
+Stand: vollständig gebaut. Offen vor dem Deploy: fachliche Prüfung der Inhalte, Klärung
+„kräftige“ Workouts für 12- bis 15-Jährige.
+
+
+PROJ-5 – Einfache Mahlzeiten
+............................
+
+Was es kann:
+  - Bereich „Essen“ zeigt die zur Essensweise passenden Mahlzeiten mit Titel, Aufwandsstufe,
+    Zubereitungszeit und Essensweise (vegan, vegetarisch, mit Fleisch oder Fisch).
+  - Passt-Regel: Ich esse alles → alle; Vegetarisch → vegetarisch und vegan; Vegan → nur vegan.
+  - Filter nach Aufwand: „Ohne Kochen“, „Schnell gekocht“ (bis 10 Min), „Bis 20 Min“.
+  - Detailansicht: Zutaten mit Mengen für eine Person, höchstens 5 einfache Schritte,
+    Hinweis „Noch einfacher: …“ für Tage ohne Kraft.
+  - Allergene: „Enthält: …“ aus den 14 EU-Hauptallergenen bzw. „Enthält keines der 14
+    Hauptallergene.“, immer mit Hinweis auf die Verpackungsangaben. Keine Allergieabfrage.
+  - Eine nicht passende Mahlzeit über einen direkten Link wird angezeigt, mit Hinweis
+    „Passt nicht zu deiner Essensweise“.
+  - Ungeprüfte Inhalte tragen den Beispielinhalt-Hinweis; Inhalte sind nur lesbar.
+
+Bewusst nicht enthalten: Kalorien, Makros, Bewertungen wie „gesund“, Einkaufslisten.
+
+Inhalt im Prototyp: 17 Beispiel-Mahlzeiten.
+
+Stand: vollständig gebaut. Offen vor dem Deploy: fachliche Prüfung, rechtliche Klärung der
+Allergenangaben, Hinweise zu Herd/Messer für Jüngere.
+
+
+PROJ-6 – Tagesentscheidung
+..........................
+
+Das Herzstück der App auf „Heute“.
+
+Was es kann:
+  - Frage „Was brauchst du gerade?“ mit „Bewegen“ oder „Essen“.
+  - Kurzer Check-in, eine Frage pro Bildschirm, ein Tipp pro Antwort:
+      Bewegen: Zeit (5/10/15 Min), Energie (wenig/mittel/viel), Ort (entfällt bei nur einem Ort)
+      Essen:   Aufwand (Gar nicht kochen / Kurz kochen / Bis 20 Min)
+  - Letzte Antworten sind vorausgewählt; „Wie letztes Mal“ führt mit einem Tipp zum Vorschlag.
+    Höchstens 5 Tipps bis zum Workout-Start (mit „Wie letztes Mal“ 3), höchstens 3 bis zur
+    Mahlzeit.
+  - Vorschlag nach fester Regel: ein Hauptvorschlag und bis zu zwei Alternativen.
+      Workouts: passend zu Profil, Ort, Zeit und Energie; bevorzugt genau die gewählte Dauer,
+      Intensität nahe an der Energie und nichts, was in den letzten 72 Stunden begonnen wurde.
+      Mahlzeiten: passend zu Essensweise und Aufwand; zu wenige werden mit einfacheren Stufen
+      aufgefüllt; Abwechslung über 72 Stunden.
+  - Zeile „Passt zu: …“ erklärt den Vorschlag.
+  - „Los geht's“ / „Das mach ich“ / „Stattdessen das“ beginnt die Aktion und öffnet die geführte
+    Durchführung bzw. das Mahlzeit-Detail. Ein Tipp auf den Titel öffnet nur das Detail.
+  - Begonnene Aktionen erscheinen 12 Stunden lang oben auf „Heute“ mit „Weitermachen“,
+    „Geschafft“ und „Heute nicht“. Ältere werden nicht angemahnt.
+  - „Rückgängig“ bis zum nächsten Check-in.
+  - Mehrere Check-ins am Tag sind möglich.
+  - Check-ins, Vorschläge und Aktionen werden pro Person gespeichert, sind im Datenexport und
+    werden mit dem Konto gelöscht.
+  - Schutz gegen Doppeltipps und ruhiger Fehlerzustand mit „Nochmal versuchen“.
+
+Stand: vollständig gebaut.
+
+
+PROJ-7 – Abschlussfeedback
+..........................
+
+Was es kann:
+  - Nach „Geschafft“ stehen in der Bestätigungskarte zwei freiwillige Ein-Tipp-Fragen:
+      „Wie war der Aufwand?“   Zu wenig / Passte / Zu viel
+      „Wieder vorschlagen?“    Gern wieder / Lieber nicht
+  - Nach „Heute nicht“ wird bewusst nichts gefragt.
+  - Antworten werden sofort gespeichert, bleiben markiert und lassen sich ändern, solange die
+    Karte sichtbar ist. „Rückgängig“ löscht die Rückmeldung. Keine Nachfrage, wenn man nichts
+    antwortet.
+  - Wirkung auf spätere Vorschläge:
+      „Lieber nicht“ – der Inhalt rutscht ans Ende und erscheint nur, wenn sonst zu wenig passt.
+                       Er wird nie ganz ausgeschlossen. „Gern wieder“ hebt das auf.
+      „Zu viel“ (Workout, höchstens 14 Tage alt) – der Vorschlag wird eine Stufe sanfter
+                       sortiert; hat das den Hauptvorschlag verändert, steht dort „Etwas sanfter,
+                       weil es letztes Mal zu viel war.“
+      „Zu wenig“ und „Passte“ – werden nur gespeichert, ändern nichts (heben ein früheres
+                       „Zu viel“ aber auf).
+      Aufwand bei Mahlzeiten – wird nur gespeichert.
+  - Rückmeldungen sind privat, im Datenexport und werden mit dem Konto gelöscht.
+
+Stand: vollständig gebaut, inklusive der Anpassung vom 24.11.2026 („Zu wenig“ verschiebt
+nichts mehr).
+
+
+PROJ-8 – Wochenblick
+....................
+
+Was es kann:
+  - Zeigt die laufende Kalenderwoche (Montag bis Sonntag) mit „Diese Woche“ und Datumsbereich;
+    der heutige Tag ist mit „heute“ markiert.
+  - Je Tag die begonnenen Aktionen mit Titel, Art (Bewegen/Essen) und Zustand „geschafft“ oder
+    „angefangen“ – einsortiert nach dem Beginn in der Ortszeit der Person.
+  - „Heute nicht“-Aktionen erscheinen bewusst nicht. Leere Tage zeigen nur einen ruhigen Strich.
+  - Wurde etwas geschafft, steht dort „Diese Woche hast du etwas für dich getan.“ – ohne Zahl.
+  - Leere laufende Woche: freundlicher Hinweis mit Weg zu „Heute“.
+  - Titel öffnen das Workout- bzw. Mahlzeit-Detail. Im Wochenblick wird nichts markiert oder
+    gelöscht.
+  - Blättern mit „Vorige Woche“ / „Nächste Woche“ bis zur Woche der Kontoerstellung; die Woche
+    steht in der Adresse und bleibt beim Neuladen erhalten.
+  - Entfernte Inhalte erscheinen als „Dein Workout“ bzw. „Deine Mahlzeit“.
+  - Wird bei jedem Öffnen aus dem Aktionsverlauf berechnet; es wird nichts Neues gespeichert
+    (nur ein technisches Cookie mit der Zeitzone des Geräts).
+
+Stand: vollständig gebaut.
+
+
+PROJ-9 – Übungsbibliothek
+.........................
+
+Was es kann:
+  - Erreichbar über „Übungen nachschlagen“ in der Workout-Liste und über verlinkte Übungsnamen
+    im Workout-Detail (nicht in der geführten Durchführung, um nicht abzulenken).
+  - Liste „Übungen“ alphabetisch mit benötigter Ausstattung.
+  - Filter: „Alle“, „Ohne Ausstattung“, „Passt zu meinem Zuhause“ (nur wenn „Zuhause“ im
+    Profil). Der Filter bleibt beim Zurückkehren erhalten.
+  - Übungsdetail: Anleitung, leichtere Variante, Ausstattung, Sicherheitshinweis und
+    „Kommt vor in“ mit Links zu den Workouts, in denen die Übung vorkommt.
+  - Übungen können nicht einzeln gestartet werden; begonnen wird immer über ein Workout.
+  - Die Bibliothek speichert nichts über die Person.
+
+Stand: vollständig gebaut. Offene Fragen: Wie wird die fachliche Prüfung der Übungen
+sichergestellt (sie haben keinen eigenen Prüfstatus)? Soll „Kurze Pause“ in der Bibliothek
+erscheinen?
+
+
+5. Gespeicherte Daten (Überblick)
+---------------------------------
+
+Pro Person (privat, im Export enthalten, mit dem Konto gelöscht):
+  - Konto und Kurzprofil (Altersgruppe, Ziel, Erfahrung, Orte, Ausstattung, Essensweise)
+  - Tages-Check-ins und Tagesvorschläge
+  - Aktionsverlauf (begonnen, geschafft, heute nicht)
+  - Abschlussfeedbacks
+
+Gemeinsame Inhalte (für alle nur lesbar):
+  - Übungen, Workouts mit ihren Schritten, Mahlzeiten
+
+Nur auf dem Gerät:
+  - Farbschema und „Bewegung reduzieren“, Zeitzonen-Cookie
+
+Nicht gespeichert: Diagnosen, Körper-, Gewichts- und Gesundheitsdaten.
+
+
+6. Ausblick
+-----------
+
+  - PROJ-10 Eigene Trainingspläne – in Arbeit (eigene, benannte Übungsfolgen, startbar wie ein
+    Workout, höchstens 20 pro Konto).
+  - Später: PROJ-11 Gewichtsverlauf, PROJ-12 Nährwertübersicht, PROJ-13 Rangsystem,
+    PROJ-14 KI-Trainer.
+
+Diese Datei wird mit den nächsten Features erweitert. Der verbindliche Status steht immer in
+features/INDEX.md, die Details je Feature in features/PROJ-X-name/spec.md.

@@ -8,7 +8,7 @@
 
 ## Stufe 1 — Grundlagen
 
-- [ ] T1 [P] Migration `custom_workouts`:
+- [x] T1 [P] Migration `custom_workouts`:
   - Tabelle (ID, Person, Name 2–40 getrimmt, Folge 1–12 Schritte mit Übung, Art `time`/`reps`, Wert je Art und 5er-Schritte bei Sekunden, `created_at`, `updated_at`)
   - Prüffunktion für die Folge
   - Trigger: Übungen existieren; höchstens 20 je Person mit kurzer Sperre und eigenem Fehlercode; `updated_at`-Pflege
@@ -17,7 +17,7 @@
   - lokal angewendet und live geprüft: zwei Konten und anonym, ungültige Werte, gleichzeitiges 20. Workout, Doppelanlage mit gleicher ID
 
   · files: `supabase/migrations/20261125120000_custom_workouts.sql` · → AC-6, AC-11, AC-12, AC-14; EC-1, EC-3, EC-4, EC-7
-- [ ] T2 [P] Reine Regeln:
+- [x] T2 [P] Reine Regeln:
   - Grenzen und Texte; neuer Schritt mit 30 Sekunden
   - Folge bearbeiten: hinzufügen, nach oben, nach unten, entfernen, Art wechseln, Wert setzen
   - Übersicht alphabetisch mit „N Übungen“
@@ -26,8 +26,8 @@
   - mit Tests
 
   · files: `src/features/custom-workouts/custom-workouts.rules.ts`, `src/features/custom-workouts/custom-workouts.rules.test.ts` · → AC-1, AC-2, AC-3, AC-6, AC-7, AC-8, AC-11; EC-7
-- [ ] T3 [P] Eingabeprüfung für Speichern (ID, Name, Folge) und Löschen (ID), mit Feldhinweisen in der Sprache der Spec; unbekannte Schlüssel abgelehnt; mit Test. · files: `src/features/custom-workouts/custom-workouts.schema.ts`, `src/features/custom-workouts/custom-workouts.schema.test.ts` · → AC-6, AC-12
-- [ ] T4 [P] Änderung PROJ-4: `GuidedWorkout` nimmt Titel, Folge und die Adresse für „Beenden“ (bisheriges Verhalten unverändert); die bestehende Durchführungsseite übergibt `/bewegung/<id>`; mit Tests. · files: `src/features/workouts/components/guided-workout.tsx`, `src/features/workouts/components/guided-workout.test.tsx`, `src/app/(protected)/(bereiche)/bewegung/[id]/los/page.tsx` · → AC-8
+- [x] T3 [P] Eingabeprüfung für Speichern (ID, Name, Folge) und Löschen (ID), mit Feldhinweisen in der Sprache der Spec; unbekannte Schlüssel abgelehnt; mit Test. · files: `src/features/custom-workouts/custom-workouts.schema.ts`, `src/features/custom-workouts/custom-workouts.schema.test.ts` · → AC-6, AC-12
+- [x] T4 [P] Änderung PROJ-4: `GuidedWorkout` nimmt Titel, Folge und die Adresse für „Beenden“ (bisheriges Verhalten unverändert); die bestehende Durchführungsseite übergibt `/bewegung/<id>`; mit Tests. · files: `src/features/workouts/components/guided-workout.tsx`, `src/features/workouts/components/guided-workout.test.tsx`, `src/app/(protected)/(bereiche)/bewegung/[id]/los/page.tsx` · → AC-8
 
 ## Stufe 2 — Datenzugriff
 

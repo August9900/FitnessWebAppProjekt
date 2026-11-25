@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { createTimer, formatSeconds, isExpired, pause, remainingSeconds, start, type TimerState } from '../timer.rules'
-import { amountLabel, shownExercise, type Workout } from '../workouts.rules'
+import { amountLabel, shownExercise, type ReviewStatus, type WorkoutStep } from '../workouts.rules'
 import { ExerciseView } from './exercise-view'
 import { SampleContentBadge } from '@/components/content/sample-content-badge'
 
@@ -16,10 +16,22 @@ const TICK_MS = 250
 /**
  * The guided workout: one exercise per screen with a timer or repetitions, "Zurück", "Weiter" /
  * "Fertig" and "Beenden" (AC-8 to AC-11). Everything lives in the browser — nothing is sent,
- * stored or counted; a reload starts again at the first exercise (EC-3).
+ * stored or counted; a reload starts again at the first exercise (EC-3). Plays an offered workout
+ * as well as an own one (PROJ-10): the caller passes the sequence, the review status (offered
+ * workouts only) and where "Beenden" leads.
  */
-export function GuidedWorkout({ workout, initialEasier }: { workout: Workout; initialEasier: number[] }) {
-  const steps = workout.steps
+export function GuidedWorkout({
+  steps,
+  reviewStatus,
+  exitHref,
+  initialEasier,
+}: {
+  steps: WorkoutStep[]
+  /** Offered workouts only; own workouts carry no review hint. */
+  reviewStatus?: ReviewStatus
+  exitHref: string
+  initialEasier: number[]
+}) {
   const [index, setIndex] = useState(0)
   const [easier, setEasier] = useState<Set<number>>(() => new Set(initialEasier))
   const [finished, setFinished] = useState(false)
@@ -103,7 +115,7 @@ export function GuidedWorkout({ workout, initialEasier }: { workout: Workout; in
           <p className="font-medium">
             Übung {index + 1} von {steps.length}
           </p>
-          <SampleContentBadge reviewStatus={workout.reviewStatus} />
+          {reviewStatus && <SampleContentBadge reviewStatus={reviewStatus} />}
         </div>
 
         <ExerciseView
@@ -130,7 +142,7 @@ export function GuidedWorkout({ workout, initialEasier }: { workout: Workout; in
           {isLast ? 'Fertig' : 'Weiter'}
         </Button>
         <Button asChild variant="ghost">
-          <Link href={`/bewegung/${encodeURIComponent(workout.id)}`}>Beenden</Link>
+          <Link href={exitHref}>Beenden</Link>
         </Button>
       </div>
 

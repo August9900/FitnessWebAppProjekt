@@ -28,7 +28,12 @@ export default async function GuidedWorkoutPage({
   return (
     <div className="space-y-8">
       <PageHeader title={workout.title} />
-      <GuidedWorkout workout={workout} initialEasier={easier} />
+      <GuidedWorkout
+        steps={workout.steps}
+        reviewStatus={workout.reviewStatus}
+        exitHref={`/bewegung/${encodeURIComponent(workout.id)}`}
+        initialEasier={easier}
+      />
     </div>
   )
 }

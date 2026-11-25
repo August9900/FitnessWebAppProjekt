@@ -53,9 +53,11 @@ afterEach(() => {
   vi.useRealTimers()
 })
 
+const offered = { steps: workout.steps, reviewStatus: workout.reviewStatus, exitHref: '/bewegung/morgen_mobil_5' }
+
 describe('GuidedWorkout — eine Übung pro Bildschirm (AC-8, AC-12)', () => {
   it('zeigt genau eine Übung mit „Übung X von Y“, Anleitung, Timer, Zurück und Weiter', () => {
-    render(<GuidedWorkout workout={workout} initialEasier={[]} />)
+    render(<GuidedWorkout {...offered} initialEasier={[]} />)
     expect(screen.getByText('Übung 1 von 3')).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 2, name: 'Marschieren' })).toBeInTheDocument()
     expect(screen.getByText('Marschieren: so geht es.')).toBeInTheDocument()
@@ -67,7 +69,7 @@ describe('GuidedWorkout — eine Übung pro Bildschirm (AC-8, AC-12)', () => {
   })
 
   it('zeigt bei Wiederholungen die Anzahl statt eines Timers', () => {
-    render(<GuidedWorkout workout={workout} initialEasier={[]} />)
+    render(<GuidedWorkout {...offered} initialEasier={[]} />)
     next()
     expect(screen.getByText('Übung 2 von 3')).toBeInTheDocument()
     expect(screen.getByText('10 Wiederholungen')).toBeInTheDocument()
@@ -75,7 +77,7 @@ describe('GuidedWorkout — eine Übung pro Bildschirm (AC-8, AC-12)', () => {
   })
 
   it('„Zurück“ führt zur vorigen Übung, deren Timer wieder auf voller Länge steht', () => {
-    render(<GuidedWorkout workout={workout} initialEasier={[]} />)
+    render(<GuidedWorkout {...offered} initialEasier={[]} />)
     fireEvent.click(screen.getByRole('button', { name: 'Start' }))
     wait(5000)
     expect(screen.getByText('0:25')).toBeInTheDocument()
@@ -90,7 +92,7 @@ describe('GuidedWorkout — eine Übung pro Bildschirm (AC-8, AC-12)', () => {
 
 describe('GuidedWorkout — Timer (AC-9, EC-4, EC-6)', () => {
   it('zählt herunter, pausiert, zählt weiter und endet ruhig ohne automatischen Wechsel', () => {
-    render(<GuidedWorkout workout={workout} initialEasier={[]} />)
+    render(<GuidedWorkout {...offered} initialEasier={[]} />)
     fireEvent.click(screen.getByRole('button', { name: 'Start' }))
     wait(3000)
     expect(screen.getByText('0:27')).toBeInTheDocument()
@@ -109,7 +111,7 @@ describe('GuidedWorkout — Timer (AC-9, EC-4, EC-6)', () => {
   })
 
   it('zeigt nach Hintergrund oder ausgeschaltetem Bildschirm sofort die tatsächliche Restzeit bzw. das Ende', () => {
-    render(<GuidedWorkout workout={workout} initialEasier={[]} />)
+    render(<GuidedWorkout {...offered} initialEasier={[]} />)
     fireEvent.click(screen.getByRole('button', { name: 'Start' }))
 
     // The clock moves on while the browser runs no timers at all (throttled background tab).
@@ -128,7 +130,7 @@ describe('GuidedWorkout — Timer (AC-9, EC-4, EC-6)', () => {
   })
 
   it('zeigt die Zeit nur als Zahl, ohne Fortschrittsbalken oder -kreise', () => {
-    const { container } = render(<GuidedWorkout workout={workout} initialEasier={[]} />)
+    const { container } = render(<GuidedWorkout {...offered} initialEasier={[]} />)
     fireEvent.click(screen.getByRole('button', { name: 'Start' }))
     wait(1000)
     expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
@@ -138,7 +140,7 @@ describe('GuidedWorkout — Timer (AC-9, EC-4, EC-6)', () => {
 
 describe('GuidedWorkout — Ansagen für Screenreader', () => {
   it('meldet den Übungswechsel, Start und Ende des Timers — nicht jede Sekunde', () => {
-    render(<GuidedWorkout workout={workout} initialEasier={[]} />)
+    render(<GuidedWorkout {...offered} initialEasier={[]} />)
     expect(screen.getByText('0:30').closest('[aria-live]')).toBeNull()
 
     fireEvent.click(screen.getByRole('button', { name: 'Start' }))
@@ -156,7 +158,7 @@ describe('GuidedWorkout — Ansagen für Screenreader', () => {
 
 describe('GuidedWorkout — Mehrfachtippen (EC-5)', () => {
   it('rückt bei schnellen Doppeltipps nur eine Übung vor, danach wieder normal', () => {
-    render(<GuidedWorkout workout={workout} initialEasier={[]} />)
+    render(<GuidedWorkout {...offered} initialEasier={[]} />)
     next()
     next()
     expect(screen.getByText('Übung 2 von 3')).toBeInTheDocument()
@@ -173,7 +175,7 @@ describe('GuidedWorkout — Mehrfachtippen (EC-5)', () => {
 
 describe('GuidedWorkout — Leichter (AC-7)', () => {
   it('übernimmt die Auswahl aus der Detailansicht und lässt sie je Übung ändern', () => {
-    render(<GuidedWorkout workout={workout} initialEasier={[2]} />)
+    render(<GuidedWorkout {...offered} initialEasier={[2]} />)
     expect(screen.getByRole('heading', { name: 'Marschieren' })).toBeInTheDocument()
 
     next()
@@ -187,14 +189,14 @@ describe('GuidedWorkout — Leichter (AC-7)', () => {
 
 describe('GuidedWorkout — Beenden und Abschluss (AC-10, AC-11)', () => {
   it('„Beenden“ führt ohne Rückfrage zur Detailansicht', () => {
-    render(<GuidedWorkout workout={workout} initialEasier={[]} />)
+    render(<GuidedWorkout {...offered} initialEasier={[]} />)
     expect(screen.getByRole('link', { name: 'Beenden' })).toHaveAttribute('href', '/bewegung/morgen_mobil_5')
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument()
   })
 
   it('zeigt nach der letzten Übung einen neutralen Abschluss mit Weg zu „Bewegung“', () => {
-    render(<GuidedWorkout workout={workout} initialEasier={[]} />)
+    render(<GuidedWorkout {...offered} initialEasier={[]} />)
     next()
     wait(400)
     next()
@@ -211,7 +213,7 @@ describe('GuidedWorkout — Beenden und Abschluss (AC-10, AC-11)', () => {
   it('speichert nichts: kein Netzwerk, kein Gerätespeicher', () => {
     const fetchSpy = vi.spyOn(globalThis, 'fetch')
     const storageSpy = vi.spyOn(Storage.prototype, 'setItem')
-    render(<GuidedWorkout workout={workout} initialEasier={[]} />)
+    render(<GuidedWorkout {...offered} initialEasier={[]} />)
     for (let i = 0; i < 3; i++) {
       next()
       wait(400)
@@ -221,5 +223,13 @@ describe('GuidedWorkout — Beenden und Abschluss (AC-10, AC-11)', () => {
     expect(storageSpy).not.toHaveBeenCalled()
     fetchSpy.mockRestore()
     storageSpy.mockRestore()
+  })
+})
+
+describe('GuidedWorkout — eigene Workouts (PROJ-10 AC-8)', () => {
+  it('spielt eine übergebene Folge ab, ohne Prüfhinweis, und „Beenden“ führt zur übergebenen Adresse', () => {
+    render(<GuidedWorkout steps={workout.steps} exitHref="/bewegung/eigene/abc" initialEasier={[]} />)
+    expect(screen.queryByText('Beispielinhalt – noch nicht fachlich geprüft')).toBeNull()
+    expect(screen.getByRole('link', { name: 'Beenden' })).toHaveAttribute('href', '/bewegung/eigene/abc')
   })
 })
