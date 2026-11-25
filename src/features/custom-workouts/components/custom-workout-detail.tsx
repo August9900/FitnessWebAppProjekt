@@ -19,7 +19,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { exerciseHref } from '@/features/exercises/exercises.rules'
+import { libraryExerciseHref } from '@/features/exercises/exercises.rules'
 import { ExerciseView } from '@/features/workouts/components/exercise-view'
 import { SAFETY_NOTE, equipmentText, type WorkoutStep } from '@/features/workouts/workouts.rules'
 import { deleteCustomWorkout } from '../custom-workouts.actions'
@@ -83,7 +83,7 @@ export function CustomWorkoutDetail({ id, name, steps }: { id: string; name: str
                 step={step}
                 easier={easier.includes(step.position)}
                 onEasierChange={(value) => setEasierAt(step.position, value)}
-                nameHref={exerciseHref(step.exercise.id)}
+                nameHref={libraryExerciseHref(step.exercise) ?? undefined}
               />
             </li>
           ))}

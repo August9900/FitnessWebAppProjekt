@@ -111,4 +111,25 @@ describe('WorkoutDetail — Übungen nachschlagen (PROJ-9 AC-2)', () => {
     render(<WorkoutDetail workout={workout} />)
     expect(screen.getByRole('link', { name: 'Rudern mit Band' })).toHaveAttribute('href', '/bewegung/uebungen/band_row')
   })
+
+  it('verlinkt Pausen nicht, andere Übungen weiterhin (PROJ-9 AC-11)', () => {
+    const pause = {
+      position: 3,
+      mode: 'time' as const,
+      amount: 30,
+      exercise: {
+        id: 'kurze_pause',
+        name: 'Kurze Pause',
+        instructions: 'Atme ruhig durch und lockere die Schultern.',
+        easierName: 'Sitzende Pause',
+        easierInstructions: 'Setz dich und atme ruhig.',
+        equipment: [],
+        isPause: true,
+      },
+    }
+    render(<WorkoutDetail workout={{ ...workout, steps: [...workout.steps, pause] }} />)
+    expect(screen.getByText('Kurze Pause')).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Kurze Pause' })).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Brücke' })).toHaveAttribute('href', '/bewegung/uebungen/bridge')
+  })
 })

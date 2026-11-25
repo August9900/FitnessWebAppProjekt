@@ -71,6 +71,19 @@ describe('CustomWorkoutDetail', () => {
     expect(screen.getByRole('link', { name: 'Kniebeuge' })).toHaveAttribute('href', '/bewegung/uebungen/kniebeuge')
   })
 
+  it('verlinkt Pausen nicht, andere Übungen weiterhin (PROJ-9 AC-11)', () => {
+    const pause: WorkoutStep = {
+      position: 3,
+      mode: 'time',
+      amount: 30,
+      exercise: { id: 'kurze_pause', name: 'Kurze Pause', instructions: 'Atme ruhig durch.', easierName: 'Sitzende Pause', easierInstructions: 'Setz dich.', equipment: [], isPause: true },
+    }
+    render(<CustomWorkoutDetail id={ID} name="Mein Mix" steps={[...steps, pause]} />)
+    expect(screen.getByText('Kurze Pause')).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Kurze Pause' })).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Marschieren' })).toHaveAttribute('href', '/bewegung/uebungen/marschieren')
+  })
+
   it('startet die Durchführung mit der „leichter“-Auswahl (AC-8)', async () => {
     show()
     expect(screen.getByRole('link', { name: "Los geht's" })).toHaveAttribute('href', `/bewegung/eigene/${ID}/los`)

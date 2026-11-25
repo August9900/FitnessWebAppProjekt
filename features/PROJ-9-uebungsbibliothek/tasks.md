@@ -59,9 +59,9 @@
 
 ## Stufe 6 — Pausen: Ansichten und Seiten
 
-- [ ] T10 [P] Änderung PROJ-4: Workout-Detail verlinkt einen Übungsnamen nur, wenn die Übung eine Bibliotheksadresse hat; mit Test. · files: `src/features/workouts/components/workout-detail.tsx`, `src/features/workouts/components/workout-detail.test.tsx` · → AC-2, AC-11
-- [ ] T11 [P] Änderung PROJ-10: Detail eines eigenen Workouts ebenso; mit Test. · files: `src/features/custom-workouts/components/custom-workout-detail.tsx`, `src/features/custom-workouts/components/custom-workout-detail.test.tsx` · → AC-11
-- [ ] T12 [P] Seiten: Liste nimmt nur Übungen für die Bibliothek; Adresse einer Pause → „Nicht gefunden“. · files: `src/app/(protected)/(bereiche)/bewegung/uebungen/page.tsx`, `src/app/(protected)/(bereiche)/bewegung/uebungen/[id]/page.tsx` · → AC-3, AC-11
+- [x] T10 [P] Änderung PROJ-4: Workout-Detail verlinkt einen Übungsnamen nur, wenn die Übung eine Bibliotheksadresse hat; mit Test. · files: `src/features/workouts/components/workout-detail.tsx`, `src/features/workouts/components/workout-detail.test.tsx` · → AC-2, AC-11
+- [x] T11 [P] Änderung PROJ-10: Detail eines eigenen Workouts ebenso; mit Test. · files: `src/features/custom-workouts/components/custom-workout-detail.tsx`, `src/features/custom-workouts/components/custom-workout-detail.test.tsx` · → AC-11
+- [x] T12 [P] Seiten: Liste nimmt nur Übungen für die Bibliothek; Adresse einer Pause → „Nicht gefunden“. · files: `src/app/(protected)/(bereiche)/bewegung/uebungen/page.tsx`, `src/app/(protected)/(bereiche)/bewegung/uebungen/[id]/page.tsx` · → AC-3, AC-11
 
 ## Stufe 7 — Pausen: Live-Prüfung
 

@@ -15,7 +15,7 @@ import {
   workoutEquipment,
   type Workout,
 } from '../workouts.rules'
-import { exerciseHref } from '@/features/exercises/exercises.rules'
+import { libraryExerciseHref } from '@/features/exercises/exercises.rules'
 import { ExerciseView } from './exercise-view'
 import { SampleContentBadge } from '@/components/content/sample-content-badge'
 
@@ -74,7 +74,7 @@ export function WorkoutDetail({ workout }: { workout: Workout }) {
                 step={step}
                 easier={easier.includes(step.position)}
                 onEasierChange={(value) => setEasierAt(step.position, value)}
-                nameHref={exerciseHref(step.exercise.id)}
+                nameHref={libraryExerciseHref(step.exercise) ?? undefined}
               />
             </li>
           ))}
