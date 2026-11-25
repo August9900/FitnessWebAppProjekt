@@ -36,13 +36,14 @@ vi.mock('@/lib/supabase/server', () => ({ createClient: async () => ({ from }) }
 
 const data = await import('./workouts.data')
 
-const exercise = (id: string, equipment: string[] = []) => ({
+const exercise = (id: string, equipment: string[] = [], isPause = false) => ({
   id,
   name: `Übung ${id}`,
   instructions: 'Mach es so.',
   easier_name: `Leicht ${id}`,
   easier_instructions: 'Mach es leichter.',
   equipment,
+  is_pause: isPause,
 })
 
 const row = (overrides: Record<string, unknown> = {}) => ({
@@ -103,6 +104,7 @@ describe('getOfferedWorkouts (AC-1)', () => {
               easierName: 'Leicht march',
               easierInstructions: 'Mach es leichter.',
               equipment: [],
+              isPause: false,
             },
           },
           expect.objectContaining({ position: 2, mode: 'reps', amount: 10 }),
@@ -162,9 +164,36 @@ describe('Übungen für die Bibliothek (PROJ-9 AC-3, AC-7, EC-2, EC-5)', () => {
     expect(calls.table).toBe('exercises')
     expect(calls.select).toContain('easier_instructions')
     expect(exercises).toEqual([
-      { id: 'kniebeuge', name: 'Übung kniebeuge', instructions: 'Mach es so.', easierName: 'Leicht kniebeuge', easierInstructions: 'Mach es leichter.', equipment: ['mat'] },
-      { id: 'marschieren', name: 'Übung marschieren', instructions: 'Mach es so.', easierName: 'Leicht marschieren', easierInstructions: 'Mach es leichter.', equipment: [] },
+      { id: 'kniebeuge', name: 'Übung kniebeuge', instructions: 'Mach es so.', easierName: 'Leicht kniebeuge', easierInstructions: 'Mach es leichter.', equipment: ['mat'], isPause: false },
+      { id: 'marschieren', name: 'Übung marschieren', instructions: 'Mach es so.', easierName: 'Leicht marschieren', easierInstructions: 'Mach es leichter.', equipment: [], isPause: false },
     ])
+  })
+
+  it('liest das Pausen-Merkmal in allen Übungsabfragen mit (AC-11)', async () => {
+    listResult = { data: [exercise('kurze_pause', [], true), exercise('marschieren')], error: null }
+    expect((await data.getAllExercises()).map((entry) => [entry.id, entry.isPause])).toEqual([
+      ['kurze_pause', true],
+      ['marschieren', false],
+    ])
+    expect(calls.select).toContain('is_pause')
+
+    singleResult = { data: exercise('kurze_pause', [], true), error: null }
+    await expect(data.getExercise('kurze_pause')).resolves.toMatchObject({ id: 'kurze_pause', isPause: true })
+    expect(calls.select).toContain('is_pause')
+
+    listResult = {
+      data: [row({ workout_steps: [{ position: 1, mode: 'time', amount: 30, exercises: exercise('kurze_pause', [], true) }] })],
+      error: null,
+    }
+    const [workout] = await data.getOfferedWorkouts()
+    expect(workout.steps[0].exercise.isPause).toBe(true)
+    expect(calls.select).toMatch(/exercises\s*\([^)]*is_pause/)
+  })
+
+  it('lässt Übungszeilen ohne Pausen-Merkmal weg (AC-11)', async () => {
+    const { is_pause: _ignored, ...withoutFlag } = exercise('ohne_merkmal')
+    listResult = { data: [withoutFlag, exercise('ok')], error: null }
+    expect((await data.getAllExercises()).map((entry) => entry.id)).toEqual(['ok'])
   })
 
   it('lässt unpassende Zeilen weg und wirft bei Lesefehlern (EC-5)', async () => {

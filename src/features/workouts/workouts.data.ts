@@ -13,7 +13,7 @@ const COLUMNS = `
   id, title, description, duration_minutes, intensity, places, review_status,
   workout_steps (
     position, mode, amount,
-    exercises ( id, name, instructions, easier_name, easier_instructions, equipment )
+    exercises ( id, name, instructions, easier_name, easier_instructions, equipment, is_pause )
   )
 `
 
@@ -24,6 +24,7 @@ const exerciseRow = z.object({
   easier_name: z.string(),
   easier_instructions: z.string(),
   equipment: z.array(z.enum(EXERCISE_EQUIPMENT)),
+  is_pause: z.boolean(),
 })
 
 const workoutRow = z.object({
@@ -72,6 +73,7 @@ export function toWorkout(row: unknown): Workout | null {
           easierName: step.exercises.easier_name,
           easierInstructions: step.exercises.easier_instructions,
           equipment: step.exercises.equipment,
+          isPause: step.exercises.is_pause,
         },
       }))
       .sort((a, b) => a.position - b.position),
@@ -99,7 +101,7 @@ export async function getWorkout(id: string): Promise<Workout | null> {
   return data ? toWorkout(data) : null
 }
 
-const EXERCISE_COLUMNS = 'id, name, instructions, easier_name, easier_instructions, equipment'
+const EXERCISE_COLUMNS = 'id, name, instructions, easier_name, easier_instructions, equipment, is_pause'
 
 /** Database row → exercise; a row that does not fit is left out instead of breaking the view. */
 export function toExercise(row: unknown): Exercise | null {
@@ -113,6 +115,7 @@ export function toExercise(row: unknown): Exercise | null {
     easierName: data.easier_name,
     easierInstructions: data.easier_instructions,
     equipment: data.equipment,
+    isPause: data.is_pause,
   }
 }
 

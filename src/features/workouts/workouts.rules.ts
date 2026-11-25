@@ -27,6 +27,8 @@ export type Exercise = {
   easierName: string
   easierInstructions: string
   equipment: ExerciseEquipment[]
+  /** PROJ-9 AC-11: a pause such as „Kurze Pause“ — not a library exercise. Missing = not a pause. */
+  isPause?: boolean
 }
 
 export type WorkoutStep = {

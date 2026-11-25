@@ -50,8 +50,8 @@
 
 ## Stufe 4 — Pausen: Daten (Refine 2026-11-25)
 
-- [ ] T7 [P] Neue Migration: Spalte `is_pause` an `exercises` (Wahrheitswert, Pflicht, Standard „nein“); „Kurze Pause“ (`kurze_pause`) als Pause kennzeichnen; Rechte und Zugriffsregeln unverändert; lokal anwenden. · files: `supabase/migrations/<Zeitstempel>_exercises_is_pause.sql` · → AC-11
-- [ ] T8 [P] Änderung PROJ-4: Übung kennt das optionale Merkmal „ist Pause“ (fehlt es, keine Pause); alle Übungsabfragen lesen `is_pause` mit (alle Übungen, eine Übung, Übungen in Workout-Schritten); mit Test. · files: `src/features/workouts/workouts.rules.ts`, `src/features/workouts/workouts.data.ts`, `src/features/workouts/workouts.data.test.ts` · → AC-11
+- [x] T7 [P] Neue Migration: Spalte `is_pause` an `exercises` (Wahrheitswert, Pflicht, Standard „nein“); „Kurze Pause“ (`kurze_pause`) als Pause kennzeichnen; Rechte und Zugriffsregeln unverändert; lokal anwenden. · files: `supabase/migrations/<Zeitstempel>_exercises_is_pause.sql` · → AC-11
+- [x] T8 [P] Änderung PROJ-4: Übung kennt das optionale Merkmal „ist Pause“ (fehlt es, keine Pause); alle Übungsabfragen lesen `is_pause` mit (alle Übungen, eine Übung, Übungen in Workout-Schritten); mit Test. · files: `src/features/workouts/workouts.rules.ts`, `src/features/workouts/workouts.data.ts`, `src/features/workouts/workouts.data.test.ts` · → AC-11
 
 ## Stufe 5 — Pausen: Regeln
 
