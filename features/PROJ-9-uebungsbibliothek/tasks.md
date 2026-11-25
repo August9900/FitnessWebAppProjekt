@@ -3,7 +3,7 @@
 > Erstellt von `/tasks` aus `spec.md` und `design.md`. Das ist der geordnete, rückverfolgbare Bauplan zwischen Vertrag (WAS) und Umsetzung (WIE).
 > `[P]` = parallel ausführbar: Die Dateien der Aufgabe überschneiden sich mit keiner anderen `[P]`-Aufgabe derselben Stufe.
 > Die Stufen laufen **nacheinander**, jede ist eine Schranke. Jede Aufgabe verweist auf die AC-/EC-IDs aus `spec.md`; das ist die Kette AC → Aufgabe → Test.
-> Dieses Feature braucht keine `[user]`-Aufgaben und keine Migration.
+> Dieses Feature braucht keine `[user]`-Aufgaben. Stufen 4–7 setzen die Pausen-Ergänzung (AC-11, Refine 2026-11-25) um und bringen eine Migration mit.
 > Kein Statusfeld hier — der Fortschritt sind die Haken unten, der Feature-Status steht ausschließlich in `features/INDEX.md`.
 
 ## Stufe 1 — Grundlagen
@@ -48,9 +48,28 @@
 
   · files: `src/app/(protected)/(bereiche)/bewegung/uebungen/page.tsx`, `src/app/(protected)/(bereiche)/bewegung/uebungen/[id]/page.tsx`, `src/app/(protected)/(bereiche)/bewegung/uebungen/[id]/not-found.tsx`, `src/app/(protected)/(bereiche)/bewegung/page.tsx` · → AC-1, AC-3, AC-4, AC-5, AC-6, AC-7, AC-8, AC-9; EC-2, EC-3, EC-4, EC-5
 
+## Stufe 4 — Pausen: Daten (Refine 2026-11-25)
+
+- [ ] T7 [P] Neue Migration: Spalte `is_pause` an `exercises` (Wahrheitswert, Pflicht, Standard „nein“); „Kurze Pause“ (`kurze_pause`) als Pause kennzeichnen; Rechte und Zugriffsregeln unverändert; lokal anwenden. · files: `supabase/migrations/<Zeitstempel>_exercises_is_pause.sql` · → AC-11
+- [ ] T8 [P] Änderung PROJ-4: Übung kennt das optionale Merkmal „ist Pause“ (fehlt es, keine Pause); alle Übungsabfragen lesen `is_pause` mit (alle Übungen, eine Übung, Übungen in Workout-Schritten); mit Test. · files: `src/features/workouts/workouts.rules.ts`, `src/features/workouts/workouts.data.ts`, `src/features/workouts/workouts.data.test.ts` · → AC-11
+
+## Stufe 5 — Pausen: Regeln
+
+- [ ] T9 Neue reine Regeln „Übungen für die Bibliothek“ (ohne Pausen; Filter und Sortierung wie bisher) und „Bibliotheksadresse einer Übung“ (für Pausen keine Adresse); Tabellen-Tests. · files: `src/features/exercises/exercises.rules.ts`, `src/features/exercises/exercises.rules.test.ts` · → AC-3, AC-11
+
+## Stufe 6 — Pausen: Ansichten und Seiten
+
+- [ ] T10 [P] Änderung PROJ-4: Workout-Detail verlinkt einen Übungsnamen nur, wenn die Übung eine Bibliotheksadresse hat; mit Test. · files: `src/features/workouts/components/workout-detail.tsx`, `src/features/workouts/components/workout-detail.test.tsx` · → AC-2, AC-11
+- [ ] T11 [P] Änderung PROJ-10: Detail eines eigenen Workouts ebenso; mit Test. · files: `src/features/custom-workouts/components/custom-workout-detail.tsx`, `src/features/custom-workouts/components/custom-workout-detail.test.tsx` · → AC-11
+- [ ] T12 [P] Seiten: Liste nimmt nur Übungen für die Bibliothek; Adresse einer Pause → „Nicht gefunden“. · files: `src/app/(protected)/(bereiche)/bewegung/uebungen/page.tsx`, `src/app/(protected)/(bereiche)/bewegung/uebungen/[id]/page.tsx` · → AC-3, AC-11
+
+## Stufe 7 — Pausen: Live-Prüfung
+
+- [ ] T13 Live-Prüfung gegen die lokale Datenbank und den Dev-Server (Skript im Scratchpad, keine Projektdateien): „Kurze Pause“ fehlt in Liste und allen Filtern; ihre Adresse zeigt „Nicht gefunden“; im Workout-Detail und im Detail eines eigenen Workouts ist ihr Name kein Link, andere Namen bleiben verlinkt; im Auswahl-Dialog bleibt sie wählbar. · files: — · → AC-2, AC-3, AC-11
+
 ## Parallelisierung
 
-- **Stufen sind Schranken.** Grundlagen (1) → Ansichten (2) → Seiten (3).
+- **Stufen sind Schranken.** Grundlagen (1) → Ansichten (2) → Seiten (3); Pausen: Daten (4) → Regeln (5) → Ansichten und Seiten (6) → Live-Prüfung (7). Für Stufe 4 muss Docker laufen.
 - **`[P]` setzt getrennte Dateien voraus.** Die `files:`-Mengen aller `[P]`-Aufgaben einer Stufe sind paarweise verschieden.
 - AC-1, AC-2, EC-2, EC-3 und EC-4 werden nach Stufe 3 zusätzlich live gegen die lokale Datenbank und den Dev-Server geprüft.
 - Während `/build` läuft jede `[P]`-Aufgabe einer Stufe in einem eigenen Subagenten oder nacheinander. Der Hauptagent integriert, prüft gegen die AC-IDs der Stufe und hakt hier ab.
