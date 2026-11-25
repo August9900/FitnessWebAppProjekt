@@ -31,7 +31,7 @@
 
 ## Stufe 2 — Datenzugriff
 
-- [ ] T5 [P] Datenzugriff (`server-only`):
+- [x] T5 [P] Datenzugriff (`server-only`):
   - eigene auflisten (ID, Name, Anzahl Schritte); eines lesen (oder nichts, ungültige IDs ohne Abfrage)
   - anlegen mit vorgegebener ID: gleiche eigene ID gilt als schon gespeichert, Grenze als eigener Fehler, unbekannte Übung als ungültig
   - ersetzen von Name und Folge in einer Änderung; keine Zeile geändert → „nicht gefunden“
