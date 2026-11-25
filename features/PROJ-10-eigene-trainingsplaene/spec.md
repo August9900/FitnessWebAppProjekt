@@ -4,7 +4,7 @@
 
 ## Abhängigkeiten
 
-- Benötigt: PROJ-9 (Übungsbibliothek) — die Übungen, aus denen ein eigenes Workout zusammengestellt wird, und deren Detailansicht.
+- Benötigt: PROJ-9 (Übungsbibliothek) — die Übungen, aus denen ein eigenes Workout zusammengestellt wird, und deren Detailansicht; Pausen wie „Kurze Pause“ stehen nicht in der Bibliothek, sind hier aber wählbar (PROJ-9 AC-11).
 - Benötigt: PROJ-4 (Kurze Workouts) — Darstellung einer Übungsfolge mit „Leichter“, Sicherheitshinweis und die geführte Durchführung. **Änderung an PROJ-4:** Die geführte Durchführung kann auch ein eigenes Workout abspielen; der Bereich „Bewegung“ zeigt die eigenen Workouts.
 - Benötigt: PROJ-1 (Konto & Anmeldung) — persönliche Speicherung, Datenexport und Kontolöschung.
 - Benötigt: PROJ-2 (App-Rahmen & Navigation) — liegt im Bereich „Bewegung“; keine neue Navigation.
@@ -41,13 +41,13 @@
 
 - [ ] **AC-2** — Angenommen die Person wählt „Neues Workout“, wenn der Editor angezeigt wird, dann gibt sie einen Namen ein und fügt über „Übung hinzufügen“ Übungen aus der Bibliothek hinzu; jede neu hinzugefügte Übung steht am Ende der Folge mit 30 Sekunden.
 - [ ] **AC-3** — Angenommen eine Übung steht in der Folge, wenn die Person sie bearbeitet, dann kann sie zwischen „Sekunden“ und „Wiederholungen“ wählen, den Wert ändern, die Übung nach oben oder unten verschieben oder entfernen — alles per Tastatur bedienbar, ohne Ziehen.
-- [ ] **AC-4** — Angenommen die Person wählt „Übung hinzufügen“, wenn die Auswahl angezeigt wird, dann sieht sie alle Übungen der Bibliothek alphabetisch mit Ausstattung und kann mit „Ohne Ausstattung“ bzw. „Passt zu meinem Zuhause“ filtern (wie PROJ-9); dieselbe Übung darf mehrfach in der Folge stehen.
+- [ ] **AC-4** — Angenommen die Person wählt „Übung hinzufügen“, wenn die Auswahl angezeigt wird, dann sieht sie alle Übungen der Bibliothek und zusätzlich die Pausen (derzeit „Kurze Pause“) alphabetisch mit Ausstattung und kann mit „Ohne Ausstattung“ bzw. „Passt zu meinem Zuhause“ filtern (wie PROJ-9; eine Pause braucht keine Ausstattung); dieselbe Übung darf mehrfach in der Folge stehen.
 - [ ] **AC-5** — Angenommen die Person wählt „Speichern“, wenn Name und Übungen gültig sind, dann ist das eigene Workout gespeichert und sie sieht seine Detailansicht.
 - [ ] **AC-6** — Angenommen die Eingaben sind ungültig, wenn die Person speichern will, dann wird nicht gespeichert und sie sieht beim betroffenen Feld einen Hinweis: Name fehlt oder ist kürzer als 2 bzw. länger als 40 Zeichen; keine Übung; mehr als 12 Übungen; Sekunden außerhalb von 10 bis 180 oder nicht in 5er-Schritten; Wiederholungen außerhalb von 1 bis 30.
 
 ### Ansehen und Starten
 
-- [ ] **AC-7** — Angenommen die Person öffnet ein eigenes Workout, wenn die Detailansicht angezeigt wird, dann sieht sie Name, benötigte Ausstattung, den Sicherheitshinweis (PROJ-4) und die Übungsfolge mit Sekunden bzw. Wiederholungen, Anleitung und „Leichter“; jeder Übungsname führt zur Übung in der Bibliothek (PROJ-9).
+- [ ] **AC-7** — Angenommen die Person öffnet ein eigenes Workout, wenn die Detailansicht angezeigt wird, dann sieht sie Name, benötigte Ausstattung, den Sicherheitshinweis (PROJ-4) und die Übungsfolge mit Sekunden bzw. Wiederholungen, Anleitung und „Leichter“; jeder Übungsname führt zur Übung in der Bibliothek (PROJ-9), ausgenommen Pausen — ihr Name steht ohne Link (PROJ-9 AC-11).
 - [ ] **AC-8** — Angenommen die Detailansicht wird angezeigt, wenn die Person „Los geht's“ wählt, dann öffnet sich die geführte Durchführung aus PROJ-4 mit genau dieser Folge und der gewählten „Leichter“-Auswahl; dabei wird nichts gespeichert oder gezählt.
 
 ### Ändern und Löschen
@@ -101,3 +101,4 @@
 | Löschen mit Bestätigung | Nicht umkehrbar. | 2026-11-25 |
 | Starten speichert und zählt nichts | Eigenständig; kein Verlauf außerhalb des Aktionsverlaufs. | 2026-11-25 |
 | Gleiche Namen erlaubt | Keine unnötige Hürde; die Übersicht zeigt zusätzlich die Anzahl der Übungen. | 2026-11-25 |
+| Pausen im Auswahl-Dialog wählbar, im Detail ohne Bibliotheks-Link (Wortlaut AC-4, AC-7 an PROJ-9 AC-11 angeglichen) | Pausen sind kein Nachschlage-Inhalt, gehören aber in eine selbst gebaute Folge; Verhalten unverändert, nur genauer beschrieben. | 2026-11-25 |
