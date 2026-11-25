@@ -29,14 +29,14 @@
 
 ## Stufe 2 — Daten und Rahmen
 
-- [ ] T4 [P] Datenzugriff: Zugang lesen (pro Anfrage zwischengespeichert); eigene Einträge neueste zuerst; Speicherfunktion aufrufen und Ergebnis übersetzen; einen Eintrag löschen; alle löschen; Einstellung setzen; Export lesen (älteste zuerst); Lesefehler werfen ohne Personendaten; mit Test. · files: `src/features/weight/weight.data.ts`, `src/features/weight/weight.data.test.ts` · → AC-2, AC-4, AC-6, AC-11, AC-12, AC-13, AC-14, AC-16; EC-1, EC-3, EC-6
-- [ ] T5 [P] Änderung PROJ-1, Exportregeln: Abschnitt `weightEntries` (Datum, kg) und `showWeightInNav` im Profil-Abschnitt; mit Test. · files: `src/features/account/account.rules.ts`, `src/features/account/account.rules.test.ts` · → AC-16
-- [ ] T6 [P] Änderung PROJ-2, Rahmen-Bausteine: Seitenleiste und untere Leiste bekommen die Bereiche von außen; Spaltenzahl nach Anzahl; bei sechs Einträgen 12 px mit Umbruch an Trennstellen, mindestens 48 px hoch; mit Tests. · files: `src/components/shell/app-shell.tsx`, `src/components/shell/desktop-nav.tsx`, `src/components/shell/mobile-nav.tsx`, `src/components/shell/navigation.test.tsx`, `src/components/shell/app-shell.test.tsx` · → AC-1; EC-7
+- [x] T4 [P] Datenzugriff: Zugang lesen (pro Anfrage zwischengespeichert); eigene Einträge neueste zuerst; Speicherfunktion aufrufen und Ergebnis übersetzen; einen Eintrag löschen; alle löschen; Einstellung setzen; Export lesen (älteste zuerst); Lesefehler werfen ohne Personendaten; mit Test. · files: `src/features/weight/weight.data.ts`, `src/features/weight/weight.data.test.ts` · → AC-2, AC-4, AC-6, AC-11, AC-12, AC-13, AC-14, AC-16; EC-1, EC-3, EC-6
+- [x] T5 [P] Änderung PROJ-1, Exportregeln: Abschnitt `weightEntries` (Datum, kg) und `showWeightInNav` im Profil-Abschnitt; mit Test. · files: `src/features/account/account.rules.ts`, `src/features/account/account.rules.test.ts` · → AC-16
+- [x] T6 [P] Änderung PROJ-2, Rahmen-Bausteine: Seitenleiste und untere Leiste bekommen die Bereiche von außen; Spaltenzahl nach Anzahl; bei sechs Einträgen 12 px mit Umbruch an Trennstellen, mindestens 48 px hoch; mit Tests. · files: `src/components/shell/app-shell.tsx`, `src/components/shell/desktop-nav.tsx`, `src/components/shell/mobile-nav.tsx`, `src/components/shell/navigation.test.tsx`, `src/components/shell/app-shell.test.tsx` · → AC-1; EC-7
 
 ## Stufe 3 — Aktionen und Export
 
 - [ ] T7 [P] Server Actions `saveWeightEntry`, `deleteWeightEntry`, `deleteAllWeightEntries`, `setWeightVisibility`: Sitzung, Schema und Zugang prüfen (Speichern/Löschen: „Gewicht sichtbar“; Einstellung: „ab 16“); Ergebnisse gespeichert · schon vorhanden · gibt es nicht mehr · ungültig · Fehler; `/gewicht` bzw. Rahmen neu laden; mit Test. · files: `src/features/weight/weight.actions.ts`, `src/features/weight/weight.actions.test.ts` · → AC-2, AC-4, AC-5, AC-6, AC-11, AC-12, AC-13, AC-14; EC-2, EC-3, EC-4
-- [ ] T8 [P] Änderung PROJ-1: Datenexport liest die Gewichtseinträge mit; mit Test. · files: `src/features/account/account.data.ts`, `src/features/account/account.data.test.ts` · → AC-16
+- [x] T8 [P] Änderung PROJ-1: Datenexport liest die Gewichtseinträge mit; mit Test. · files: `src/features/account/account.data.ts`, `src/features/account/account.data.test.ts` · → AC-16
 
 ## Stufe 4 — Bausteine der Ansicht
 

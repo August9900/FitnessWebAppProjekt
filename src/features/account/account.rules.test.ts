@@ -89,9 +89,11 @@ describe('buildAccountExport (AC-15)', () => {
         places: ['home', 'gym'],
         home_equipment: ['mat'],
         diet: 'vegan',
+        show_weight_in_nav: false,
       },
       dailyDecisions: { checkIns: [], actions: [] },
       feedback: [],
+      weightEntries: [],
       customWorkouts: [],
       exportedAt,
     })
@@ -107,11 +109,13 @@ describe('buildAccountExport (AC-15)', () => {
         places: ['home', 'gym'],
         homeEquipment: ['mat'],
         diet: 'vegan',
+        showWeightInNav: false,
         createdAt: '2026-11-01T00:00:00Z',
         updatedAt: '2026-11-01T00:00:00Z',
       },
       dailyDecisions: { checkIns: [], actions: [] },
       feedback: [],
+      weightEntries: [],
       customWorkouts: [],
     })
     expect(JSON.stringify(result)).not.toContain('hash')
@@ -123,10 +127,11 @@ describe('buildAccountExport (AC-15)', () => {
       profile: { age_band_at_signup: '12_15', created_at: 'c', updated_at: 'u' },
       dailyDecisions: { checkIns: [], actions: [] },
       feedback: [],
+      weightEntries: [],
       customWorkouts: [],
       exportedAt,
     })
-    expect(result.profile).toMatchObject({ goal: null, experience: null, places: null, homeEquipment: null, diet: null })
+    expect(result.profile).toMatchObject({ goal: null, experience: null, places: null, homeEquipment: null, diet: null, showWeightInNav: null })
   })
 
   it('contains check-ins with answers, suggestion and time, and actions with state and times (AC-18 of PROJ-6)', () => {
@@ -171,6 +176,7 @@ describe('buildAccountExport (AC-15)', () => {
         ],
       },
       feedback: [],
+      weightEntries: [],
       customWorkouts: [],
       exportedAt,
     })
@@ -229,6 +235,7 @@ describe('buildAccountExport (AC-15)', () => {
           updated_at: '2026-11-17T08:22:00Z',
         },
       ],
+      weightEntries: [],
       customWorkouts: [],
       exportedAt,
     })
@@ -251,6 +258,7 @@ describe('buildAccountExport (AC-15)', () => {
       profile: null,
       dailyDecisions: { checkIns: [], actions: [] },
       feedback: [],
+      weightEntries: [],
       customWorkouts: [
         {
           id: 'w1',
@@ -291,3 +299,26 @@ describe('ageBandLabel', () => {
     expect(ageBandLabel(undefined)).toBe('Keine Angabe')
   })
 })
+
+describe('buildAccountExport — Gewichtsverlauf (AC-16 von PROJ-11)', () => {
+  it('enthält alle Gewichtseinträge mit Datum und kg', () => {
+    const result = buildAccountExport({
+      account: { id: 'u1', email: 'a@b.de', created_at: 'c' },
+      profile: { age_band_at_signup: '16_plus', created_at: 'c', updated_at: 'u', show_weight_in_nav: false },
+      dailyDecisions: { checkIns: [], actions: [] },
+      feedback: [],
+      customWorkouts: [],
+      weightEntries: [
+        { date: '2026-11-20', weightKg: 72.4 },
+        { date: '2026-11-25', weightKg: 71 },
+      ],
+      exportedAt: new Date('2026-11-25T10:00:00Z'),
+    })
+    expect(result.weightEntries).toEqual([
+      { date: '2026-11-20', weightKg: 72.4 },
+      { date: '2026-11-25', weightKg: 71 },
+    ])
+    expect(result.profile?.showWeightInNav).toBe(false)
+  })
+})
+

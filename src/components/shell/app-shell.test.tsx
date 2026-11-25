@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react'
 vi.mock('next/navigation', () => ({ usePathname: () => '/heute' }))
 
 const { AppShell, MAIN_CONTENT_ID } = await import('./app-shell')
+const { navAreasFor } = await import('./navigation.rules')
 
 beforeAll(() => {
   window.matchMedia = vi.fn().mockReturnValue({
@@ -39,6 +40,30 @@ describe('AppShell', () => {
     expect(navigations).toHaveLength(2)
     for (const nav of navigations) {
       expect(nav.querySelector('[aria-current="page"]')?.getAttribute('href')).toBe('/heute')
+    }
+  })
+
+  it('zeigt in beiden Navigationen die übergebenen Bereiche — mit „Gewicht“ sechs (AC-19)', () => {
+    render(
+      <AppShell areas={navAreasFor({ showWeight: true })}>
+        <p>Seiteninhalt</p>
+      </AppShell>
+    )
+    for (const nav of screen.getAllByRole('navigation', { name: 'Hauptnavigation' })) {
+      expect(nav.querySelectorAll('a')).toHaveLength(6)
+      expect(nav.querySelector('a[href="/gewicht"]')).not.toBeNull()
+    }
+  })
+
+  it('ohne Angabe die fünf Bereiche für alle', () => {
+    render(
+      <AppShell>
+        <p>Seiteninhalt</p>
+      </AppShell>
+    )
+    for (const nav of screen.getAllByRole('navigation', { name: 'Hauptnavigation' })) {
+      expect(nav.querySelectorAll('a')).toHaveLength(5)
+      expect(nav.querySelector('a[href="/gewicht"]')).toBeNull()
     }
   })
 

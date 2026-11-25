@@ -118,6 +118,8 @@ export type ExportProfile = {
   places?: string[] | null
   home_equipment?: string[] | null
   diet?: string | null
+  /** PROJ-11 setting „Gewicht in der Navigation zeigen“. */
+  show_weight_in_nav?: boolean | null
 }
 
 /** A PROJ-6 check-in as stored: answers of the chosen kind and the ranked suggestion. */
@@ -157,6 +159,9 @@ export type ExportCustomWorkout = {
   updated_at: string
 }
 
+/** A PROJ-11 weight entry: calendar day and kilograms. */
+export type ExportWeightEntry = { date: string; weightKg: number }
+
 export type ExportFeedback = {
   action_id: string
   effort: string | null
@@ -174,6 +179,7 @@ export function buildAccountExport(input: {
   dailyDecisions: ExportDailyDecisions
   feedback: ExportFeedback[]
   customWorkouts: ExportCustomWorkout[]
+  weightEntries: ExportWeightEntry[]
   exportedAt: Date
 }) {
   return {
@@ -194,6 +200,7 @@ export function buildAccountExport(input: {
           places: input.profile.places ?? null,
           homeEquipment: input.profile.home_equipment ?? null,
           diet: input.profile.diet ?? null,
+          showWeightInNav: input.profile.show_weight_in_nav ?? null,
           createdAt: input.profile.created_at,
           updatedAt: input.profile.updated_at,
         }
@@ -240,6 +247,8 @@ export function buildAccountExport(input: {
       createdAt: workout.created_at,
       updatedAt: workout.updated_at,
     })),
+    // PROJ-11 Gewichtsverlauf: every entry with day and kilograms, also while the area is hidden (AC-16).
+    weightEntries: input.weightEntries.map((entry) => ({ date: entry.date, weightKg: entry.weightKg })),
   }
 }
 

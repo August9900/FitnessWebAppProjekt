@@ -9,6 +9,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getOwnCustomWorkoutsExport } from '@/features/custom-workouts/custom-workouts.data'
 import { getOwnFeedbackExport } from '@/features/feedback/feedback.data'
 import { getOwnTodayExport } from '@/features/today/today.data'
+import { getOwnWeightExport } from '@/features/weight/weight.data'
 import { buildAccountExport, type ExportProfile } from './account.rules'
 
 export type AccountUser = {
@@ -42,7 +43,7 @@ export async function getOwnProfile(userId: string): Promise<ExportProfile | nul
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('profiles')
-    .select('age_band_at_signup, created_at, updated_at, goal, experience, places, home_equipment, diet')
+    .select('age_band_at_signup, created_at, updated_at, goal, experience, places, home_equipment, diet, show_weight_in_nav')
     .eq('user_id', userId)
     .maybeSingle()
   if (error) throw new Error(`Profile could not be read (${error.code ?? 'unknown'}).`)
@@ -56,13 +57,14 @@ export async function getOwnProfile(userId: string): Promise<ExportProfile | nul
 export async function collectAccountExport(now = new Date()) {
   const user = await getCurrentUser()
   if (!user) return null
-  const [profile, dailyDecisions, feedback, customWorkouts] = await Promise.all([
+  const [profile, dailyDecisions, feedback, customWorkouts, weightEntries] = await Promise.all([
     getOwnProfile(user.id),
     getOwnTodayExport(user.id),
     getOwnFeedbackExport(user.id),
     getOwnCustomWorkoutsExport(user.id),
+    getOwnWeightExport(user.id),
   ])
-  return buildAccountExport({ account: user, profile, dailyDecisions, feedback, customWorkouts, exportedAt: now })
+  return buildAccountExport({ account: user, profile, dailyDecisions, feedback, customWorkouts, weightEntries, exportedAt: now })
 }
 
 export type PasswordCheck = { ok: true } | { ok: false; reason: 'wrong' | 'unavailable' }

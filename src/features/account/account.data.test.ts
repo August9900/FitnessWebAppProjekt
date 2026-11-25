@@ -4,7 +4,13 @@ vi.mock('server-only', () => ({}))
 
 const serverAuth = { getUser: vi.fn() }
 const profileQuery = { maybeSingle: vi.fn() }
-const from = vi.fn(() => ({ select: () => ({ eq: () => profileQuery }) }))
+const selected: string[] = []
+const from = vi.fn(() => ({
+  select: (columns: string) => {
+    selected.push(columns)
+    return { eq: () => profileQuery }
+  },
+}))
 vi.mock('@/lib/supabase/server', () => ({
   createClient: async () => ({ auth: serverAuth, from }),
 }))
@@ -17,6 +23,9 @@ vi.mock('@/features/feedback/feedback.data', () => ({ getOwnFeedbackExport }))
 
 const getOwnCustomWorkoutsExport = vi.fn()
 vi.mock('@/features/custom-workouts/custom-workouts.data', () => ({ getOwnCustomWorkoutsExport }))
+
+const getOwnWeightExport = vi.fn()
+vi.mock('@/features/weight/weight.data', () => ({ getOwnWeightExport }))
 
 const deleteUser = vi.fn()
 vi.mock('@/lib/supabase/admin', () => ({
@@ -70,12 +79,13 @@ describe('collectAccountExport (AC-15)', () => {
     getOwnTodayExport.mockResolvedValue({ checkIns: [], actions: [] })
     getOwnFeedbackExport.mockResolvedValue([])
     getOwnCustomWorkoutsExport.mockResolvedValue([])
+    getOwnWeightExport.mockResolvedValue([])
   })
 
   it('combines account and own profile', async () => {
     serverAuth.getUser.mockResolvedValue({ data: { user }, error: null })
     profileQuery.maybeSingle.mockResolvedValue({
-      data: { age_band_at_signup: '12_15', created_at: 'c', updated_at: 'u', goal: 'strength', experience: 'regular', places: ['outdoors'], home_equipment: null, diet: 'omnivore' },
+      data: { age_band_at_signup: '12_15', created_at: 'c', updated_at: 'u', goal: 'strength', experience: 'regular', places: ['outdoors'], home_equipment: null, diet: 'omnivore', show_weight_in_nav: true },
       error: null,
     })
     const result = await data.collectAccountExport(new Date('2026-11-11T00:00:00Z'))
@@ -88,10 +98,35 @@ describe('collectAccountExport (AC-15)', () => {
       places: ['outdoors'],
       homeEquipment: null,
       diet: 'omnivore',
+      showWeightInNav: true,
       createdAt: 'c',
       updatedAt: 'u',
     })
     expect(JSON.stringify(result)).not.toContain('provider')
+  })
+
+  it('liest die Einstellung „Gewicht in der Navigation zeigen“ mit (AC-16 von PROJ-11)', async () => {
+    serverAuth.getUser.mockResolvedValue({ data: { user }, error: null })
+    profileQuery.maybeSingle.mockResolvedValue({ data: null, error: null })
+    selected.length = 0
+    await data.collectAccountExport()
+    expect(selected[0]).toContain('show_weight_in_nav')
+  })
+
+  it('enthält die eigenen Gewichtseinträge (AC-16 von PROJ-11)', async () => {
+    serverAuth.getUser.mockResolvedValue({ data: { user }, error: null })
+    profileQuery.maybeSingle.mockResolvedValue({ data: null, error: null })
+    getOwnWeightExport.mockResolvedValue([{ date: '2026-11-25', weightKg: 72.4 }])
+    const result = await data.collectAccountExport()
+    expect(getOwnWeightExport).toHaveBeenCalledWith('u1')
+    expect(result?.weightEntries).toEqual([{ date: '2026-11-25', weightKg: 72.4 }])
+  })
+
+  it('erstellt keinen unvollständigen Export, wenn die Gewichtseinträge nicht lesbar sind', async () => {
+    serverAuth.getUser.mockResolvedValue({ data: { user }, error: null })
+    profileQuery.maybeSingle.mockResolvedValue({ data: null, error: null })
+    getOwnWeightExport.mockRejectedValue(new Error('Weight entries could not be exported (08006).'))
+    await expect(data.collectAccountExport()).rejects.toThrow('Weight entries could not be exported')
   })
 
   it('adds the own check-ins and actions (AC-18 of PROJ-6)', async () => {

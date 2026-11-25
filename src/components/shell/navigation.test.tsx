@@ -6,6 +6,7 @@ vi.mock('next/navigation', () => ({ usePathname: () => pathname }))
 
 const { DesktopNav } = await import('./desktop-nav')
 const { MobileNav } = await import('./mobile-nav')
+const { navAreasFor } = await import('./navigation.rules')
 
 beforeAll(() => {
   // jsdom has no matchMedia; the sidebar provider asks it for the mobile breakpoint.
@@ -78,5 +79,39 @@ describe('untere Navigation (EC-4)', () => {
   it('hat für jeden Eintrag den vollständigen zugänglichen Namen, auch bei Trennstelle', () => {
     render(<MobileNav />)
     expect(screen.getByRole('link', { name: 'Wochenblick' })).toBeInTheDocument()
+  })
+})
+
+describe('mit „Gewicht“ (AC-19, EC-4)', () => {
+  const six = navAreasFor({ showWeight: true })
+  const SIX = [...EXPECTED.slice(0, 4), ['Gewicht', '/gewicht'], EXPECTED[4]]
+
+  it.each([
+    ['Seitenleiste', () => render(<SidebarProvider><DesktopNav areas={six} /></SidebarProvider>)],
+    ['untere Navigation', () => render(<MobileNav areas={six} />)],
+  ])('%s zeigt sechs Bereiche, „Gewicht“ zwischen Wochenblick und Profil', (_name, renderNav) => {
+    pathname = '/gewicht'
+    renderNav()
+    const nav = screen.getByRole('navigation', { name: 'Hauptnavigation' })
+    expect(linksOf(nav).map((link) => [nameOf(link), link.getAttribute('href')])).toEqual(SIX)
+    expect(screen.getByRole('link', { current: 'page' }).getAttribute('href')).toBe('/gewicht')
+  })
+
+  it('untere Navigation: sechs gleiche Spalten, 12-px-Beschriftung, volle Namen trotz Trennstellen', () => {
+    render(<MobileNav areas={six} />)
+    const nav = screen.getByRole('navigation', { name: 'Hauptnavigation' })
+    expect(nav.querySelector('ul')?.className).toContain('grid-cols-6')
+    for (const link of linksOf(nav)) {
+      expect(link.className).toContain('text-xs')
+      expect(link.style.minHeight).toBe('4.5rem')
+    }
+    expect(screen.getByRole('link', { name: 'Bewegung' })).toBeInTheDocument()
+  })
+
+  it('untere Navigation mit fünf Bereichen bleibt wie bisher', () => {
+    render(<MobileNav />)
+    const nav = screen.getByRole('navigation', { name: 'Hauptnavigation' })
+    expect(nav.querySelector('ul')?.className).toContain('grid-cols-5')
+    expect(linksOf(nav)[0].className).toContain('text-sm')
   })
 })

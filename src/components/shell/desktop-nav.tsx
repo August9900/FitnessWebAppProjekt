@@ -12,10 +12,13 @@ import {
 } from '@/components/ui/sidebar'
 import { BrandMark } from './brand-mark'
 import { NAV_ICONS } from './nav-icons'
-import { NAV_AREAS, isActivePath } from './navigation.rules'
+import { NAV_AREAS, isActivePath, type NavArea } from './navigation.rules'
 
-/** Sidebar from 1024 px width (AC-1). Not collapsible; the current area shows a bar, bold text and aria-current. */
-export function DesktopNav() {
+/**
+ * Sidebar from 1024 px width (AC-1). Not collapsible; the current area shows a bar, bold text and
+ * aria-current. The areas come from the protected layout: five, or six with "Gewicht" (AC-19).
+ */
+export function DesktopNav({ areas = NAV_AREAS }: { areas?: readonly NavArea[] }) {
   const pathname = usePathname()
 
   return (
@@ -26,7 +29,7 @@ export function DesktopNav() {
       <SidebarContent className="px-3">
         <nav aria-label="Hauptnavigation">
           <SidebarMenu className="gap-1">
-            {NAV_AREAS.map((area) => {
+            {areas.map((area) => {
               const active = isActivePath(pathname, area.href)
               const Icon = NAV_ICONS[area.key]
               return (

@@ -2,6 +2,7 @@ import type { CSSProperties, ReactNode } from 'react'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { DesktopNav } from './desktop-nav'
 import { MOBILE_NAV_HEIGHT, MobileNav } from './mobile-nav'
+import { NAV_AREAS, type NavArea } from './navigation.rules'
 
 export const MAIN_CONTENT_ID = 'inhalt'
 
@@ -9,8 +10,9 @@ export const MAIN_CONTENT_ID = 'inhalt'
  * The app frame for every protected page (docs/app-shell.md): skip link first, sidebar from
  * 1024 px, bottom navigation below, and the content in between. Below 1024 px the content keeps
  * room for the bottom navigation and the device's safe area, so nothing is hidden (AC-2, EC-6).
+ * The protected layout decides which areas a person has (five or six, AC-19) and passes them in.
  */
-export function AppShell({ children }: { children: ReactNode }) {
+export function AppShell({ children, areas = NAV_AREAS }: { children: ReactNode; areas?: readonly NavArea[] }) {
   const spacing = {
     '--mobile-nav-space': `calc(${MOBILE_NAV_HEIGHT} + env(safe-area-inset-bottom) + 2rem)`,
   } as CSSProperties
@@ -23,7 +25,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       >
         Zum Inhalt springen
       </a>
-      <DesktopNav />
+      <DesktopNav areas={areas} />
       <main
         id={MAIN_CONTENT_ID}
         tabIndex={-1}
@@ -32,7 +34,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       >
         <div className="mx-auto w-full max-w-3xl">{children}</div>
       </main>
-      <MobileNav />
+      <MobileNav areas={areas} />
     </SidebarProvider>
   )
 }
