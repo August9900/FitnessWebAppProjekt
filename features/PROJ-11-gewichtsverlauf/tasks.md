@@ -8,7 +8,7 @@
 
 ## Stufe 1 — Grundlagen
 
-- [ ] T1 [P] Migration:
+- [x] T1 [P] Migration:
   - Tabelle `weight_entries` mit Schlüssel (Person, Tag), Wertebereich 30,0–300,0 mit einer Nachkommastelle, Datum höchstens UTC-heute + 1 Tag, `updated_at` automatisch, Löschen mit dem Konto
   - Hilfsfunktion „ab 16“; Zugriffsregel „eigene Zeilen, aktive Sitzung, ab 16“ für Lesen, Anlegen, Ändern, Löschen; Spaltenrechte; `anon` ohne Rechte
   - Speicherfunktion (Rechte der Person, eine Transaktion) mit den Ergebnissen gespeichert · schon vorhanden (mit Wert) · gibt es nicht mehr; gleicher Wert am selben Tag gilt als gespeichert
@@ -16,7 +16,7 @@
   - lokal anwenden
 
   · files: `supabase/migrations/<Zeitstempel>_weight_entries.sql` · → AC-2, AC-6, AC-11, AC-14, AC-15, AC-17; EC-1, EC-3
-- [ ] T2 [P] Regeln und Eingabeprüfung:
+- [x] T2 [P] Regeln und Eingabeprüfung:
   - Regel „Gewicht sichtbar“ (ab 16 und Einstellung an)
   - kg aus Text lesen (Komma oder Punkt, höchstens eine Nachkommastelle, 30,0–300,0); Anzeige „72,0 kg“
   - Datum „nicht in der Zukunft“ gegen „heute“ in der Gerätezeitzone
@@ -25,7 +25,7 @@
   - Tabellen-Tests
 
   · files: `src/features/weight/weight.rules.ts`, `src/features/weight/weight.rules.test.ts`, `src/features/weight/weight.schema.ts`, `src/features/weight/weight.schema.test.ts` · → AC-1, AC-2, AC-4, AC-5, AC-7, AC-8, AC-9, AC-14; EC-5
-- [ ] T3 [P] Änderung PROJ-2, Navigationsliste: Eintrag „Gewicht“ (`/gewicht`) zwischen Wochenblick und Profil als bedingt; reine Funktion „Bereiche für diese Person“; Kurzbeschriftungen mit weichen Trennstellen bei sechs Einträgen; Waagen-Symbol; mit Test. · files: `src/components/shell/navigation.rules.ts`, `src/components/shell/navigation.rules.test.ts`, `src/components/shell/nav-icons.tsx` · → AC-1, AC-2; EC-7
+- [x] T3 [P] Änderung PROJ-2, Navigationsliste: Eintrag „Gewicht“ (`/gewicht`) zwischen Wochenblick und Profil als bedingt; reine Funktion „Bereiche für diese Person“; Kurzbeschriftungen mit weichen Trennstellen bei sechs Einträgen; Waagen-Symbol; mit Test. · files: `src/components/shell/navigation.rules.ts`, `src/components/shell/navigation.rules.test.ts`, `src/components/shell/nav-icons.tsx` · → AC-1, AC-2; EC-7
 
 ## Stufe 2 — Daten und Rahmen
 
