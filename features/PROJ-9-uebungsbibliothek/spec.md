@@ -22,6 +22,7 @@
 - Eine Übung einzeln „starten“ oder als Aktion beginnen — begonnen wird weiterhin nur über ein Workout (PROJ-6).
 - Bilder, Videos oder Animationen zu Übungen.
 - Links zur Bibliothek aus der geführten Durchführung (PROJ-4) — dort soll nichts vom Training ablenken.
+- Pausen wie „Kurze Pause“ als nachschlagbare Übung — sie sind kein Bewegungsinhalt (siehe AC-11).
 - Eigene Trainingspläne aus Übungen zusammenstellen — gehört zu PROJ-10.
 
 ## Acceptance Criteria
@@ -33,7 +34,7 @@
 
 ### Liste
 
-- [ ] **AC-3** — Angenommen die Person öffnet die Übungsbibliothek, wenn sie angezeigt wird, dann sieht sie unter der Überschrift „Übungen“ alle Übungen alphabetisch nach Namen, jeweils mit Name und benötigter Ausstattung („Ohne Ausstattung“ bzw. z. B. „Matte, Kurzhanteln“).
+- [ ] **AC-3** — Angenommen die Person öffnet die Übungsbibliothek, wenn sie angezeigt wird, dann sieht sie unter der Überschrift „Übungen“ alle Übungen außer Pausen (AC-11) alphabetisch nach Namen, jeweils mit Name und benötigter Ausstattung („Ohne Ausstattung“ bzw. z. B. „Matte, Kurzhanteln“).
 - [ ] **AC-4** — Angenommen die Liste wird angezeigt, wenn die Person „Ohne Ausstattung“ wählt, dann sieht sie nur Übungen, die keine Ausstattung brauchen; mit „Alle“ wieder alle.
 - [ ] **AC-5** — Angenommen das Profil der Person enthält den Ort „Zuhause“, wenn sie „Passt zu meinem Zuhause“ wählt, dann sieht sie nur Übungen, deren gesamte Ausstattung in ihrer Ausstattung zuhause enthalten ist (Übungen ohne Ausstattung eingeschlossen); ohne den Ort „Zuhause“ im Profil wird dieser Filter nicht angeboten.
 - [ ] **AC-6** — Angenommen ein Filter ist gewählt, wenn die Person ein Übungsdetail öffnet und zurückkehrt, dann ist derselbe Filter weiterhin gewählt; die gewählte Filteroption ist nicht nur an der Farbe erkennbar.
@@ -44,6 +45,10 @@
 - [ ] **AC-8** — Angenommen das Übungsdetail wird angezeigt, wenn die Übung in angebotenen Workouts vorkommt, dann steht darunter „Kommt vor in“ mit jedem dieser Workouts (Titel und Dauer, in der Reihenfolge des Angebots), jeweils als Link zum Workout-Detail (PROJ-4); kommt sie in keinem angebotenen Workout vor, steht dort „Gerade in keinem Workout.“
 - [ ] **AC-9** — Angenommen das Übungsdetail wird angezeigt, wenn die Person „Alle Übungen“ wählt, dann kehrt sie zur Liste zurück (mit dem zuvor gewählten Filter).
 - [ ] **AC-10** — Angenommen ein Übungsdetail wird angezeigt, wenn es erscheint, dann gibt es dort keine Möglichkeit, die Übung zu starten oder als Aktion zu beginnen.
+
+### Pausen
+
+- [ ] **AC-11** — Angenommen eine Übung ist eine Pause (derzeit nur „Kurze Pause“), wenn die Bibliothek angezeigt wird, dann erscheint sie weder in der Liste noch in einem Filterergebnis; ihre Bibliotheksadresse zeigt „Nicht gefunden“, und im Workout-Detail (PROJ-4) sowie im Detail eines eigenen Workouts (PROJ-10) ist ihr Name kein Link. Im Auswahl-Dialog „Übung hinzufügen“ für eigene Workouts (PROJ-10) bleibt sie wählbar.
 
 ## Edge Cases
 
@@ -63,7 +68,7 @@
 ## Offene Fragen
 
 - [ ] Vor dem ersten Deploy: Wie wird sichergestellt, dass die in der Bibliothek gezeigten Übungen fachlich geprüft sind (PRD: Prüfung vor öffentlicher Veröffentlichung), obwohl Übungen keinen eigenen Prüfstatus und keinen Hinweis haben?
-- [ ] Gehört „Kurze Pause“ als Übung in die Bibliothek, oder soll sie dort fehlen? (Derzeit erscheint sie wie jede andere Übung.)
+- [x] Gehört „Kurze Pause“ als Übung in die Bibliothek, oder soll sie dort fehlen? → Nein: nicht in der Bibliothek, aber im Auswahl-Dialog für eigene Workouts wählbar (AC-11, 2026-11-25).
 
 ## Entscheidungsprotokoll
 
@@ -78,3 +83,4 @@
 | Übungsnamen im Workout-Detail verlinken, nicht in der geführten Durchführung | Mehr erfahren beim Ansehen, keine Ablenkung beim Trainieren. | 2026-11-24 |
 | Alphabetische Liste, Sicherheitshinweis im Detail | Schnell auffindbar; derselbe Hinweis wie bei Workouts. | 2026-11-24 |
 | Keine Möglichkeit, eine Übung einzeln zu starten | Begonnen wird über Workouts und die Tagesentscheidung; der Aktionsverlauf bleibt eindeutig. | 2026-11-24 |
+| Pausen („Kurze Pause“) nicht in der Bibliothek, Name ohne Link, im Auswahl-Dialog für eigene Workouts aber wählbar | Eine Pause ist nichts zum Nachschlagen; wer eigene Workouts zusammenstellt, soll trotzdem Pausen einbauen können. | 2026-11-25 |
