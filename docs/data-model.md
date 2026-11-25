@@ -18,12 +18,12 @@ _Grundlage: `docs/PRD.md` und `features/INDEX.md`, durch `/init` am 23.09.2026 e
 | Tagesvorschlag | Die Rangfolge aus Hauptvorschlag und bis zu zwei Alternativen zu einem Check-in; wird zusammen mit dem Check-in gespeichert (PROJ-6). | Nur die jeweilige Person. |
 | Aktionsverlauf | Hält je begonnener Aktion fest, ob sie begonnen, geschafft oder „heute nicht“ ist (PROJ-6). | Nur die jeweilige Person. |
 | Abschlussfeedback | Hält zu einer als geschafft markierten Aktion fest, wie der Aufwand war (zu wenig, passte, zu viel) und ob der Inhalt wieder vorgeschlagen werden soll; beide Angaben freiwillig (PROJ-7). | Nur die jeweilige Person. |
+| Eigenes Workout | Eine selbst zusammengestellte, benannte Übungsfolge (je Übung Sekunden oder Wiederholungen), ohne Tage oder Termine; startbar wie ein Workout (PROJ-10). | Nur die jeweilige Person. |
 
 ## Spätere Ergänzungen
 
 | Ding | Zweck | Eigentum und Sichtbarkeit |
 |------|-------|---------------------------|
-| Eigener Trainingsplan | Hält selbst zusammengestellte Trainingstage und Übungen fest. | Nur die jeweilige Person. |
 | Gewichtseintrag | Hält einen freiwilligen Wert für den Gewichtsverlauf fest. | Nur die jeweilige Person. |
 | Persönliche Bestleistung | Hält eine freiwillig eingetragene Leistung für ein mögliches Rangsystem fest. | Nur die jeweilige Person. |
 | Nährwertziel | Hält gegebenenfalls berechnete Ernährungsziele fest. | Nur die jeweilige Person. |
@@ -31,11 +31,12 @@ _Grundlage: `docs/PRD.md` und `features/INDEX.md`, durch `/init` am 23.09.2026 e
 
 ## Beziehungen und Grenzen
 
-- Ein Konto hat ein Kurzprofil und kann viele Check-ins, Vorschläge, Aktionen und Rückmeldungen haben.
+- Ein Konto hat ein Kurzprofil und kann viele Check-ins, Vorschläge, Aktionen, Rückmeldungen und eigene Workouts haben.
 - Schutz-Zähler beziehen sich auf ein Konto oder eine anfragende IP-Adresse; sie werden nach Ablauf der Schutzfrist gelöscht.
 - Ein kurzes Workout besteht aus einer geordneten Folge von Schritten; jeder Schritt verweist auf genau eine Übung (mit Dauer oder Wiederholungen). Jede Übung hat eine leichtere Variante. Workouts tragen einen Prüfstatus; vor dem ersten Deploy sind nur geprüfte öffentlich sichtbar (PROJ-4). Eine Mahlzeitenoption trägt ihre Essensweise (vegan, vegetarisch, mit Fleisch oder Fisch), eine Aufwandsstufe, ihre Zutaten, Schritte, einen „Noch einfacher“-Hinweis und die enthaltenen Hauptallergene; sie hat ebenfalls einen Prüfstatus (PROJ-5). Welche Mahlzeiten passen, ergibt sich aus der Essensweise im Kurzprofil. Ein Tagesvorschlag gehört zu genau einem Check-in und nennt bis zu drei Workouts bzw. Mahlzeiten in Rangfolge.
 - Aus einem Check-in kann höchstens eine Aktion begonnen werden; sie verweist auf das gewählte Workout bzw. die gewählte Mahlzeit aus dessen Vorschlag. Zu einer als geschafft markierten Aktion gibt es höchstens ein Abschlussfeedback (PROJ-7); es wird gelöscht, wenn „Geschafft“ zurückgenommen wird. Abschlussfeedbacks beeinflussen die Reihenfolge späterer Tagesvorschläge („Lieber nicht“, Aufwand bei Workouts), werden aber nicht im Tagesvorschlag gespeichert.
 - Check-ins, Aktionen und Abschlussfeedbacks werden mit dem Konto gelöscht und sind im Datenexport enthalten (PROJ-6, PROJ-7).
 - Der Wochenblick wird aus dem Aktionsverlauf abgeleitet; dafür ist zunächst kein eigenes gespeichertes Ding vorgesehen.
-- Spätere eigene Pläne, Gewichtseinträge, Bestleistungen, Nährwertziele und Chatverläufe gehören jeweils genau einem Konto.
+- Ein eigenes Workout gehört genau einem Konto und verweist in seiner Folge auf Übungen; höchstens 20 je Konto. Es wird mit dem Konto gelöscht und ist im Datenexport enthalten; es erscheint nicht in Tagesvorschlägen, Aktionsverlauf oder Wochenblick (PROJ-10).
+- Spätere Gewichtseinträge, Bestleistungen, Nährwertziele und Chatverläufe gehören jeweils genau einem Konto.
 - Eine ADHS- oder Autismusdiagnose wird nicht abgefragt oder gespeichert. Körper- und Trainingsdaten sowie Angaben Minderjähriger werden vor dem ersten Deploy mit `/dsgvo` geprüft; die lokale Entwicklung und Tests mit Testdaten können vorher stattfinden.
