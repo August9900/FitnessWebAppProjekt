@@ -69,8 +69,8 @@
 
 ## Stufe 5 — Seiten und Live-Prüfung
 
-- [ ] T12 `/bewegung` lädt die eigenen Workouts und zeigt „Deine Workouts“ unter dem Angebot; Seiten `/bewegung/eigene/neu` und `/bewegung/eigene/[id]/bearbeiten` (Übungen und Profil für den Editor laden; fremd oder unbekannt → „Nicht gefunden“). · files: `src/app/(protected)/(bereiche)/bewegung/page.tsx`, `src/app/(protected)/(bereiche)/bewegung/eigene/neu/page.tsx`, `src/app/(protected)/(bereiche)/bewegung/eigene/[id]/bearbeiten/page.tsx` · → AC-1, AC-2, AC-9
-- [ ] T13 Seiten:
+- [x] T12 `/bewegung` lädt die eigenen Workouts und zeigt „Deine Workouts“ unter dem Angebot; Seiten `/bewegung/eigene/neu` und `/bewegung/eigene/[id]/bearbeiten` (Übungen und Profil für den Editor laden; fremd oder unbekannt → „Nicht gefunden“). · files: `src/app/(protected)/(bereiche)/bewegung/page.tsx`, `src/app/(protected)/(bereiche)/bewegung/eigene/neu/page.tsx`, `src/app/(protected)/(bereiche)/bewegung/eigene/[id]/bearbeiten/page.tsx` · → AC-1, AC-2, AC-9
+- [x] T13 Seiten:
   - `/bewegung/eigene/[id]` und `/bewegung/eigene/[id]/los` samt „Dieses Workout gibt es nicht (mehr)“ mit Weg zu „Bewegung“
   - Anschließend Live-Prüfung mit zwei Konten: anlegen, ändern, löschen, Grenze 20, zweite Sitzung, fremde und unbekannte Adresse, Durchführung, Export, Kontolöschung.
 

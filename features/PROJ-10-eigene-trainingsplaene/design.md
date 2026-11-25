@@ -165,3 +165,18 @@ Keine.
 ## Offene Fragen
 
 - [ ] Aus der Spec übernommen: `/dsgvo PROJ-10` (Freitext im Namen, Aufbewahrung).
+
+## Umsetzungshinweise (/build, 2026-11-25)
+
+- **Wechsel zwischen Sekunden und Wiederholungen** setzt den Wert auf den Standard der neuen Art (30 Sekunden bzw. 10 Wiederholungen), statt die Zahl zu übernehmen. So ist der Schritt nach dem Wechsel immer gültig.
+- **Art als zwei Knöpfe:** Sekunden und Wiederholungen sind zwei große Knöpfe mit `aria-pressed` und Häkchen statt einer Auswahlliste. Das ist leichter zu treffen und per Tastatur bedienbar.
+- **ID eines neuen Workouts:** Die Seite `/bewegung/eigene/neu` erzeugt sie einmal pro Aufruf auf dem Server statt im Browser. Die Wirkung ist dieselbe: Ein doppeltes „Speichern“ legt nur ein Workout an. Hydrations-Abweichungen sind so ausgeschlossen.
+- **„Übung hinzufügen“** ist bei 12 Übungen gesperrt. Wird der Dialog vorher geöffnet und darüber hinaus hinzugefügt, greift der Hinweis „Höchstens 12 Übungen.“ beim Speichern.
+- **Fehler beim Löschen** erscheint im Bestätigungsdialog, der dabei offen bleibt.
+- **Fehlercodes der Datenbank:** `PW001` = unbekannte Übung (wird in der Folge als Hinweis „Eine Übung gibt es nicht mehr. Bitte entferne sie.“ gezeigt), `PW002` = Grenze von 20. Trifft die Grenze ein Workout, das mit derselben ID schon existiert (Doppeltipp beim 20.), gilt es als gespeichert.
+- **„Nicht gefunden“ mit Status 200** wegen des gestreamten Ladezustands, wie bei PROJ-4 und PROJ-9.
+- **Bau ohne Subagenten:** Die Stufen wurden nacheinander im Hauptkontext gebaut.
+- **Live-Prüfung:**
+  - Tabelle und Zugriff mit zwei Konten und anonym: 27/27, darunter alle ungültigen Werte, unbekannte Übung, gleiche ID, gleichzeitiges 20. Workout und Kontolöschung.
+  - Seiten mit echter Sitzung: 17/17 (Übersicht, Editor, Detail, Durchführung, Bearbeiten, fremd, unbekannt und ungültig, zwei Geräte, Export, Löschen auf anderem Gerät, Kontolöschung).
+  - Die Server Actions selbst und die Bedienung des Editors sind durch Action- und Komponententests belegt, nicht durch einen Browserdurchlauf.
