@@ -65,7 +65,7 @@
 
 ## Stufe 6 — Seite und Live-Prüfung
 
-- [ ] T14 Seite `/gewicht`:
+- [x] T14 Seite `/gewicht`:
   - im Gate für vollständige Angaben; lädt Zugang, Einträge und Zeitzonen-Cookie (mit `TimeZoneSync`); ohne „Gewicht sichtbar“ → allgemeines „Seite nicht gefunden“
   - Zeitraum aus `?zeitraum=` (Unbekanntes → `3m`); Lesefehler → Fehlerzustand des Rahmens
   - Anschließend Live-Prüfung gegen lokale Datenbank und Dev-Server: Person „12–15“ (Navigation, direkter Aufruf, direkter Datenbankzugriff), Person ab 16 mit unvollständigen Angaben, Ausblenden und Wiedereinblenden (auch zweite Sitzung), zwei Sitzungen am selben Tag, Verschieben auf belegten Tag, auf anderem Gerät gelöschter Eintrag, Doppelaufruf, Export, Kontolöschung; Sichtprüfung der unteren Leiste mit sechs Einträgen bei 375 px

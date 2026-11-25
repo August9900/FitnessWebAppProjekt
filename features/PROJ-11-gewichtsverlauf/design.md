@@ -160,3 +160,10 @@ Keine.
 ## Offene Fragen
 
 Keine neuen; siehe `spec.md` (insbesondere `/dsgvo PROJ-11` vor dem ersten Deploy).
+
+## Umsetzungshinweise (/build, 2026-11-25)
+
+- T8 (Export verdrahten) wurde aus Stufe 3 in Stufe 2 vorgezogen, weil die erweiterte Exportregel (T5) sonst den Typcheck der Stufe gebrochen hätte. Inhalt unverändert.
+- Migration: `supabase/migrations/20261125150000_weight_entries.sql`. Das Datum „nicht in der Zukunft“ prüft die Datenbank über einen Trigger (Fehlercode `WE001`, UTC-heute + 1 Tag), nicht über eine Prüfbedingung mit `now()`.
+- Kurve: SVG mit fester Box 320 × 160, skaliert mit der Breite; Beschriftung als SVG-Text.
+- Offen: Sichtprüfung der unteren Leiste mit sechs Einträgen bei 375 und 320 px im Browser (EC-7, PROJ-2 EC-4). Geprüft sind bisher Spalten, Schriftgröße, Trennstellen und Mindesthöhe im ausgelieferten HTML und in Komponententests.
