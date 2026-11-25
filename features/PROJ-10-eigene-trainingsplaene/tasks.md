@@ -43,8 +43,8 @@
 
 ## Stufe 3 — Server Actions und Export
 
-- [ ] T6 [P] Server Actions `saveCustomWorkout` und `deleteCustomWorkout`: Sitzung und Eingabe prüfen; Ergebnisse gespeichert (mit ID), ungültig (mit Feldhinweisen), gibt es nicht mehr, Grenze erreicht, fehlgeschlagen; `/bewegung` aktualisieren; Protokoll ohne Personendaten; mit Test. · files: `src/features/custom-workouts/custom-workouts.actions.ts`, `src/features/custom-workouts/custom-workouts.actions.test.ts` · → AC-5, AC-6, AC-9, AC-10, AC-11; EC-2, EC-3, EC-4, EC-5
-- [ ] T7 [P] Änderung PROJ-1: Export-Abschnitt `customWorkouts` (ID, Name, Folge, Anlage, letzte Änderung); übrige Teile unverändert; mit Tests. · files: `src/features/account/account.data.ts`, `src/features/account/account.rules.ts`, `src/features/account/account.data.test.ts`, `src/features/account/account.rules.test.ts` · → AC-13
+- [x] T6 [P] Server Actions `saveCustomWorkout` und `deleteCustomWorkout`: Sitzung und Eingabe prüfen; Ergebnisse gespeichert (mit ID), ungültig (mit Feldhinweisen), gibt es nicht mehr, Grenze erreicht, fehlgeschlagen; `/bewegung` aktualisieren; Protokoll ohne Personendaten; mit Test. · files: `src/features/custom-workouts/custom-workouts.actions.ts`, `src/features/custom-workouts/custom-workouts.actions.test.ts` · → AC-5, AC-6, AC-9, AC-10, AC-11; EC-2, EC-3, EC-4, EC-5
+- [x] T7 [P] Änderung PROJ-1: Export-Abschnitt `customWorkouts` (ID, Name, Folge, Anlage, letzte Änderung); übrige Teile unverändert; mit Tests. · files: `src/features/account/account.data.ts`, `src/features/account/account.rules.ts`, `src/features/account/account.data.test.ts`, `src/features/account/account.rules.test.ts` · → AC-13
 
 ## Stufe 4 — Ansichten
 

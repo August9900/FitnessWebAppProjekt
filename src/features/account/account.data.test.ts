@@ -15,6 +15,9 @@ vi.mock('@/features/today/today.data', () => ({ getOwnTodayExport }))
 const getOwnFeedbackExport = vi.fn()
 vi.mock('@/features/feedback/feedback.data', () => ({ getOwnFeedbackExport }))
 
+const getOwnCustomWorkoutsExport = vi.fn()
+vi.mock('@/features/custom-workouts/custom-workouts.data', () => ({ getOwnCustomWorkoutsExport }))
+
 const deleteUser = vi.fn()
 vi.mock('@/lib/supabase/admin', () => ({
   createAdminClient: () => ({ auth: { admin: { deleteUser } } }),
@@ -66,6 +69,7 @@ describe('collectAccountExport (AC-15)', () => {
   beforeEach(() => {
     getOwnTodayExport.mockResolvedValue({ checkIns: [], actions: [] })
     getOwnFeedbackExport.mockResolvedValue([])
+    getOwnCustomWorkoutsExport.mockResolvedValue([])
   })
 
   it('combines account and own profile', async () => {
@@ -130,6 +134,24 @@ describe('collectAccountExport (AC-15)', () => {
     profileQuery.maybeSingle.mockResolvedValue({ data: null, error: null })
     getOwnFeedbackExport.mockRejectedValue(new Error('Feedback could not be read (08006).'))
     await expect(data.collectAccountExport()).rejects.toThrow('Feedback could not be read')
+  })
+
+  it('adds the own workouts (AC-13 of PROJ-10)', async () => {
+    serverAuth.getUser.mockResolvedValue({ data: { user }, error: null })
+    profileQuery.maybeSingle.mockResolvedValue({ data: null, error: null })
+    getOwnCustomWorkoutsExport.mockResolvedValue([
+      { id: 'w1', name: 'Mein Mix', steps: [{ exercise_id: 'kniebeuge', mode: 'time', amount: 30 }], created_at: 't1', updated_at: 't1' },
+    ])
+    const result = await data.collectAccountExport()
+    expect(getOwnCustomWorkoutsExport).toHaveBeenCalledWith('u1')
+    expect(result?.customWorkouts).toEqual([expect.objectContaining({ id: 'w1', name: 'Mein Mix', steps: [{ exerciseId: 'kniebeuge', mode: 'time', amount: 30 }] })])
+  })
+
+  it('refuses to produce a partial export when the own workouts cannot be read', async () => {
+    serverAuth.getUser.mockResolvedValue({ data: { user }, error: null })
+    profileQuery.maybeSingle.mockResolvedValue({ data: null, error: null })
+    getOwnCustomWorkoutsExport.mockRejectedValue(new Error('Own workouts could not be read (08006).'))
+    await expect(data.collectAccountExport()).rejects.toThrow('Own workouts could not be read')
   })
 
   it('returns null without a session', async () => {

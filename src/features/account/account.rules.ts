@@ -148,6 +148,15 @@ export type ExportAction = {
 export type ExportDailyDecisions = { checkIns: ExportCheckIn[]; actions: ExportAction[] }
 
 /** A PROJ-7 feedback as stored: the action it belongs to, both answers and their times. */
+/** A PROJ-10 own workout as stored: name, ordered steps and times. */
+export type ExportCustomWorkout = {
+  id: string
+  name: string
+  steps: { exercise_id: string; mode: string; amount: number }[]
+  created_at: string
+  updated_at: string
+}
+
 export type ExportFeedback = {
   action_id: string
   effort: string | null
@@ -164,6 +173,7 @@ export function buildAccountExport(input: {
   profile: ExportProfile | null
   dailyDecisions: ExportDailyDecisions
   feedback: ExportFeedback[]
+  customWorkouts: ExportCustomWorkout[]
   exportedAt: Date
 }) {
   return {
@@ -221,6 +231,14 @@ export function buildAccountExport(input: {
       suggestAgainAt: entry.suggest_again_at,
       createdAt: entry.created_at,
       updatedAt: entry.updated_at,
+    })),
+    // PROJ-10 Eigene Trainingspläne: own workouts with their sequence (AC-13).
+    customWorkouts: input.customWorkouts.map((workout) => ({
+      id: workout.id,
+      name: workout.name,
+      steps: workout.steps.map((step) => ({ exerciseId: step.exercise_id, mode: step.mode, amount: step.amount })),
+      createdAt: workout.created_at,
+      updatedAt: workout.updated_at,
     })),
   }
 }

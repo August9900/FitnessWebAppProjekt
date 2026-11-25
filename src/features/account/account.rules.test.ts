@@ -92,6 +92,7 @@ describe('buildAccountExport (AC-15)', () => {
       },
       dailyDecisions: { checkIns: [], actions: [] },
       feedback: [],
+      customWorkouts: [],
       exportedAt,
     })
     expect(result).toEqual({
@@ -111,6 +112,7 @@ describe('buildAccountExport (AC-15)', () => {
       },
       dailyDecisions: { checkIns: [], actions: [] },
       feedback: [],
+      customWorkouts: [],
     })
     expect(JSON.stringify(result)).not.toContain('hash')
   })
@@ -121,6 +123,7 @@ describe('buildAccountExport (AC-15)', () => {
       profile: { age_band_at_signup: '12_15', created_at: 'c', updated_at: 'u' },
       dailyDecisions: { checkIns: [], actions: [] },
       feedback: [],
+      customWorkouts: [],
       exportedAt,
     })
     expect(result.profile).toMatchObject({ goal: null, experience: null, places: null, homeEquipment: null, diet: null })
@@ -168,6 +171,7 @@ describe('buildAccountExport (AC-15)', () => {
         ],
       },
       feedback: [],
+      customWorkouts: [],
       exportedAt,
     })
     expect(result.dailyDecisions).toEqual({
@@ -225,6 +229,7 @@ describe('buildAccountExport (AC-15)', () => {
           updated_at: '2026-11-17T08:22:00Z',
         },
       ],
+      customWorkouts: [],
       exportedAt,
     })
     expect(result.feedback).toEqual([
@@ -236,6 +241,40 @@ describe('buildAccountExport (AC-15)', () => {
         suggestAgainAt: null,
         createdAt: '2026-11-17T08:21:00Z',
         updatedAt: '2026-11-17T08:22:00Z',
+      },
+    ])
+  })
+
+  it('contains own workouts with name, sequence and times (AC-13 of PROJ-10)', () => {
+    const result = buildAccountExport({
+      account: { id: 'u1', email: 'a@b.de', created_at: 'c' },
+      profile: null,
+      dailyDecisions: { checkIns: [], actions: [] },
+      feedback: [],
+      customWorkouts: [
+        {
+          id: 'w1',
+          name: 'Mein Mix',
+          steps: [
+            { exercise_id: 'kniebeuge', mode: 'time', amount: 30 },
+            { exercise_id: 'marschieren', mode: 'reps', amount: 10 },
+          ],
+          created_at: 't1',
+          updated_at: 't2',
+        },
+      ],
+      exportedAt,
+    })
+    expect(result.customWorkouts).toEqual([
+      {
+        id: 'w1',
+        name: 'Mein Mix',
+        steps: [
+          { exerciseId: 'kniebeuge', mode: 'time', amount: 30 },
+          { exerciseId: 'marschieren', mode: 'reps', amount: 10 },
+        ],
+        createdAt: 't1',
+        updatedAt: 't2',
       },
     ])
   })
