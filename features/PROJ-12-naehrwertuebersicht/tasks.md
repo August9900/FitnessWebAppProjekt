@@ -8,7 +8,7 @@
 
 ## Stufe 1 — Grundlagen
 
-- [ ] T1 [P] Migration:
+- [x] T1 [P] Migration:
   - vier Spalten an `meals`: `energy_kcal` (0–2000), `protein_g`, `carbs_g`, `fat_g` (je 0–200), ganze Zahlen oder leer
   - Regel „alle vier oder keine“
   - Beispielwerte für alle 17 Beispiel-Mahlzeiten, grob aus den Zutatenmengen geschätzt und gerundet
@@ -16,7 +16,7 @@
   - Datenbank-Prüfung: Regel „alle oder keine“, Grenzen, alle 17 mit Werten, Angemeldete können nicht ändern
 
   · files: `supabase/migrations/<Zeitstempel>_meal_nutrition.sql` · → AC-8, AC-10, AC-11
-- [ ] T2 [P] Nährwert-Regeln:
+- [x] T2 [P] Nährwert-Regeln:
   - Typ „Nährwerte“ (kcal, Eiweiß, Kohlenhydrate, Fett — ganze Zahlen); Grenzen
   - aus vier gelesenen Werten zusammensetzen: alle gültig → Nährwerte, sonst keine
   - die vier Anzeigezeilen in fester Reihenfolge mit Beschriftung und Einheit, „0 g“ bleibt „0 g“
