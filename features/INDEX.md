@@ -37,7 +37,7 @@
 | PROJ-13 | Rangsystem | Persönliche Bestleistungen können in ein optionales, positiv gestaltetes Rangsystem einfließen. | Roadmap | — | 2026-09-23 |
 | PROJ-14 | KI-Trainer | Ein späterer, gesondert geprüfter Coach kann frei formulierte Fragen beantworten. | Roadmap | — | 2026-09-23 |
 
-**Baureihenfolge:** P0 (erste Version): PROJ-1 → PROJ-2 → PROJ-3; PROJ-4 und PROJ-5 nach PROJ-2; PROJ-6 nach PROJ-3, PROJ-4 und PROJ-5 → PROJ-7 → PROJ-8 · P1: PROJ-9 nach PROJ-4 → PROJ-10 · P2: PROJ-11 und PROJ-12 nach PROJ-3; PROJ-13 nach PROJ-8 und erneuter Produktprüfung; PROJ-14 nach PROJ-6 und gesonderter Prüfung.
+**Baureihenfolge:** P0 (erste Version): PROJ-1 → PROJ-2 → PROJ-3; PROJ-4 und PROJ-5 nach PROJ-2; PROJ-6 nach PROJ-3, PROJ-4 und PROJ-5 → PROJ-7 → PROJ-8 · P1: PROJ-9 nach PROJ-4 → PROJ-10 · P2: PROJ-11 nach PROJ-3; PROJ-12 nach PROJ-5; PROJ-13 nach PROJ-8 und erneuter Produktprüfung; PROJ-14 nach PROJ-6 und gesonderter Prüfung.
 
 <!-- Add features above this line -->
 
