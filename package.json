@@ -16,7 +16,8 @@
     "typecheck": "next typegen && tsc --noEmit",
     "check": "npm run lint && npm run typecheck && npm run check:structure && npm test && npm run build",
     "check:structure": "node scripts/check-architecture.mjs",
-    "test:structure": "node scripts/verify-architecture.mjs"
+    "test:structure": "node scripts/verify-architecture.mjs",
+    "seed:demo": "node scripts/seed-demo.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
