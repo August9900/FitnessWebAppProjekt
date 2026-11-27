@@ -108,7 +108,7 @@ Für die Längenprüfung einzelner Listeneinträge kommt eine kleine Hilfsfunkti
 
 ## Beispielinhalte (Prototyp)
 
-Die Inhalts-Migration legt mindestens 15 Mahlzeiten mit `review_status = unreviewed` an. Abdeckung (AC-9): in jeder Aufwandsstufe mindestens eine vegane; insgesamt mindestens drei vegetarische (nicht vegane) und mindestens drei mit Fleisch oder Fisch. Je Mahlzeit höchstens 6 Zutaten aus dem normalen Supermarkt, höchstens 5 Schritte, ein „Noch einfacher“-Hinweis und Allergenangaben. Die Inhalte sind allgemein gehalten, ohne Gesundheitsversprechen, ohne Nährwerte und ohne Wertung; sie tragen in der App den Hinweis „Beispielinhalt – noch nicht fachlich geprüft“.
+Die Inhalts-Migration legt mindestens 15 Mahlzeiten mit `review_status = unreviewed` an. Abdeckung (AC-9): in jeder Aufwandsstufe mindestens eine vegane; insgesamt mindestens drei vegetarische (nicht vegane) und mindestens drei mit Fleisch oder Fisch. Je Mahlzeit höchstens 6 Zutaten aus dem normalen Supermarkt, höchstens 5 Schritte, ein „Noch einfacher“-Hinweis und Allergenangaben. Die Inhalte sind allgemein gehalten, ohne Gesundheitsversprechen und ohne Wertung (Nährwerte ergänzt PROJ-12 mit eigener Migration); sie tragen in der App den Hinweis „Beispielinhalt – noch nicht fachlich geprüft“.
 
 ## Abhängigkeiten
 

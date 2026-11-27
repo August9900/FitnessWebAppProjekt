@@ -5,6 +5,7 @@
 - Benötigt: PROJ-2 (App-Rahmen & Navigation) — Bereich „Essen“, gemeinsame Bausteine.
 - Benötigt: PROJ-3 (Kurzprofil & Einstieg) — die Essensweise bestimmt, welche Mahlzeiten passen; der Bereich ist erst mit vollständigen Angaben erreichbar.
 - Wird genutzt von: PROJ-6 (Tagesentscheidung) — wählt aus diesem Angebot eine Mahlzeit als Vorschlag.
+- Erweitert durch: PROJ-12 (Nährwertübersicht) — ungefähre Nährwerte pro Portion, zugeklappt im Detail.
 
 ## User Stories
 
@@ -19,7 +20,7 @@
 - Speichern, ob eine Mahlzeit gegessen oder zubereitet wurde, Verlauf und Wochenansicht — gehören zu PROJ-6, PROJ-7 und PROJ-8.
 - Die Auswahl einer einzelnen Mahlzeit für heute anhand von Zeit und Energie — gehört zu PROJ-6.
 - Geführte Zubereitung Schritt für Schritt, Timer.
-- Kalorien, Makros oder Bewertungen wie „gesund“ / „ungesund“ — Nährwerte gehören später zu PROJ-12.
+- Bewertungen wie „gesund“ / „ungesund“. Ungefähre Nährwerte pro Portion zeigt PROJ-12 — nur zugeklappt im Detail; in der Übersicht und in Vorschlägen stehen keine.
 - „Alle Mahlzeiten anzeigen“ für Mahlzeiten, die nicht zur Essensweise passen.
 - Kategorien nach Tageszeit (Frühstück, Mittag, Abend, Snack).
 - Filter nach Küchenausstattung (Herd, Mikrowelle) oder nach Allergenen; Allergien oder Unverträglichkeiten im Profil.
@@ -58,7 +59,7 @@
 ## Übergreifende Anforderungen
 
 - Texte sind kurz, in einfachen Sätzen, du-Form, ohne Fachsprache; jeder Schritt höchstens zwei Sätze.
-- Keine Kalorien, keine Bewertung von Lebensmitteln oder Essverhalten, keine Rangfolgen, keine Streaks.
+- Keine Kalorien oder anderen Nährwerte in der Übersicht; im Detail nur zugeklappt und ohne Bewertung (PROJ-12). Keine Bewertung von Lebensmitteln oder Essverhalten, keine Rangfolgen, keine Streaks.
 - Bedienelemente sind per Tastatur erreichbar und mindestens 48 px hoch (PROJ-2); die Essensweise und die Aufwandsstufe stehen als Text da, nicht nur als Farbe oder Symbol.
 
 ## Offene Fragen
@@ -79,6 +80,7 @@
 | Drei feste Aufwandsstufen „Ohne Kochen“, „Schnell gekocht“, „Bis 20 Min“ | Eine Entscheidung statt zwei (Zeit und Kochen); „Ohne Kochen“ ist die wichtigste Rettung an Tagen ohne Kraft. | 2026-11-13 |
 | „Noch einfacher“-Hinweis je Mahlzeit statt Tauschtipps je Zutat | Hilft an energiearmen Tagen wie „Leichter“ bei Bewegung, ohne zusätzlichen Pflege- und Prüfaufwand für viele Alternativen. | 2026-11-13 |
 | Keine Nährwerte, Mengen für eine Person | Nichtziel im PRD; Zahlen und Bewertungen erzeugen Druck; Nährwerte folgen gegebenenfalls in PROJ-12. | 2026-11-13 |
+| Nährwerte jetzt durch PROJ-12: ungefähr, pro Portion, nur zugeklappt im Detail, ohne Bewertung; Übersicht weiter ohne Zahlen (Wortlaut angeglichen) | PROJ-12 hat die zurückgestellten Nährwerte so umgesetzt, dass niemand ihnen ungewollt begegnet; die Regel „keine Bewertung“ bleibt. | 2026-11-27 |
 | Mindestens 15 Beispielmahlzeiten, höchstens 6 Zutaten und 5 Schritte | Auch eine vegane Person findet in jeder Stufe etwas; enge Grenzen halten den Entscheidungs- und Einkaufsaufwand klein. | 2026-11-13 |
 | Allergene als Hinweis im Detail, ohne Filter und ohne Profilangabe | Personen mit Allergien können selbst entscheiden; es werden keine Gesundheitsdaten erhoben (PROJ-3). | 2026-11-13 |
 | Nicht passende Mahlzeit per direkter Adresse wird angezeigt, mit Hinweis | Kein Fehler bei geteilten Links; der Hinweis verhindert ein Missverständnis. | 2026-11-13 |
