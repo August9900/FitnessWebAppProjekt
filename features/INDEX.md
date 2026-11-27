@@ -33,7 +33,7 @@
 | PROJ-9 | Übungsbibliothek | Nutzende können Übungen mit ihren Eigenschaften und Einsatzmöglichkeiten nachschlagen. | In Progress | [Spec](PROJ-9-uebungsbibliothek/) | 2026-09-23 |
 | PROJ-10 | Eigene Trainingspläne | Nutzende können Trainingspläne selbst zusammenstellen und speichern. | In Progress | [Spec](PROJ-10-eigene-trainingsplaene/) | 2026-09-23 |
 | PROJ-11 | Gewichtsverlauf | Nutzende können Gewichtseinträge und deren Verlauf einsehen. | In Progress | [Spec](PROJ-11-gewichtsverlauf/) | 2026-09-23 |
-| PROJ-12 | Nährwertübersicht | Mahlzeiten zeigen ihre ungefähren Nährwerte pro Portion. | Planned | [Spec](PROJ-12-naehrwertuebersicht/) | 2026-09-23 |
+| PROJ-12 | Nährwertübersicht | Mahlzeiten zeigen ihre ungefähren Nährwerte pro Portion. | Architected | [Spec](PROJ-12-naehrwertuebersicht/) | 2026-09-23 |
 | PROJ-13 | Rangsystem | Persönliche Bestleistungen können in ein optionales, positiv gestaltetes Rangsystem einfließen. | Roadmap | — | 2026-09-23 |
 | PROJ-14 | KI-Trainer | Ein späterer, gesondert geprüfter Coach kann frei formulierte Fragen beantworten. | Roadmap | — | 2026-09-23 |
 
