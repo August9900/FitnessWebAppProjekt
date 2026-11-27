@@ -109,3 +109,10 @@ Keine.
 ## Offene Fragen
 
 Keine neuen; siehe `spec.md` (fachliche Prüfung, Quelle und Berechnungsweg der Werte).
+
+## Umsetzungshinweise (/build, 2026-11-27)
+
+- Migration: `supabase/migrations/20261127120000_meal_nutrition.sql` (Spalten, Regel „alle oder keine“, Beispielwerte für 17 Mahlzeiten).
+- Die vier neuen Felder sind beim Lesen optional: Eine Zeile ohne diese Felder bleibt als Mahlzeit ohne Nährwerte sichtbar (Zod v4 verlangt sonst das Feld).
+- Der Auslöser nutzt den gemeinsamen Knopf des Designsystems; dessen Farbüberblendung beim Überfahren schaltet „Bewegung reduzieren“ zentral ab. Der aufklappende Inhalt und der Pfeil haben keine eigene Animation.
+- Die Zahlen stehen erst nach dem Aufklappen auf der Seite; in den Seitendaten des Browsers sind sie als Werte bereits enthalten.

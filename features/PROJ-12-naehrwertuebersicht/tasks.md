@@ -32,7 +32,7 @@
 
 ## Stufe 3 — Detail und Live-Prüfung
 
-- [ ] T5 Änderung PROJ-5: Mahlzeiten-Detail zeigt den Abschnitt am Ende, nur mit Werten; mit Test. Anschließend Live-Prüfung gegen lokale Datenbank und Produktions-Build: Detail mit zugeklapptem Abschnitt und weiter vorhandener Beispielinhalt-Markierung, Mahlzeit ohne Werte ohne Abschnitt, keine Nährwerte in `/essen` und auf `/heute`, nicht angebotene Mahlzeit → „Nicht gefunden“. · files: `src/features/meals/components/meal-detail.tsx`, `src/features/meals/components/meal-detail.test.tsx` · → AC-1, AC-6, AC-7, AC-9, AC-11; EC-2, EC-3, EC-4
+- [x] T5 Änderung PROJ-5: Mahlzeiten-Detail zeigt den Abschnitt am Ende, nur mit Werten; mit Test. Anschließend Live-Prüfung gegen lokale Datenbank und Produktions-Build: Detail mit zugeklapptem Abschnitt und weiter vorhandener Beispielinhalt-Markierung, Mahlzeit ohne Werte ohne Abschnitt, keine Nährwerte in `/essen` und auf `/heute`, nicht angebotene Mahlzeit → „Nicht gefunden“. · files: `src/features/meals/components/meal-detail.tsx`, `src/features/meals/components/meal-detail.test.tsx` · → AC-1, AC-6, AC-7, AC-9, AC-11; EC-2, EC-3, EC-4
 
 ## Parallelisierung
 

@@ -77,3 +77,29 @@ describe('MealDetail', () => {
     expect(section('Zubereitung')).toBeInTheDocument()
   })
 })
+
+describe('MealDetail — Nährwerte (PROJ-12 AC-1, AC-6, AC-9)', () => {
+  const nutrition = { energyKcal: 355, proteinG: 10, carbsG: 50, fatG: 11 }
+
+  it('zeigt am Ende den zugeklappten Abschnitt, wenn die Mahlzeit Nährwerte hat', () => {
+    const { container } = render(<MealDetail meal={{ ...meal, nutrition }} fits />)
+    const trigger = screen.getByRole('button', { name: 'Nährwerte pro Portion' })
+    expect(trigger).toHaveAttribute('aria-expanded', 'false')
+    expect(screen.queryByText('355 kcal')).toBeNull()
+    const headings = Array.from(container.querySelectorAll('h2')).map((heading) => heading.textContent)
+    expect(headings[headings.length - 1]).toBe('Nährwerte pro Portion')
+  })
+
+  it('ohne Nährwerte gibt es keinen Abschnitt und keinen Hinweis darauf', () => {
+    render(<MealDetail meal={{ ...meal, nutrition: null }} fits />)
+    expect(screen.queryByText('Nährwerte pro Portion')).toBeNull()
+    expect(screen.queryByText(/Nährwert/)).toBeNull()
+    render(<MealDetail meal={meal} fits />)
+    expect(screen.queryByText(/Nährwert/)).toBeNull()
+  })
+
+  it('die Beispielinhalt-Markierung der Mahlzeit bleibt, die Nährwerte bekommen keine eigene (AC-9)', () => {
+    render(<MealDetail meal={{ ...meal, nutrition }} fits />)
+    expect(screen.getAllByText(/Beispielinhalt/)).toHaveLength(1)
+  })
+})

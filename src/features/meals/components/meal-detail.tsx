@@ -1,6 +1,7 @@
 import { SampleContentBadge } from '@/components/content/sample-content-badge'
 import { PageHeader } from '@/components/shell/page-header'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { NutritionSection } from '@/features/nutrition/components/nutrition-section'
 import {
   ALLERGEN_PACKAGING_NOTE,
   EFFORT_LABELS,
@@ -14,7 +15,8 @@ import {
 /**
  * The meal detail: key facts, ingredients for one person, steps, "Noch einfacher" and the allergen
  * statement (AC-5 to AC-8). A meal opened by its address that does not fit the person's diet is
- * shown in full with a short note (EC-3). No controls, so no browser code.
+ * shown in full with a short note (EC-3). At the end, only when the meal has values, the collapsed
+ * nutrition section of PROJ-12 (AC-1, AC-6).
  */
 export function MealDetail({ meal, fits }: { meal: Meal; fits: boolean }) {
   return (
@@ -71,6 +73,8 @@ export function MealDetail({ meal, fits }: { meal: Meal; fits: boolean }) {
         <p>{allergenText(meal.allergens)}</p>
         <p className="text-sm text-muted-foreground">{ALLERGEN_PACKAGING_NOTE}</p>
       </section>
+
+      {meal.nutrition && <NutritionSection nutrition={meal.nutrition} />}
     </div>
   )
 }
