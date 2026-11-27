@@ -3,11 +3,13 @@
 import 'server-only'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
+import { toNutrition } from '@/features/nutrition/nutrition.rules'
 import { ALLERGENS, EFFORTS, MEAL_DIETS, REVIEW_STATUSES, type Meal } from './meals.rules'
 
 const ID_PATTERN = /^[a-z0-9_]{3,40}$/
 
-const COLUMNS = 'id, title, diet, effort, minutes, ingredients, steps, easier_hint, allergens, review_status'
+const COLUMNS =
+  'id, title, diet, effort, minutes, ingredients, steps, easier_hint, allergens, review_status, energy_kcal, protein_g, carbs_g, fat_g'
 
 const mealRow = z.object({
   id: z.string(),
@@ -20,6 +22,11 @@ const mealRow = z.object({
   easier_hint: z.string(),
   allergens: z.array(z.enum(ALLERGENS)),
   review_status: z.enum(REVIEW_STATUSES),
+  // PROJ-12: checked by the nutrition rule — unfitting values mean "no values", not a hidden meal.
+  energy_kcal: z.unknown().optional(),
+  protein_g: z.unknown().optional(),
+  carbs_g: z.unknown().optional(),
+  fat_g: z.unknown().optional(),
 })
 
 /**
@@ -41,6 +48,7 @@ export function toMeal(row: unknown): Meal | null {
     easierHint: data.easier_hint,
     allergens: data.allergens,
     reviewStatus: data.review_status,
+    nutrition: toNutrition({ energyKcal: data.energy_kcal, proteinG: data.protein_g, carbsG: data.carbs_g, fatG: data.fat_g }),
   }
 }
 

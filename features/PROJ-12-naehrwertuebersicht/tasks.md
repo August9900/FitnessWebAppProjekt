@@ -27,8 +27,8 @@
 
 ## Stufe 2 — Daten und Abschnitt
 
-- [ ] T3 [P] Änderung PROJ-5: Die Mahlzeit kennt optional ihre Nährwerte (bestehende Testdaten bleiben gültig); alle Mahlzeiten-Abfragen lesen die vier Spalten mit; unvollständige oder ungültige Werte → Mahlzeit ohne Nährwerte, die Mahlzeit bleibt sichtbar; mit Test. · files: `src/features/meals/meals.rules.ts`, `src/features/meals/meals.data.ts`, `src/features/meals/meals.data.test.ts` · → AC-6, AC-8; EC-2, EC-3
-- [ ] T4 [P] Abschnitt „Nährwerte pro Portion“: zugeklappt (shadcn `collapsible`), Auslöser als Knopf mit `aria-expanded`, mindestens 48 px; beim Öffnen einer Seite immer zu; ohne Animation; vier Werte und Hinweis, umbrechend; keine wertenden Farben oder Texte; mit Test. · files: `src/features/nutrition/components/nutrition-section.tsx`, `src/features/nutrition/components/nutrition-section.test.tsx` · → AC-1, AC-2, AC-3, AC-4, AC-5; EC-1, EC-4, EC-5
+- [x] T3 [P] Änderung PROJ-5: Die Mahlzeit kennt optional ihre Nährwerte (bestehende Testdaten bleiben gültig); alle Mahlzeiten-Abfragen lesen die vier Spalten mit; unvollständige oder ungültige Werte → Mahlzeit ohne Nährwerte, die Mahlzeit bleibt sichtbar; mit Test. · files: `src/features/meals/meals.rules.ts`, `src/features/meals/meals.data.ts`, `src/features/meals/meals.data.test.ts` · → AC-6, AC-8; EC-2, EC-3
+- [x] T4 [P] Abschnitt „Nährwerte pro Portion“: zugeklappt (shadcn `collapsible`), Auslöser als Knopf mit `aria-expanded`, mindestens 48 px; beim Öffnen einer Seite immer zu; ohne Animation; vier Werte und Hinweis, umbrechend; keine wertenden Farben oder Texte; mit Test. · files: `src/features/nutrition/components/nutrition-section.tsx`, `src/features/nutrition/components/nutrition-section.test.tsx` · → AC-1, AC-2, AC-3, AC-4, AC-5; EC-1, EC-4, EC-5
 
 ## Stufe 3 — Detail und Live-Prüfung
 

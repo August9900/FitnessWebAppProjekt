@@ -3,6 +3,7 @@
  * (AC-2), the effort filter (AC-3) and the allergen text (AC-7, EC-4). No IO, no framework.
  */
 import type { Diet } from '@/features/profile/profile.schema'
+import type { Nutrition } from '@/features/nutrition/nutrition.rules'
 
 export const MEAL_DIETS = ['vegan', 'vegetarian', 'meat_fish'] as const
 export const EFFORTS = ['no_cook', 'quick', 'up_to_20'] as const
@@ -41,6 +42,8 @@ export type Meal = {
   easierHint: string
   allergens: Allergen[]
   reviewStatus: ReviewStatus
+  /** PROJ-12: approximate values per portion — all four or none. Missing = none. */
+  nutrition?: Nutrition | null
 }
 
 export const MEAL_DIET_LABELS = {

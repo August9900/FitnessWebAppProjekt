@@ -81,7 +81,30 @@ describe('getOfferedMeals (AC-1)', () => {
         easierHint: 'Iss den Hummus mit Gurkenstücken direkt aus der Packung.',
         allergens: ['gluten', 'sesame'],
         reviewStatus: 'unreviewed',
+        nutrition: null,
       },
+    ])
+  })
+
+  it('liest die vier Nährwerte mit und setzt sie zusammen (PROJ-12 AC-8)', async () => {
+    listResult = { data: [row({ energy_kcal: 315, protein_g: 12, carbs_g: 47, fat_g: 0 })], error: null }
+    const [meal] = await data.getOfferedMeals()
+    expect(calls.select).toEqual(expect.stringContaining('energy_kcal, protein_g, carbs_g, fat_g'))
+    expect(meal.nutrition).toEqual({ energyKcal: 315, proteinG: 12, carbsG: 47, fatG: 0 })
+  })
+
+  it('unvollständige oder ungültige Nährwerte: Mahlzeit bleibt, aber ohne Werte (PROJ-12 AC-6, AC-8)', async () => {
+    listResult = {
+      data: [
+        row({ id: 'teilweise', energy_kcal: 315, protein_g: null, carbs_g: 47, fat_g: 7 }),
+        row({ id: 'zu_viel', energy_kcal: 315, protein_g: 12, carbs_g: 470, fat_g: 7 }),
+      ],
+      error: null,
+    }
+    const meals = await data.getOfferedMeals()
+    expect(meals.map((meal) => [meal.id, meal.nutrition])).toEqual([
+      ['teilweise', null],
+      ['zu_viel', null],
     ])
   })
 
