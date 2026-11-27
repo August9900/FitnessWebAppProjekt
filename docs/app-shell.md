@@ -14,16 +14,17 @@
 | Bewegung | Kurze, geprüfte Workouts ansehen. | Angemeldete Nutzende | PROJ-4 |
 | Essen | Einfache, geprüfte Mahlzeitenoptionen ansehen. | Angemeldete Nutzende | PROJ-5 |
 | Wochenblick | Begonnene und abgeschlossene Aktionen ohne Streak-Strafe überblicken. | Angemeldete Nutzende | PROJ-8 |
+| Gewicht | Eigene Gewichtseinträge als Liste und Kurve, ohne Ziel und Bewertung. | Angemeldete Nutzende mit Altersgruppe „ab 16“, solange „Gewicht in der Navigation zeigen“ eingeschaltet ist | PROJ-11 |
 | Profil | Eigene Angaben und Kontoeinstellungen ansehen und anpassen. | Angemeldete Nutzende | PROJ-3 für Angaben; PROJ-1 für das Konto |
 
-Nach der Anmeldung öffnet sich **Heute**. PROJ-7 ergänzt die Rückmeldung nach einer Aktion im Tagesablauf, ohne einen weiteren Hauptbereich zu erzeugen. Spätere Features erhalten erst bei ihrer Architekturentscheidung einen Platz in der Navigation.
+Nach der Anmeldung öffnet sich **Heute**. PROJ-7 ergänzt die Rückmeldung nach einer Aktion im Tagesablauf, ohne einen weiteren Hauptbereich zu erzeugen. Spätere Features erhalten erst bei ihrer Architekturentscheidung einen Platz in der Navigation. „Gewicht“ (PROJ-11) ist der einzige bedingte Eintrag: Die Navigation zeigt je Person fünf oder sechs Bereiche (PROJ-2 AC-19).
 
 ## Layoutbereiche
 
-- **Desktop-Navigation:** PULSE-Marke und die fünf Hauptbereiche in einer gemeinsamen Seitenleiste; der aktuelle Bereich ist erkennbar.
-- **Mobilnavigation:** Dieselben fünf Bereiche in einer knappen unteren Navigation mit zugänglichen Namen; der aktuelle Bereich ist erkennbar.
+- **Desktop-Navigation (ab 1024 px Breite):** PULSE-Marke und die Hauptbereiche (fünf, mit „Gewicht“ sechs) in einer gemeinsamen, nicht einklappbaren Seitenleiste; der aktuelle Bereich ist erkennbar, nicht nur durch Farbe.
+- **Mobilnavigation (unter 1024 px Breite):** Dieselben Bereiche in einer fixierten unteren Navigation mit Symbol und sichtbarer Beschriftung; der aktuelle Bereich ist erkennbar. Bei sechs Einträgen dürfen Beschriftungen an Trennstellen auf zwei Zeilen umbrechen und kleiner werden (mindestens 12 px).
 - **Kopfbereich:** Titel des aktuellen Bereichs und, falls erforderlich, genau eine wichtigste Aktion.
-- **Inhalt:** Der aktuelle Schritt oder die aktuelle Aufgabe steht im Vordergrund; ergänzende Informationen bleiben nachgeordnet.
+- **Inhalt:** Der aktuelle Schritt oder die aktuelle Aufgabe steht im Vordergrund; ergänzende Informationen bleiben nachgeordnet. Ein Link „Zum Inhalt springen“ ist das erste fokussierbare Element.
 
 ## Wiederkehrendes Seitenmuster
 
@@ -32,13 +33,33 @@ Nach der Anmeldung öffnet sich **Heute**. PROJ-7 ergänzt die Rückmeldung nach
 - Leere Zustände benennen den nächsten möglichen Schritt, etwa den ersten Check-in.
 - Fehler benennen das Problem und eine konkrete Möglichkeit zum erneuten Versuch.
 - Bestätigungen erscheinen nahe der ausgelösten Aktion und verwenden dieselben Begriffe wie die zugehörigen Bedienelemente.
+- Bereiche ohne Inhalt zeigen einen ruhigen Platzhalter mit einem Weg zu „Heute“, bis ihr Feature sie füllt.
+- Eine unbekannte Adresse zeigt „Seite nicht gefunden“: angemeldet im Rahmen, sonst ohne Navigation.
 
 ## Anmeldestatus
 
-- **Ohne Anmeldung:** Nur Einstieg und Konto-Zugang sind erreichbar; persönliche Bereiche und Daten bleiben geschützt.
-- **Angemeldet:** Die fünf Hauptbereiche sind erreichbar; Einstiegspunkt ist „Heute“.
+- **Ohne Anmeldung:** Nur Einstieg und Konto-Zugang sind erreichbar; sie zeigen die PULSE-Marke, aber keine App-Navigation. Persönliche Bereiche und Daten bleiben geschützt.
+- **Angemeldet, Angaben unvollständig:** Heute, Bewegung, Essen, Wochenblick und Gewicht führen zum Einstieg (`/einstieg`, PROJ-3). Der Einstieg ist eine schlichte Seite ohne App-Navigation mit PULSE-Marke, „Konto verwalten“ und „Abmelden“. Das Profil bleibt erreichbar.
+- **Angemeldet, Angaben vollständig:** Die fünf Hauptbereiche sind erreichbar, ab 16 mit eingeschaltetem „Gewicht“ zusätzlich „Gewicht“; Einstiegspunkt ist „Heute“. Für alle anderen zeigt die Adresse von „Gewicht“ „Nicht gefunden“ (PROJ-11).
 - **Weitere Rollen:** Für die erste Version sind keine zusätzlichen Nutzendenrollen festgelegt. Berechtigungen für die Pflege geprüfter Inhalte werden in den betreffenden Feature-Designs entschieden.
 
 ## Gemeinsame Bausteine
 
-Seitenleiste, Mobilnavigation, Kopfbereich sowie Lade-, Leer- und Fehlerzustände werden als gemeinsame Bausteine von PROJ-2 geplant. Konkrete Komponenten und Dateipfade legt `/architecture PROJ-2` fest.
+Festgelegt durch `/architecture PROJ-2`. Features verwenden diese Bausteine und bauen keine eigenen nach:
+
+| Baustein | Ort | Verwendung |
+|----------|-----|------------|
+| App-Rahmen (Sprunglink, Seitenleiste, untere Navigation, Inhaltsbereich) | `src/components/shell/app-shell.tsx` | Liegt im geschützten Layout `src/app/(protected)/layout.tsx`; Features fügen nur Seiten darunter hinzu. |
+| Navigationseinträge | `src/components/shell/navigation.rules.ts` | Einzige Liste der Hauptbereiche; ein neuer Eintrag ist eine Änderung an PROJ-2. „Gewicht“ steht dort als bedingter Eintrag; ob er gilt, entscheidet PROJ-11. |
+| Kopfbereich | `src/components/shell/page-header.tsx` | Jede geschützte Seite beginnt damit: Titel und optional genau eine Hauptaktion. |
+| Platzhalter für leere Bereiche | `src/components/shell/area-placeholder.tsx` | Für Bereiche, deren Feature noch fehlt. |
+| PULSE-Marke | `src/components/shell/brand-mark.tsx` | Seitenleiste, öffentliche Seiten, „Seite nicht gefunden“. |
+| Gate für Hauptbereiche | `src/app/(protected)/(bereiche)/layout.tsx` (PROJ-3) | Seiten von Heute, Bewegung, Essen, Wochenblick und Gewicht liegen in dieser Gruppe und öffnen sich erst mit vollständigen Angaben; das Profil liegt außerhalb. |
+| Ladezustand | `src/components/shell/area-loading.tsx`, eingebunden über `loading.tsx` in `(protected)/(bereiche)/` und `(protected)/profil/` | Liegt bewusst unterhalb jedes Zugangs-Gates, damit ein Gate per Server-Weiterleitung antworten kann, bevor etwas gesendet wird. Ein neuer geschützter Bereich außerhalb von `(bereiche)` bekommt eine eigene `loading.tsx` mit diesem Baustein. |
+| Fehlerzustand | `src/app/(protected)/error.tsx` | Gilt automatisch für alle geschützten Seiten; Features können eigene, feinere Zustände ergänzen. |
+
+## Darstellung
+
+- Das Farbschema folgt der Geräteeinstellung; im Profil lässt sich unter „Darstellung“ System, Hell oder Dunkel wählen.
+- Reduzierte Bewegung gilt, wenn das Gerät sie meldet oder die Person sie im Profil einschaltet. Sie wirkt app-weit über eine zentrale Regel, Features müssen dafür nichts tun.
+- Beide Einstellungen liegen nur auf dem jeweiligen Gerät.

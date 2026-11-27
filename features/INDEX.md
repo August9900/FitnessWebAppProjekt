@@ -22,22 +22,22 @@
 
 | ID | Feature | Beschreibung | Status | Spec | Erstellt |
 |----|---------|--------------|--------|------|----------|
-| PROJ-1 | Konto & Anmeldung | Nutzende können ein Konto erstellen, sich anmelden und ihre persönlichen Daten geräteübergreifend geschützt nutzen. | Tasked | [Spec](PROJ-1-konto-anmeldung/) | 2026-09-23 |
-| PROJ-2 | App-Rahmen & Navigation | Ein gemeinsamer, ruhiger Rahmen verbindet die Bereiche der App auf Desktop und Mobilgeräten. | Roadmap | — | 2026-09-23 |
-| PROJ-3 | Kurzprofil & Einstieg | Nutzende erfassen mit wenigen Angaben ihr Ziel und ihre praktischen Trainingsmöglichkeiten. | Roadmap | — | 2026-09-23 |
-| PROJ-4 | Kurze Workouts | Ein fachlich geprüftes Angebot enthält kurze, anpassbare Bewegungsoptionen. | Roadmap | — | 2026-09-23 |
-| PROJ-5 | Einfache Mahlzeiten | Ein fachlich geprüftes Angebot enthält schnell umsetzbare Essensoptionen. | Roadmap | — | 2026-09-23 |
-| PROJ-6 | Tagesentscheidung | Ein kurzer Check-in führt zu einer passenden Aktion und verständlichen Alternativen. | Roadmap | — | 2026-09-23 |
-| PROJ-7 | Abschlussfeedback | Nach einer Aktion können Nutzende melden, ob Aufwand und Inhalt gepasst haben. | Roadmap | — | 2026-09-23 |
-| PROJ-8 | Wochenblick | Nutzende sehen ihre begonnenen und abgeschlossenen Aktionen ohne Streak-Strafe oder Nachholpflicht. | Roadmap | — | 2026-09-23 |
-| PROJ-9 | Übungsbibliothek | Nutzende können Übungen mit ihren Eigenschaften und Einsatzmöglichkeiten nachschlagen. | Roadmap | — | 2026-09-23 |
-| PROJ-10 | Eigene Trainingspläne | Nutzende können Trainingspläne selbst zusammenstellen und speichern. | Roadmap | — | 2026-09-23 |
-| PROJ-11 | Gewichtsverlauf | Nutzende können Gewichtseinträge und deren Verlauf einsehen. | Roadmap | — | 2026-09-23 |
-| PROJ-12 | Nährwertübersicht | Nutzende können berechnete Kalorien- und Makrowerte einsehen. | Roadmap | — | 2026-09-23 |
+| PROJ-1 | Konto & Anmeldung | Nutzende können ein Konto erstellen, sich anmelden und ihre persönlichen Daten geräteübergreifend geschützt nutzen. | In Progress | [Spec](PROJ-1-konto-anmeldung/) | 2026-09-23 |
+| PROJ-2 | App-Rahmen & Navigation | Ein gemeinsamer, ruhiger Rahmen verbindet die Bereiche der App auf Desktop und Mobilgeräten. | In Progress | [Spec](PROJ-2-app-rahmen-navigation/) | 2026-09-23 |
+| PROJ-3 | Kurzprofil & Einstieg | Nutzende erfassen mit wenigen Angaben ihr Ziel und ihre praktischen Trainingsmöglichkeiten. | In Progress | [Spec](PROJ-3-kurzprofil-einstieg/) | 2026-09-23 |
+| PROJ-4 | Kurze Workouts | Ein fachlich geprüftes Angebot enthält kurze, anpassbare Bewegungsoptionen. | In Progress | [Spec](PROJ-4-kurze-workouts/) | 2026-09-23 |
+| PROJ-5 | Einfache Mahlzeiten | Ein fachlich geprüftes Angebot enthält schnell umsetzbare Essensoptionen. | In Progress | [Spec](PROJ-5-einfache-mahlzeiten/) | 2026-09-23 |
+| PROJ-6 | Tagesentscheidung | Ein kurzer Check-in führt zu einer passenden Aktion und verständlichen Alternativen. | In Progress | [Spec](PROJ-6-tagesentscheidung/) | 2026-09-23 |
+| PROJ-7 | Abschlussfeedback | Nach einer Aktion können Nutzende melden, ob Aufwand und Inhalt gepasst haben. | In Progress | [Spec](PROJ-7-abschlussfeedback/) | 2026-09-23 |
+| PROJ-8 | Wochenblick | Nutzende sehen ihre begonnenen und abgeschlossenen Aktionen ohne Streak-Strafe oder Nachholpflicht. | In Progress | [Spec](PROJ-8-wochenblick/) | 2026-09-23 |
+| PROJ-9 | Übungsbibliothek | Nutzende können Übungen mit ihren Eigenschaften und Einsatzmöglichkeiten nachschlagen. | In Progress | [Spec](PROJ-9-uebungsbibliothek/) | 2026-09-23 |
+| PROJ-10 | Eigene Trainingspläne | Nutzende können Trainingspläne selbst zusammenstellen und speichern. | In Progress | [Spec](PROJ-10-eigene-trainingsplaene/) | 2026-09-23 |
+| PROJ-11 | Gewichtsverlauf | Nutzende können Gewichtseinträge und deren Verlauf einsehen. | In Progress | [Spec](PROJ-11-gewichtsverlauf/) | 2026-09-23 |
+| PROJ-12 | Nährwertübersicht | Mahlzeiten zeigen ihre ungefähren Nährwerte pro Portion. | In Progress | [Spec](PROJ-12-naehrwertuebersicht/) | 2026-09-23 |
 | PROJ-13 | Rangsystem | Persönliche Bestleistungen können in ein optionales, positiv gestaltetes Rangsystem einfließen. | Roadmap | — | 2026-09-23 |
 | PROJ-14 | KI-Trainer | Ein späterer, gesondert geprüfter Coach kann frei formulierte Fragen beantworten. | Roadmap | — | 2026-09-23 |
 
-**Baureihenfolge:** P0 (erste Version): PROJ-1 → PROJ-2 → PROJ-3; PROJ-4 und PROJ-5 nach PROJ-2; PROJ-6 nach PROJ-3, PROJ-4 und PROJ-5 → PROJ-7 → PROJ-8 · P1: PROJ-9 nach PROJ-4 → PROJ-10 · P2: PROJ-11 und PROJ-12 nach PROJ-3; PROJ-13 nach PROJ-8 und erneuter Produktprüfung; PROJ-14 nach PROJ-6 und gesonderter Prüfung.
+**Baureihenfolge:** P0 (erste Version): PROJ-1 → PROJ-2 → PROJ-3; PROJ-4 und PROJ-5 nach PROJ-2; PROJ-6 nach PROJ-3, PROJ-4 und PROJ-5 → PROJ-7 → PROJ-8 · P1: PROJ-9 nach PROJ-4 → PROJ-10 · P2: PROJ-11 nach PROJ-3; PROJ-12 nach PROJ-5; PROJ-13 nach PROJ-8 und erneuter Produktprüfung; PROJ-14 nach PROJ-6 und gesonderter Prüfung.
 
 <!-- Add features above this line -->
 
